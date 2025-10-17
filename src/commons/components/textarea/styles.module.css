@@ -143,9 +143,9 @@
 
 /* 글자 수 카운터 */
 .counter {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 4px;
+  position: absolute;
+  right: 12px; /* textarea padding-right 내부 */
+  bottom: 8px; /* textarea padding-bottom 내부 */
 }
 
 .counterText {

@@ -88,16 +88,16 @@ export const Textarea: React.FC<TextareaProps> = ({
           }}
           {...props}
         />
+        {showCount && typeof props.maxLength === 'number' ? (
+          <div className={styles.counter} aria-live="polite">
+            <span className={styles.counterText}>{Math.min(currentValue.length, props.maxLength)}/{props.maxLength}</span>
+          </div>
+        ) : null}
       </div>
       {hasError ? (
         typeof error === 'string' ? <span className={styles.errorText}>{error}</span> : <span className={styles.errorText}>유효하지 않은 값입니다.</span>
       ) : helperText ? (
         <span className={styles.helperText}>{helperText}</span>
-      ) : null}
-      {showCount && typeof props.maxLength === 'number' ? (
-        <div className={styles.counter} aria-live="polite">
-          <span className={styles.counterText}>{Math.min(currentValue.length, props.maxLength)}/{props.maxLength}</span>
-        </div>
       ) : null}
     </label>
   );

@@ -289,7 +289,8 @@
 }
 .reTextareaRoot {
   width: 100%;
-  padding: 0 16px;
+  /* padding: 0 16px; */
+  /* 잘못 만들어줌 */
 }
 .reTextareaEl {
   width: 100%;
@@ -297,7 +298,8 @@
 }
 .reFooter {
   justify-content: flex-end;
-  padding: 0 16px;
+  /* padding: 0 16px; */
+  /* 잘못 만들어줌 */
 }
 .reListText {
   margin: 0;

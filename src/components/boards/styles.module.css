@@ -1,0 +1,170 @@
+/* 보드 화면 스타일: 레이아웃 및 토큰 기반 시각 정의 (주석은 한국어) */
+/* 폭은 1280px 고정, 가운데 정렬 */
+
+.container {
+	width: 1280px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	/* 레이아웃 확인을 위한 최소 배경 */
+	background: rgba(0, 0, 0, 0.02);
+}
+
+/* 공통 박스 스타일: 와이어프레임 구분용 */
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-surface-subtle);
+    border: 1px dashed var(--color-outline);
+    color: var(--color-text-secondary);
+}
+
+/* 간격 전용 엘리먼트 */
+.gap40 { height: 40px; }
+.gap24 { height: 24px; }
+.gap8 { height: 8px; }
+.gap56 { height: 56px; }
+
+/* 영역별 높이 고정 */
+.title {
+	composes: box;
+	height: 36px;
+    padding: 0 16px;
+    font-size: var(--typo-desktop-webHeadline02-fontSize);
+    line-height: var(--typo-desktop-webHeadline02-lineHeight);
+    font-weight: var(--typo-desktop-webHeadline02-fontWeight);
+    color: var(--color-text-primary);
+}
+
+.search {
+	composes: box;
+	height: 48px;
+	padding: 0 48px 0 0;
+    /* padding: 0 16px; */
+}
+
+.main {
+	composes: box;
+	height: 696px;
+    padding: 16px;
+}
+
+/* 메인 내부 래퍼: 피그마 1184x648 레이아웃 정렬 */
+.mainInner {
+	width: 1184px;
+	height: 648px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+/* 헤더 행 (52px) */
+.listHeader {
+	height: 52px;
+	display: grid;
+	grid-template-columns: 64px 1fr 100px 100px;
+	align-items: center;
+	padding: 0 24px;
+	color: var(--color-text-primary);
+	font-size: var(--typo-desktop-body01-fontSize);
+	line-height: var(--typo-desktop-body01-lineHeight);
+	font-weight: var(--typo-desktop-body01-fontWeight);
+}
+
+/* 바디 영역 (548px) */
+.listBody {
+	height: 548px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+/* 리스트 행 (44px, 라운드 8, 얇은 경계) */
+.listRow {
+	height: 44px;
+	display: grid;
+	grid-template-columns: 64px 1fr 100px 100px;
+	align-items: center;
+	padding: 0 24px;
+	border: 1px solid var(--color-surface-soft);
+	border-radius: 8px;
+	background: var(--color-surface-default);
+}
+
+/* 컬럼 공통: 텍스트 정렬 */
+.colNo { text-align: center; color: var(--color-text-placeholder); font-size: var(--typo-desktop-body02_s-fontSize); line-height: var(--typo-desktop-body02_s-lineHeight); font-weight: 300; }
+.colTitle { color: var(--color-text-primary); font-size: var(--typo-desktop-body02_s-fontSize); line-height: var(--typo-desktop-body02_s-lineHeight); font-weight: 500; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.colAuthor { text-align: center; color: var(--color-text-secondary); font-size: var(--typo-desktop-body02_s-fontSize); line-height: var(--typo-desktop-body02_s-lineHeight); font-weight: 300; }
+.colDate { text-align: center; color: var(--color-text-placeholder); font-size: var(--typo-desktop-body02_s-fontSize); line-height: var(--typo-desktop-body02_s-lineHeight); font-weight: 300; }
+
+.pagination {
+	composes: box;
+	height: 56px;
+    padding: 0 16px;
+}
+
+/* 페이지네이션 내부: 피그마 1184x32 스펙 정렬 */
+.paginationInner {
+	width: 1184px;
+	height: 32px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
+/* 검색 행: 셀렉트/인풋/버튼 정렬 */
+.searchRow {
+    width: 100%;
+    display: flex;
+    /* align-items: center; */
+    gap: 12px;
+	padding: 0 0 0 48px;
+}
+
+/* 데이트피커 영역 폭: 셀렉트와 유사한 고정 폭 가이드 */
+.searchDatepicker {
+    width: 289px;
+	height: 48px;
+}
+
+/* 가로 폭 유틸: className 전달은 width만 허용 조건 준수 */
+.wSelect { width: 160px; }
+.wSearch640 { width: 640px; }
+.wButton64 { width: 64px; }
+
+/* 데이트피커 너비 유틸 (안td 클래스 충돌 방지 위해 래퍼 클래스 사용 권장) */
+.wDatepicker { /* 가급적 인라인 style 대신 클래스 기반 제어 */ }
+
+/* 데이트피커 아이콘을 왼쪽으로 이동 (범위 지정 전역 선택자) */
+.searchDatepicker :global(.ant-picker) {
+    width: 100%;
+}
+.searchDatepicker :global(.ant-picker .ant-picker-suffix) {
+    order: -1; /* 아이콘을 입력 앞쪽으로 이동 */
+    margin-right: 8px;
+    margin-left: 0;
+}
+
+/* 검색 버튼용 래퍼: tertiary 버튼을 검정 배경으로 보이게 함 */
+.btnTertiaryBlack {
+    width: 64px; /* 요청 폭 고정 */
+    height: 48px; /* 버튼 기본 높이와 일치 */
+    background: var(--color-action-neutral); /* 검정 토큰 */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* 내부 버튼 라운드 일치 및 넘침 방지 */
+}
+
+/* 내부 버튼을 래퍼 크기에 맞춤 */
+.btnTertiaryBlack :global(button) {
+    width: 100%;
+    height: 100%;
+}
+
+
