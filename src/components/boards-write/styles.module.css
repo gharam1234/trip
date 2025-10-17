@@ -1,0 +1,201 @@
+.writeContainer {
+  /* 작성 컨테이너: 가로 1280px 고정, 수직 스택 */
+  width: 1280px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.gap {
+  /* {gap}: 1280 * 40 */
+  width: 1280px;
+  height: 40px;
+}
+
+.divider {
+  /* 수평선: 두 갭 사이에 그려지는 선 - CSS 변수 토큰 사용 */
+  width: 1280px;
+  height: 1px;
+  background-color: var(--color-outline);
+}
+
+.writeHeader {
+  /* write-header: 1280 * 68 */
+  width: 1280px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+  color: var(--color-action-neutral);
+}
+.headerTitle {
+  /* 피그마 디자인에 맞는 타이포그래피 - CSS 변수 토큰 사용 */
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-headline01-fontSize);
+  line-height: var(--typo-desktop-headline01-lineHeight);
+  font-weight: var(--typo-desktop-headline01-fontWeight);
+  color: var(--color-action-neutral);
+}
+
+.sectionTitle {
+  /* 섹션 제목 스타일 (피그마 디자인 기준) - CSS 변수 토큰 사용 */
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-title02-fontSize);
+  line-height: var(--typo-desktop-title02-lineHeight);
+  font-weight: var(--typo-desktop-title02-fontWeight);
+  color: var(--color-action-neutral);
+  margin: 0;
+  margin-bottom: 8px; /* 인풋과 간격 8px */
+}
+
+.requiredMark {
+  /* 필수 표시 (*) 스타일 - CSS 변수 토큰 사용 */
+  color: var(--color-danger);
+  font-weight: var(--typo-desktop-title01-fontWeight);
+  font-size: var(--typo-desktop-title01-fontSize);
+  line-height: var(--typo-desktop-title01-lineHeight);
+}
+
+.writeTitle {
+  /* write-title: 1280 * 80 */
+  width: 1280px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+}
+
+.writeContents {
+  /* write-contents: 1280 * 368 */
+  width: 1280px;
+  height: 368px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+}
+
+.contentTextarea {
+  /* 내용 입력 높이 336px (피그마 원안) */
+  width: 1280px;
+  height: 336px !important;
+}
+
+.writeAddress {
+  /* write-address: 1280 * 192 */
+  width: 1280px;
+  height: 192px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+}
+.addressRow {
+  /* 주소 입력 행: 좌우 정렬/간격 */
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.zipInput {
+  /* 우편번호 입력 사이즈 고정 */
+  width: 82px; /* 피그마 우편번호 예시 5자리 폭 근사 */
+  
+}
+.zipButton {
+  /* 우편번호 검색 버튼 너비 */
+  width: 130px; /* 피그마 버튼 폭 */
+}
+
+.writeUtube {
+  /* write-utube: 1280 * 80 */
+  width: 1280px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+}
+
+.writeImages {
+  /* write-images: 1280 * 192 */
+  width: 1280px;
+  height: 192px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+}
+.imageGrid {
+  /* 3열 고정, 간격 16px */
+  display: grid;
+  grid-template-columns: repeat(3, 160px);
+  gap: 16px;
+  width: 512px; /* 피그마 디자인 기준 */
+  margin-top: 8px; /* 제목과 간격 8px */
+}
+.imageItem {
+  /* 이미지 아이템 컨테이너 - CSS 변수 토큰 사용 */
+  width: 160px;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-soft);
+  border-radius: 8px;
+  position: relative;
+}
+.imageText {
+  /* 이미지 하단 텍스트 - CSS 변수 토큰 사용 */
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: var(--typo-desktop-body02_s-lineHeight);
+  font-weight: var(--typo-desktop-body02_s-fontWeight);
+  color: var(--color-text-quaternary);
+  margin-top: 8px;
+  text-align: center;
+}
+
+.writeFooter {
+  /* write-footer: 1280 * 48 */
+  width: 1280px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 0;
+  background: transparent;
+}
+.footerButtons {
+  /* 좌우 버튼 간 간격 고정 */
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 0 0; /* 피그마 기준 우측 정렬 */
+}
+.footerButtonLeft {
+  /* secondary 버튼 너비만 className으로 제어 */
+  width: 64px; /* 피그마 취소 버튼 폭 */
+}
+.footerButtonRight {
+  /* primary 버튼 너비만 className으로 제어 */
+  width: 95px; /* 피그마 등록하기 버튼 폭 */
+}
+
+/* 공통 유틸: 폭 100% 지정 */
+.fullWidth {
+  width: 1280px; /* 피그마 폭과 정확히 일치 */
+}
+
+

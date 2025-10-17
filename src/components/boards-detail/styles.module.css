@@ -1,0 +1,311 @@
+/*
+  보드 상세 와이어프레임 스타일
+  - 고정 폭 1280px
+  - 각 섹션은 요구된 높이값을 정확히 반영
+  - 배치 확인을 위해 중립 톤 배경색과 경계선 사용
+*/
+
+.container {
+  width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 시각적 구분을 위한 기본 박스 스타일 */
+.detailTitle,
+.detailWriter,
+.detailImages,
+.detailContent,
+.detailVideo,
+.detailIcon,
+.detailFooter,
+.reTitle,
+.reRating,
+.reInput,
+.reFooter,
+.reList {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--color-surface-subtle);
+  border: 1px dashed var(--color-border-gray-1);
+  color: var(--color-text-tertiary);
+}
+
+/* 높이 스펙 적용 */
+.detailTitle { height: 72px; }
+.detailWriter { height: 80px; }
+.detailImages { height: 531px; }
+.detailContent { height: 744px; }
+.detailVideo { height: 508px; }
+.detailIcon { height: 48px; }
+.detailFooter { height: 40px; }
+.reTitle { height: 24px; }
+.reRating { height: 24px; }
+.reInput { height: 144px; }
+.reFooter { height: 48px; }
+.reList { height: 72px; }
+
+/* 간격 스펙 적용 */
+.gap16 { height: 16px; }
+.gap24 { height: 24px; }
+.gap40 { height: 40px; }
+
+/* 제목 텍스트: 피그마 웹헤드라인03 준용 */
+.titleText {
+  margin: 0;
+  padding: 0 16px;
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-webHeadline03-fontSize);
+  line-height: var(--typo-desktop-webHeadline03-lineHeight);
+  font-weight: var(--typo-desktop-webHeadline03-fontWeight);
+  color: var(--color-text-primary);
+}
+
+/* 작성자 영역 상세 레이아웃 */
+.detailWriter {
+  flex-direction: column;
+  gap: 8px;
+}
+.writerRowTop {
+  width: 100%;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+.writerProfile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.profileImage {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: var(--color-gray-3);
+}
+.profileName {
+  font-size: var(--typo-desktop-light02-fontSize);
+  line-height: var(--typo-desktop-light02-lineHeight);
+  font-weight: var(--typo-desktop-light02-fontWeight);
+  color: var(--color-text-tertiary);
+}
+.writerMeta {
+  display: flex;
+  align-items: center;
+}
+.writerDate {
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: var(--typo-desktop-body02_s-lineHeight);
+  font-weight: var(--typo-desktop-body02_s-fontWeight);
+  color: var(--color-text-quaternary);
+}
+.writerDivider {
+  width: 100%;
+  height: 0px;
+  border-top: 1px solid var(--color-outline);
+}
+.writerRowBottom {
+  width: 100%;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 16px;
+}
+.iconLink,
+.iconLocation {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+}
+.iconLink { background-image: url('/icons/link.svg'); }
+.iconLocation { background-image: url('/icons/location.svg'); }
+
+/* 이미지/비디오 자리표시 */
+.heroImage {
+  width: 400px;
+  height: 100%;
+  background: var(--color-background-gray-8);
+  margin-left: 16px;
+}
+
+.detailContent {
+  align-items: flex-start;
+}
+.contentParagraph {
+  margin: 0;
+  padding: 8px 16px;
+  font-size: var(--typo-desktop-body01_regular-fontSize);
+  line-height: var(--typo-desktop-body01_regular-lineHeight);
+  font-weight: var(--typo-desktop-body01_regular-fontWeight);
+  color: var(--color-text-primary);
+}
+
+.detailVideo {
+  align-items: center;
+  justify-content: center;
+}
+.videoThumb {
+  width: 822px;
+  height: 464px;
+  background: var(--color-surface-soft);
+  position: relative;
+}
+.playButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.playTriangle {
+  width: 0;
+  height: 0;
+  border-left: 12px solid var(--color-dark-gray-10);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+/* 리액션 영역 */
+.detailIcon {
+  justify-content: center;
+  /* margin: 0 auto; */
+  gap: 24px;
+  padding: 0 16px;
+}
+.reactionBad,
+.reactionGood {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  /* gap: 8px; */
+}
+.iconBad {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  background-image: url('/icons/dislike.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+}
+.iconGood{
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  background-image: url('/icons/like.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.reactionCountMuted {
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: var(--typo-desktop-body02_s-lineHeight);
+  font-weight: var(--typo-desktop-body02_s-fontWeight);
+  color: var(--color-text-tertiary);
+}
+.reactionCountDanger {
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: var(--typo-desktop-body02_s-lineHeight);
+  font-weight: var(--typo-desktop-body02_s-fontWeight);
+  color: var(--color-danger);
+}
+
+/* 상세 푸터 버튼 정렬 */
+.detailFooter {
+  justify-content: center;
+  gap: 24px;
+  padding: 0 16px;
+}
+
+/* 회고 타이틀/입력/목록 자리표시 */
+.reTitleText {
+  margin: 0;
+  padding: 0 16px;
+  font-size: var(--typo-desktop-title01-fontSize);
+  line-height: var(--typo-desktop-title01-lineHeight);
+  font-weight: var(--typo-desktop-title01-fontWeight);
+  color: var(--color-text-primary);
+}
+.ratingPlaceholder {
+  width: 240px;
+  height: 24px;
+  background: var(--color-background-gray-8);
+  margin-left: 16px;
+}
+.reRating {
+  gap: 8px;
+  padding: 0 16px;
+}
+.ratingItem,
+.ratingItemActive {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--color-text-quaternary);
+  cursor: pointer;
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: 1;
+}
+.ratingItemActive {
+  color: var(--color-warning);
+}
+/* 키보드 포커스 가시화: 글로벌 아웃라인 토큰 사용 */
+.ratingItem:focus-visible,
+.ratingItemActive:focus-visible {
+  outline: 2px solid var(--color-outline);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.inputPlaceholder {
+  width: 100%;
+  height: 44px;
+  margin: 0 16px;
+  background: var(--color-gray-1);
+  border: 1px solid var(--color-border-gray-1);
+  border-radius: 8px;
+}
+.reTextareaRoot {
+  width: 100%;
+  padding: 0 16px;
+}
+.reTextareaEl {
+  width: 100%;
+  height: 112px; /* 144px 영역 내에서 텍스트 필드 높이 조정 */
+}
+.reFooter {
+  justify-content: flex-end;
+  padding: 0 16px;
+}
+.reListText {
+  margin: 0;
+  padding: 0 16px;
+  font-size: var(--typo-desktop-title02-fontSize);
+  line-height: var(--typo-desktop-title02-lineHeight);
+  font-weight: var(--typo-desktop-title02-fontWeight);
+  color: var(--color-text-primary);
+}
+
+

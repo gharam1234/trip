@@ -1,0 +1,23 @@
+# 대용량/빌드 산출물
+node_modules/
+.storybook-cache/
+storybook-static/
+.next/
+dist/
+build/
+
+# 이미지/폰트/동영상 등 바이너리
+public/**/*.png
+public/**/*.jpg
+public/**/*.jpeg
+public/**/*.gif
+public/**/*.svg
+public/**/*.webp
+public/**/*.avif
+public/**/*.mp4
+public/**/*.mov
+public/**/*.woff
+public/**/*.woff2
+
+# 기타 불필요한 대용량
+**/*.map

@@ -1,0 +1,163 @@
+.root {
+  /* 피그마 기준: 인라인 플렉스 컨테이너, 라벨/필드/헬퍼 세로 스택 */
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px; /* 라벨-필드-헬퍼 간격 (피그마 디자인 기준) */
+  /* width: 100%; */
+}
+
+.label {
+  /* 피그마 최신 토큰: m(16/24), s(12/20) → 기본 m 사용 */
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.requiredMark {
+  margin-left: 4px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #f66a6a;
+}
+
+.field {
+  /* 입력 영역: 좌우 아이콘과 input을 가로 정렬 */
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #d4d3d3; /* 기본 테두리 */
+  background-color: #ffffff;
+  transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.input {
+  /* 실제 입력 필드: 아이콘 공간을 고려하여 패딩 */
+  flex: 1 1 auto;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-size: 16px; /* m/l: 16/24, s: 14/20 */
+  line-height: 24px; /* m/l 기본 */
+  color: #111111;
+  padding: 0 16px; /* 기본 패딩 */
+}
+
+.input::placeholder {
+  color: #ababab; /* 플레이스홀더 색상 */
+}
+
+.leftIcon,
+.rightIcon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280; /* 아이콘 중립 톤 */
+}
+
+/* 포커스 스타일: 접근성 고려한 명확한 포커스 링 */
+.field:focus-within {
+  /* 선택/타이핑 상태: 진한 회색 테두리 */
+  border-color: #777777;
+  box-shadow: none;
+}
+
+/* 비활성 상태 */
+.isDisabled .field {
+  /* 비활성 s/m: 회색 배경과 연한 테두리 */
+  background-color: #e4e4e4;
+  /* border-color: transparent; */
+  /* 잘못만드어진거같음 */
+}
+.isDisabled .input {
+  color: #9ca3af;
+}
+
+/* 에러 상태 */
+.isError .field {
+  /* 에러 상태: 빨간 테두리 */
+  border-color: #f66a6a;
+  box-shadow: none;
+}
+.errorText {
+  /* m(16/24), s(12/20)에서 m 기준 사용 */
+  font-size: 16px;
+  line-height: 24px;
+  color: #f66a6a;
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+.helperText {
+  font-size: 12px;
+  line-height: 20px; /* 피그마 디자인 기준 */
+  color: #6b7280;
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+}
+
+/* 카운터: 오른쪽 정렬 0/100, Pretendard Medium 16/24, 회색 */
+.counter {
+  display: flex;
+  justify-content: flex-end;
+}
+.counterText {
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #ababab;
+}
+
+/* variant: primary | secondary | tertiary */
+.variantPrimary .field {
+  background-color: #ffffff;
+}
+.variantSecondary .field {
+  background-color: #f9fafb;
+}
+.variantTertiary .field {
+  background-color: transparent;
+  border-color: #e5e7eb;
+}
+
+/* size: small | medium | large - 피그마 디자인 기준 */
+.sizeSmall .field { 
+  /* s: 40px */
+  height: 40px; 
+  border-radius: 8px; 
+}
+.sizeSmall .input { 
+  font-size: 14px; 
+  line-height: 20px; 
+  padding: 0 12px; 
+}
+
+.sizeMedium .field { 
+  /* m: 48px */
+  height: 48px; 
+  border-radius: 8px; 
+}
+.sizeMedium .input { 
+  font-size: 16px; 
+  line-height: 24px; 
+  padding: 0 16px; 
+}
+
+.sizeLarge .field { 
+  /* l: 56px */
+  height: 56px; 
+  border-radius: 8px; 
+}
+.sizeLarge .input { 
+  font-size: 16px; 
+  line-height: 24px; 
+  padding: 0 20px; 
+}
+
+
