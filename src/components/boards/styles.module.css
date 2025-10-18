@@ -167,4 +167,9 @@
     height: 100%;
 }
 
+/* 트립토크 등록 버튼 스타일 */
+.wButton {
+    cursor: pointer;
+}
+
 

@@ -14,6 +14,7 @@ import { Pagination } from "@/commons/components/pagination";
 import { DatePicker } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
+import { useLinkToNewBoard } from "./hooks/index.link.new.hook";
 
 export default function Boards(): JSX.Element {
   // 영역 순서 가이드
@@ -29,6 +30,9 @@ export default function Boards(): JSX.Element {
   // 상태: 포맷된 날짜 문자열 (API 파라미터 연동 대비)
   const [dateRangeText, setDateRangeText] = React.useState<{ start: string | null; end: string | null }>({ start: null, end: null });
 
+  // Hook: 트립토크 등록 페이지로 이동
+  const { navigateToNewBoard } = useLinkToNewBoard();
+
   // 검색 실행 핸들러
   function handleSearchSubmit(): void {
     // TODO: 실제 데이터 요청 연동 시 여기에 API 호출/라우팅 로직 연결
@@ -38,7 +42,7 @@ export default function Boards(): JSX.Element {
   }
 
   return (
-    <div className={styles.container} aria-label="boards">
+    <div className={styles.container} aria-label="boards" data-testid="boards-container">
       {/* 간격 40px */}
       <div className={styles.gap40} role="presentation" />
 
@@ -94,7 +98,8 @@ export default function Boards(): JSX.Element {
             variant="primary"
             size="medium"
             className={styles.wButton}
-            onClick={handleSearchSubmit}
+            onClick={navigateToNewBoard}
+            data-testid="trip-talk-register-button"
           >
             트립토크 등록
           </Button>
