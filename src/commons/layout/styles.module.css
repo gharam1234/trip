@@ -38,6 +38,11 @@
   background: transparent;
 }
 
+.logoLink {
+  /* 로고 링크 스타일 */
+  cursor: pointer;
+}
+
 .tapGroup {
   display: flex;
   align-items: center;

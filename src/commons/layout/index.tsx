@@ -3,20 +3,32 @@
 import React from "react";
 import Slider from "react-slick";
 import styles from "./styles.module.css";
+import Image from "next/image";
+import { useLinkRouting } from "./hooks/index.link.routing.hook";
 
 type LayoutWireframeProps = {
   children: React.ReactNode;
 };
 
 export default function LayoutWireframe({ children }: LayoutWireframeProps) {
+  const { handleLogoClick } = useLinkRouting();
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="layout-container">
       {/* 네비게이션 영역: 1920x80 (내부 1280 정렬) */}
       <nav className={styles.navigation}>
         <div className={styles.navigationInner}>
           {/* 좌측: 로고 + 탭 */}
           <div className={styles.navLeftGroup}>
-            <div className={styles.logoArea} aria-label="logo" />
+            <img 
+              src="/images/logo.png" 
+              alt="logo" 
+              width={51.52} 
+              height={32} 
+              className={styles.logoLink}
+              data-testid="logo-link"
+              onClick={handleLogoClick}
+            />
             <div className={styles.tapGroup}>
               <button className={`${styles.tapItem} ${styles.tapActive}`} type="button">
                 {/* '트립토크' */}

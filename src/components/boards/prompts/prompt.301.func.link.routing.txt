@@ -9,10 +9,10 @@
 
 ==============================================
 
-조건-파일경로) 참고할 TSX  파일경로: src/components/diaries/index.tsx
-조건-파일경로) 참고할 CSS  파일경로: src/components/diaries/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/diaries/hooks/index.link.routing.hook.ts
-조건-파일경로) 구현될 TEST 파일경로: src/components/diaries/tests/index.link.routing.hook.spec.ts
+조건-파일경로) 참고할 TSX  파일경로: src/components/boards/index.tsx
+조건-파일경로) 참고할 CSS  파일경로: src/components/boards/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards/hooks/index.link.routing.hook.ts
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards/tests/index.link.routing.hook.spec.ts
 
 ==============================================
 기존 히스토리 참고만 할것 -
@@ -51,15 +51,15 @@
 
 ==============================================
 
-기존 히스토리 참고만 할것 - 핵심요구사항) 각 일기카드를 클릭시, url.ts의 페이지URL에 정의된 경로로 이동할 것.
+ 핵심요구사항) 각 게시글 클릭시, url.ts의 페이지URL에 정의된 경로로 이동할 것.
             1) 경로: commons/constants/url.ts
             2) 조건
                 - CSS는 cursor: pointer만 추가할 것.
                 - 경로를 하드코딩하지 말고, url.ts를 import 하여 적용할 것.
-                - 해당 카드에 바인딩된 id를 사용할 것.
+                - 해당 게시글에 바인딩된 id를 사용할 것.
 
-            3) 일기카드 영역
-                - 전체: url.ts에 정의된 일기상세페이지 => /diaries/[id]
+            3) 게시글 영역
+                - 전체: url.ts에 정의된 상세페이지 => /boards/[BoardId]
                 - 삭제아이콘: 페이지 이동하지 말 것.
 ==============================================
 핵심요구사항) 아래와 같은 문제를 해결할 것
