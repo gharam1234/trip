@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import styles from "./styles.module.css";
 import Image from "next/image";
 import { useLinkRouting } from "./hooks/index.link.routing.hook";
+import { useAreaVisibility } from "./hooks/index.area.hook";
 
 type LayoutWireframeProps = {
   children: React.ReactNode;
@@ -12,11 +13,12 @@ type LayoutWireframeProps = {
 
 export default function LayoutWireframe({ children }: LayoutWireframeProps) {
   const { handleLogoClick } = useLinkRouting();
+  const { showBanner, showNavigation, routeKey } = useAreaVisibility();
 
   return (
-    <div className={styles.container} data-testid="layout-container">
+    <div className={styles.container} data-testid="layout-container" data-route-key={routeKey} data-show-banner={showBanner} data-show-navigation={showNavigation}>
       {/* 네비게이션 영역: 1920x80 (내부 1280 정렬) */}
-      <nav className={styles.navigation}>
+      <nav className={styles.navigation} style={{ display: showNavigation ? 'flex' : 'none' }}>
         <div className={styles.navigationInner}>
           {/* 좌측: 로고 + 탭 */}
           <div className={styles.navLeftGroup}>
@@ -53,7 +55,7 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
       </nav>
 
       {/* 배너 영역: 1920x516 (react-slick 기반 캐러셀) */}
-      <section className={styles.banner} aria-label="main visual banner">
+      <section className={styles.banner} aria-label="main visual banner" style={{ display: showBanner ? 'block' : 'none' }} data-testid="banner-section">
         <Slider
           dots={true}
           infinite={true}

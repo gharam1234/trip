@@ -6,7 +6,8 @@ test.describe('Layout Link Routing Hook', () => {
     await page.goto('/');
     
     // 페이지가 완전히 로드될 때까지 대기 (data-testid 기반)
-    await page.waitForSelector('[data-testid="layout-container"]', { timeout: 500 });
+    // timeout은 500ms 미만으로 설정
+    await page.waitForSelector('[data-testid="layout-container"]', { timeout: 400 });
   });
 
   test('로고 클릭 시 게시글 목록 페이지로 이동해야 함', async ({ page }) => {
@@ -17,7 +18,8 @@ test.describe('Layout Link Routing Hook', () => {
     await expect(page).toHaveURL('/boards');
     
     // 페이지가 완전히 로드될 때까지 대기 (data-testid 기반)
-    await page.waitForLoadState('domcontentloaded', { timeout: 500 });
+    // timeout은 500ms 미만으로 설정
+    await page.waitForLoadState('domcontentloaded', { timeout: 400 });
   });
 
   test('로고에 cursor: pointer 스타일이 적용되어야 함', async ({ page }) => {
@@ -35,7 +37,8 @@ test.describe('Layout Link Routing Hook', () => {
     await expect(page).toHaveURL('/boards');
     
     // 페이지 로드 완료 대기 (networkidle 사용하지 않음)
-    await page.waitForLoadState('domcontentloaded', { timeout: 500 });
+    // timeout은 500ms 미만으로 설정
+    await page.waitForLoadState('domcontentloaded', { timeout: 400 });
     
     // 페이지 제목이나 특정 요소가 로드되었는지 확인
     await expect(page.locator('body')).toBeVisible();
