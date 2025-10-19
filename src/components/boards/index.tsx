@@ -16,6 +16,7 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useLinkToNewBoard } from "./hooks/index.link.new.hook";
 import { useBoardsBinding } from "./hooks/index.binding.hook";
+import { useBoardRouting } from "./hooks/index.link.routing.hook";
 
 export default function Boards(): JSX.Element {
   // 영역 순서 가이드
@@ -36,6 +37,9 @@ export default function Boards(): JSX.Element {
   
   // Hook: 로컬스토리지에서 게시글 데이터 바인딩
   const { boards, loading, error } = useBoardsBinding();
+  
+  // Hook: 게시글 상세페이지로 이동
+  const { navigateToBoardDetail } = useBoardRouting();
 
   // 검색 실행 핸들러
   function handleSearchSubmit(): void {
@@ -148,7 +152,12 @@ export default function Boards(): JSX.Element {
               </div>
             ) : (
               boards.map((item) => (
-                <div key={item.no} className={styles.listRow} role="row">
+                <div 
+                  key={item.no} 
+                  className={styles.listRow} 
+                  role="row"
+                  onClick={() => navigateToBoardDetail(item.no)}
+                >
                   <div className={styles.colNo} role="cell">{item.no}</div>
                   <div className={styles.colTitle} role="cell">{item.title}</div>
                   <div className={styles.colAuthor} role="cell">{item.author}</div>
