@@ -1,0 +1,257 @@
+
+> vibe-coding@0.1.0 test:e2e
+> playwright test
+
+
+Running 25 tests using 5 workers
+
+(node:95057) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95055) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95058) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95054) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95058) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95055) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95054) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95057) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+경로: /boards
+  routeKey: BOARDS_LIST
+  showBanner: true
+  showNavigation: true
+  banner display: block
+  navigation display: flex
+  ✓   4 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:53:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 목록 페이지 - banner와 navigation 모두 표시 (2.1s)
+
+경로: /boards/123
+  routeKey: BOARD_DETAIL
+  showBanner: true
+  showNavigation: true
+  banner display: block
+  navigation display: flex
+  ✓   6 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:53:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 상세 페이지 - banner와 navigation 모두 표시 (788ms)
+  ✓   1 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:13:7 › Layout Link Routing Hook › 로고 클릭 시 게시글 목록 페이지로 이동해야 함 (2.9s)
+  ✓   5 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:18:7 › 게시판 폼 등록 기능 › 필수 필드 입력 시 등록하기 버튼이 활성화되어야 함 (2.9s)
+  ✓   3 [chromium] › src/components/boards/tests/index.link.new.hook.spec.ts:4:7 › 트립토크 등록 버튼 클릭 테스트 › 트립토크 등록 버튼 클릭시 /boards/new 페이지로 이동한다 (3.0s)
+  ✓   8 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:25:7 › Layout Link Routing Hook › 로고에 cursor: pointer 스타일이 적용되어야 함 (454ms)
+
+경로: /boards/new
+  routeKey: BOARD_NEW
+  showBanner: false
+  showNavigation: false
+  banner display: none
+  navigation display: none
+  ✓   7 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:53:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 작성 페이지 - banner와 navigation 모두 숨김 (517ms)
+  ✓  11 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:126:7 › Area Visibility Hook (TDD 기반 테스트) › skip 대상 경로들이 정의되어 있는지 확인 (1ms)
+  ✓  12 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:133:7 › Area Visibility Hook (TDD 기반 테스트) › 동적 세그먼트 경로 매칭 로직이 정확하게 작동하는지 확인 (2ms)
+  ✓   9 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:30:7 › 게시판 폼 등록 기능 › 필수 필드가 비어있으면 등록하기 버튼이 비활성화되어야 함 (714ms)
+  ✓  10 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:32:7 › Layout Link Routing Hook › 로고 클릭 후 페이지 로드가 완료되어야 함 (839ms)
+  ✓  13 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:36:7 › 게시판 폼 등록 기능 › 게시물 등록 성공 시나리오 (794ms)
+  ✓  14 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:75:7 › 게시판 폼 등록 기능 › 기존 게시물이 있을 때 새 게시물 등록 시 ID가 증가해야 함 (626ms)
+  ✓  15 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:110:7 › 게시판 폼 등록 기능 › 폼 유효성 검사 - 작성자 필드 (631ms)
+  ✓  16 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:128:7 › 게시판 폼 등록 기능 › 폼 유효성 검사 - 비밀번호 필드 (642ms)
+  ✓  17 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:144:7 › 게시판 폼 등록 기능 › 폼 유효성 검사 - 제목 필드 (631ms)
+  ✘   2 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:39:7 › Board Detail Binding Hook › should load and bind board data correctly when boardId matches (7.1s)
+(node:95165) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95165) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  18 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:162:7 › 게시판 폼 등록 기능 › 폼 유효성 검사 - 내용 필드 (635ms)
+  ✓  20 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:180:7 › 게시판 폼 등록 기능 › 폼 유효성 검사 - 유튜브 URL 필드 (753ms)
+  ✘  19 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:73:7 › Board Detail Binding Hook › should bind correct board data when accessing different boardId (5.5s)
+(node:95229) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95229) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  21 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:96:7 › Board Detail Binding Hook › should handle missing board data gracefully when localStorage has no boards (112ms)
+(node:95242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  22 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:110:7 › Board Detail Binding Hook › should show not found message when boardId does not exist in localStorage (109ms)
+(node:95255) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95255) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  23 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:124:7 › Board Detail Binding Hook › should handle empty boards array in localStorage (108ms)
+(node:95261) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95261) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  24 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:137:7 › Board Detail Binding Hook › should handle board data without images correctly (465ms)
+  ✓  25 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:155:7 › Board Detail Binding Hook › should handle board data without youtubeUrl correctly (525ms)
+
+
+  1) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:39:7 › Board Detail Binding Hook › should load and bind board data correctly when boardId matches 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[aria-label*="강남로 123"]')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('[aria-label*="강남로 123"]')[22m
+
+
+      60 |     // 위치 정보(addressDetail) 검증
+      61 |     const iconLocation = page.locator('[aria-label*="강남로 123"]');
+    > 62 |     await expect(iconLocation).toBeVisible();
+         |                                ^
+      63 |
+      64 |     // 내용 검증
+      65 |     await expect(page.locator('[class*="contentParagraph"]').first()).toContainText('이것은 첫 번째 게시글의 내용입니다.');
+        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:62:32
+
+    Error Context: test-results/src-components-boards-deta-9de34-rectly-when-boardId-matches-chromium/error-context.md
+
+  2) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:73:7 › Board Detail Binding Hook › should bind correct board data when accessing different boardId 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[aria-label*="마린시티"]')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('[aria-label*="마린시티"]')[22m
+
+
+      90 |     // 위치 정보 검증
+      91 |     const iconLocation = page.locator('[aria-label*="마린시티"]');
+    > 92 |     await expect(iconLocation).toBeVisible();
+         |                                ^
+      93 |   });
+      94 |
+      95 |   // 실패 시나리오: 빈 로컬스토리지에서 boardId로 접근 시 에러 처리 확인
+        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:92:32
+
+    Error Context: test-results/src-components-boards-deta-1bf06-accessing-different-boardId-chromium/error-context.md
+
+  3) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:96:7 › Board Detail Binding Hook › should handle missing board data gracefully when localStorage has no boards 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('div')
+    Expected substring: [32m"게시글을 찾을 수 없습니다."[39m
+    Error: strict mode violation: locator('div') resolved to 26 elements:
+        1) <div data-show-banner="true" data-show-navigation="true" data-route-key="BOARD_DETAIL" data-testid="layout-container" class="styles_container__Y7Dol">…</div> aka getByTestId('layout-container')
+        2) <div class="styles_navigationInner__7w0_O">…</div> aka getByText('트립토크숙박권 구매마이 페이지로그인')
+        3) <div class="styles_navLeftGroup__D7MB7">…</div> aka locator('div').nth(2)
+        4) <div class="styles_tapGroup__vQxFu">…</div> aka getByText('트립토크숙박권 구매마이 페이지')
+        5) <div class="styles_navRightGroup__Sgs_a">…</div> aka locator('div').filter({ hasText: /^로그인$/ })
+        6) <div dir="ltr" class="slick-slider slick-initialized">…</div> aka getByText('Previous Next123')
+        7) <div class="slick-list">…</div> aka locator('.slick-list')
+        8) <div class="slick-track">…</div> aka locator('.slick-track')
+        9) <div tabindex="-1" data-index="-1" aria-hidden="true" class="slick-slide slick-cloned">…</div> aka locator('.slick-slide').first()
+        10) <div>…</div> aka locator('.slick-slide > div').first()
+        ...
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for locator('div')[22m
+
+
+      104 |
+      105 |     // 게시글을 찾을 수 없다는 메시지 확인
+    > 106 |     await expect(page.locator('div')).toContainText('게시글을 찾을 수 없습니다.');
+          |                                       ^
+      107 |   });
+      108 |
+      109 |   // 실패 시나리오: 존재하지 않는 boardId로 접근 시 처리 확인
+        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:106:39
+
+    Error Context: test-results/src-components-boards-deta-ed062--localStorage-has-no-boards-chromium/error-context.md
+
+  4) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:110:7 › Board Detail Binding Hook › should show not found message when boardId does not exist in localStorage 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('div')
+    Expected substring: [32m"게시글을 찾을 수 없습니다."[39m
+    Error: strict mode violation: locator('div') resolved to 26 elements:
+        1) <div data-show-banner="true" data-show-navigation="true" data-route-key="BOARD_DETAIL" data-testid="layout-container" class="styles_container__Y7Dol">…</div> aka getByTestId('layout-container')
+        2) <div class="styles_navigationInner__7w0_O">…</div> aka getByText('트립토크숙박권 구매마이 페이지로그인')
+        3) <div class="styles_navLeftGroup__D7MB7">…</div> aka locator('div').nth(2)
+        4) <div class="styles_tapGroup__vQxFu">…</div> aka getByText('트립토크숙박권 구매마이 페이지')
+        5) <div class="styles_navRightGroup__Sgs_a">…</div> aka locator('div').filter({ hasText: /^로그인$/ })
+        6) <div dir="ltr" class="slick-slider slick-initialized">…</div> aka getByText('Previous Next123')
+        7) <div class="slick-list">…</div> aka locator('.slick-list')
+        8) <div class="slick-track">…</div> aka locator('.slick-track')
+        9) <div tabindex="-1" data-index="-1" aria-hidden="true" class="slick-slide slick-cloned">…</div> aka locator('.slick-slide').first()
+        10) <div>…</div> aka locator('.slick-slide > div').first()
+        ...
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for locator('div')[22m
+
+
+      118 |
+      119 |     // 게시글을 찾을 수 없다는 메시지 확인
+    > 120 |     await expect(page.locator('div')).toContainText('게시글을 찾을 수 없습니다.');
+          |                                       ^
+      121 |   });
+      122 |
+      123 |   // 실패 시나리오: boards 배열이 비어있을 때 처리 확인
+        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:120:39
+
+    Error Context: test-results/src-components-boards-deta-396bc-s-not-exist-in-localStorage-chromium/error-context.md
+
+  5) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:124:7 › Board Detail Binding Hook › should handle empty boards array in localStorage 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('div')
+    Expected substring: [32m"게시글을 찾을 수 없습니다."[39m
+    Error: strict mode violation: locator('div') resolved to 26 elements:
+        1) <div data-show-banner="true" data-show-navigation="true" data-route-key="BOARD_DETAIL" data-testid="layout-container" class="styles_container__Y7Dol">…</div> aka getByTestId('layout-container')
+        2) <div class="styles_navigationInner__7w0_O">…</div> aka getByText('트립토크숙박권 구매마이 페이지로그인')
+        3) <div class="styles_navLeftGroup__D7MB7">…</div> aka locator('div').nth(2)
+        4) <div class="styles_tapGroup__vQxFu">…</div> aka getByText('트립토크숙박권 구매마이 페이지')
+        5) <div class="styles_navRightGroup__Sgs_a">…</div> aka locator('div').filter({ hasText: /^로그인$/ })
+        6) <div dir="ltr" class="slick-slider slick-initialized">…</div> aka getByText('Previous Next123')
+        7) <div class="slick-list">…</div> aka locator('.slick-list')
+        8) <div class="slick-track">…</div> aka locator('.slick-track')
+        9) <div tabindex="-1" data-index="-1" aria-hidden="true" class="slick-slide slick-cloned">…</div> aka locator('.slick-slide').first()
+        10) <div>…</div> aka locator('.slick-slide > div').first()
+        ...
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for locator('div')[22m
+
+
+      131 |
+      132 |     // 게시글을 찾을 수 없다는 메시지 확인
+    > 133 |     await expect(page.locator('div')).toContainText('게시글을 찾을 수 없습니다.');
+          |                                       ^
+      134 |   });
+      135 |
+      136 |   // 성공 시나리오: 이미지가 없는 경우 처리 확인
+        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:133:39
+
+    Error Context: test-results/src-components-boards-deta-8f54e-oards-array-in-localStorage-chromium/error-context.md
+
+  5 failed
+    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:39:7 › Board Detail Binding Hook › should load and bind board data correctly when boardId matches 
+    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:73:7 › Board Detail Binding Hook › should bind correct board data when accessing different boardId 
+    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:96:7 › Board Detail Binding Hook › should handle missing board data gracefully when localStorage has no boards 
+    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:110:7 › Board Detail Binding Hook › should show not found message when boardId does not exist in localStorage 
+    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:124:7 › Board Detail Binding Hook › should handle empty boards array in localStorage 
+  20 passed (17.2s)

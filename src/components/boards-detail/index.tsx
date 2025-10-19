@@ -1,16 +1,25 @@
 "use client";
 
 import React from "react";
+import { useParams } from "next/navigation";
 import styles from "./styles.module.css";
 import Button from "@/commons/components/button";
 import Textarea from "@/commons/components/textarea";
+import { useBoardDetailBinding } from "./hooks/index.binding.hook";
 
 /**
  * 보드 상세 와이어프레임 컴포넌트
  * - HTML과 flexbox만 사용하여 구조를 구현
  * - 고정 폭 1280px 기준 섹션 높이/간격을 요구사항 수치로 맞춤
+ * - 실제 로컬스토리지 데이터를 바인딩하여 표시
  */
 export default function BoardsDetailWireframe(): JSX.Element {
+  // URL 파라미터에서 boardId 추출
+  const params = useParams();
+  const boardId = params?.BoardId as string;
+
+  // 실제 데이터 바인딩 훅 사용
+  const { boardData, loading, error } = useBoardDetailBinding(boardId);
   // 별점/댓글 입력 상태 관리 (주석은 항상 한국어)
   const [rating, setRating] = React.useState<number>(0);
   const [comment, setComment] = React.useState<string>("");
@@ -20,68 +29,108 @@ export default function BoardsDetailWireframe(): JSX.Element {
     // 실제 연동 시 서버 호출로 교체
     console.log("submit review", { rating, commentLength: comment.length, comment });
   }, [rating, comment]);
+
+  // 로딩 상태 처리
+  if (loading) {
+    return (
+      <div className={styles.container} data-testid="board-detail-page">
+        <div>로딩 중...</div>
+      </div>
+    );
+  }
+
+  // 에러 상태 처리
+  if (error) {
+    return (
+      <div className={styles.container} data-testid="board-detail-page">
+        <div>오류가 발생했습니다: {error}</div>
+      </div>
+    );
+  }
+
+  // 데이터가 없을 때 처리
+  if (!boardData) {
+    return (
+      <div className={styles.container} data-testid="board-detail-page">
+        <div>게시글을 찾을 수 없습니다.</div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container} data-testid="board-detail-page">
-      {/* 제목 영역: 피그마 타이틀 포맷 반영 */}
+      {/* 제목 영역: 실제 데이터 바인딩 */}
       <section className={styles.detailTitle}>
-        <h1 className={styles.titleText}>살어리 살어리랏다 쳥산(靑山)애 살어리랏다멀위랑 ᄃᆞ래랑 먹고 쳥산(靑山)애 살어리랏다얄리얄리 얄랑셩 얄라리 얄라</h1>
+        <h1 className={styles.titleText}>{boardData.title}</h1>
       </section>
 
       {/* gap 24 */}
       <div className={styles.gap24} />
 
-      {/* 작성자 영역: 프로필, 작성일, 구분선, 링크/위치 아이콘 자리표시 */}
+      {/* 작성자 영역: 실제 데이터 바인딩 */}
       <section className={styles.detailWriter}>
         <div className={styles.writerRowTop}>
           <div className={styles.writerProfile}>
             <div className={styles.profileImage} aria-hidden />
-            <span className={styles.profileName}>홍길동</span>
+            <span className={styles.profileName}>{boardData.writer}</span>
           </div>
           <div className={styles.writerMeta}>
-            <span className={styles.writerDate}>2024.11.11</span>
+            <span className={styles.writerDate}>{boardData.createdAt}</span>
           </div>
         </div>
         <div className={styles.writerDivider} />
         <div className={styles.writerRowBottom}>
           <div className={styles.iconLink} aria-label="링크 아이콘" />
-          <div className={styles.iconLocation} aria-label="위치 아이콘" />
+          <div className={styles.iconLocation} aria-label={`위치: ${boardData.addressDetail || '위치 정보 없음'}`} />
         </div>
       </section>
 
       {/* gap 24 */}
       <div className={styles.gap24} />
 
-      {/* 이미지 영역: 대표 이미지 자리표시 */}
+      {/* 이미지 영역: 실제 이미지 데이터 바인딩 */}
       <section className={styles.detailImages}>
-        <div className={styles.heroImage} />
+        {boardData.images && boardData.images.length > 0 ? (
+          <div className={styles.heroImage} style={{ backgroundImage: `url(${boardData.images[0]})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+        ) : (
+          <div className={styles.heroImage} />
+        )}
       </section>
 
       {/* gap 24 */}
       <div className={styles.gap24} />
 
-      {/* 내용 영역: 본문 타이포 */}
+      {/* 내용 영역: 실제 내용 데이터 바인딩 */}
       <section className={styles.detailContent}>
-        <p className={styles.contentParagraph}>
-          살겠노라 살겠노라. 청산에 살겠노라. 머루랑 다래를 먹고 청산에 살겠노라. 얄리얄리 얄랑셩 얄라리 얄라
-        </p>
-        <p className={styles.contentParagraph}>
-          우는구나 우는구나 새야. 자고 일어나 우는구나 새야. 너보다 시름 많은 나도 자고 일어나 우노라. 얄리얄리 얄라셩 얄라리 얄라
-        </p>
-        <p className={styles.contentParagraph}>
-          갈던 밭 보았느냐. 물 아래 갈던 밭 보았느냐. 이끼 묻은 쟁기를 가지고 물 아래 갈던 밭 보았느냐.
-        </p>
+        {boardData.contents.split('\n').map((paragraph, index) => (
+          <p key={index} className={styles.contentParagraph}>
+            {paragraph}
+          </p>
+        ))}
       </section>
 
       {/* gap 24 */}
       <div className={styles.gap24} />
 
-      {/* 비디오 영역: 썸네일 + 플레이 버튼 자리표시 */}
+      {/* 비디오 영역: 실제 유튜브 URL 바인딩 */}
       <section className={styles.detailVideo}>
-        <div className={styles.videoThumb}>
-          <button className={styles.playButton} aria-label="재생">
-            <span className={styles.playTriangle} aria-hidden />
-          </button>
-        </div>
+        {boardData.youtubeUrl ? (
+          <div className={styles.videoThumb}>
+            <button 
+              className={styles.playButton} 
+              aria-label="재생"
+              onClick={() => window.open(boardData.youtubeUrl, '_blank')}
+            >
+              <span className={styles.playTriangle} aria-hidden />
+            </button>
+          </div>
+        ) : (
+          <div className={styles.videoThumb}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#666' }}>
+              비디오가 없습니다
+            </div>
+          </div>
+        )}
       </section>
 
       {/* gap 24 */}
