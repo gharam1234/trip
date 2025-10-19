@@ -9,10 +9,10 @@
 
 ==============================================
 
-조건-파일경로) 참고할 TSX  파일경로: src/components/diaries/index.tsx
-조건-파일경로) 참고할 CSS  파일경로: src/components/diaries/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/diaries/hooks/index.binding.hook.ts
-조건-파일경로) 구현될 TEST 파일경로: src/components/diaries/tests/index.binding.hook.spec.ts
+조건-파일경로) 참고할 TSX  파일경로: src/components/boards/index.tsx
+조건-파일경로) 참고할 CSS  파일경로: src/components/boards/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards/hooks/index.binding.hook.ts
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards/tests/index.binding.hook.spec.ts
 
 ==============================================
 
@@ -23,7 +23,7 @@
 
             2) 테스트 조건
                 - timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
-                - /diaries 페이지가 완전히 로드된 후 테스트할 것.
+                - /boards 페이지가 완전히 로드된 후 테스트할 것.
                     - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
                     - 페이지 로드 식별 금지사항: networkidle 대기 방법
 
@@ -39,29 +39,39 @@
                     - 로컬스토리지 모킹하지 말 것.
 
             3) 테스트 데이터타입
-                - 저장소: 로컬스토리지
-                - key: diaries
+                 - 저장소: 로컬스토리지
+                - key: boards
                 - value: [{ 
-                    id: number,
-                    title: string, 
-                    content: string, 
-                    emotion: enum.ts 경로에 정의된 emotion enum 타입을 import하여 사용할 것.
-                    createdAt: string
+                    boardId: String,
+                    writer: String,
+                    password: String,
+                    title: String!,
+                    contents: String!,
+                    youtubeUrl: String,
+                    boardAddress: BoardAddressInput{
+                        zipcode: String
+                        address: String
+                        addressDetail: String
+                    }
+                    images: [String!]
+                    createdAt:String
+
                 }]
 
-기존 히스토리 참고만 할것 핵심요구사항) 현재의 모든 구조를 그대로 유지하고, 하드코딩된 Mock데이터를 제거하고, 실제 데이터를 바인딩할 것.
+
+기존히스토리 참고만 - 핵심요구사항) 현재의 모든 구조를 그대로 유지하고, 하드코딩된 Mock데이터를 제거하고, 실제 데이터를 바인딩할 것.
             1) 바인딩할 데이터
-                - 로컬스토리지에 저장된 diaries 배열 내부의 객체들
+                - 로컬스토리지에 저장된 boards 배열 내부의 객체들
 
             2) 데이터바인딩 상세내용
-                - 카드사진: 일기객체의 emotion => enum.ts 경로에 정의된 emotion enum 타입을 import하여 비교 및 참조할 것.
-                - 감정텍스트: 일기객체의 emotion => enum.ts 경로에 정의된 emotion enum 타입을 import하여 비교 및 참조할 것.
-                - 작성일: 일기객체의 createdAt
-                - 제목: 일기객체의 title => 일기카드 사이즈를 넘어가는 경우, "..."으로 표현하여 일기카드 사이즈를 넘어가지 않도록 할 것.
+                - 번호: 게시글객체의 boardId
+                - 제목: 게시글객체의 title
+                - 작성자: 게시글객체의 writer
+                - 작성일: 게시글객체의 createdAt
+                - 제목: 게시글객체의 title => 사이즈를 넘어가는 경우, "..."으로 표현하여 해당 칸의 사이즈를 넘어가지 않도록 할 것.
 
 ==============================================
-핵심요구사항) 아래의 문제를 해결할 것.
-            - 현재상황: 일기쓰기모달에서 등록하기를 누르고 등록완료확인모달에서 확인을 누르면 유저 시나리오대로 흘러가는데
-            등록완료확인모달에서 확인이 아닌 다른 곳을 클릭하면 등록완료모달만 종료만 되고 있어서 유저 시나리오대로 흘러가지 않고 있음
-            - 해결방향: 등록완료확인모달에서 확인이 아닌 다른 곳을 클릭했을때에도 상세페이지로 라우팅 되어야 함
 
+핵심요구사항) 다음 문제를 해결
+-현재상황 : 최신 글이 맨 위에 있어야 되는데 반대로 되어있음
+-해결방향 : 최신 글일수록 위에 오도록 역순으로 위치할 것

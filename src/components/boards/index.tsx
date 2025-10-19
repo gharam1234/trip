@@ -15,6 +15,7 @@ import { DatePicker } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useLinkToNewBoard } from "./hooks/index.link.new.hook";
+import { useBoardsBinding } from "./hooks/index.binding.hook";
 
 export default function Boards(): JSX.Element {
   // 영역 순서 가이드
@@ -32,6 +33,9 @@ export default function Boards(): JSX.Element {
 
   // Hook: 트립토크 등록 페이지로 이동
   const { navigateToNewBoard } = useLinkToNewBoard();
+  
+  // Hook: 로컬스토리지에서 게시글 데이터 바인딩
+  const { boards, loading, error } = useBoardsBinding();
 
   // 검색 실행 핸들러
   function handleSearchSubmit(): void {
@@ -119,27 +123,39 @@ export default function Boards(): JSX.Element {
             <div className={styles.colDate} role="columnheader">날짜</div>
           </div>
 
-          {/* 리스트 548px: 샘플 데이터 렌더링 (연동 시 교체) */}
+          {/* 리스트 548px: 로컬스토리지 데이터 바인딩 */}
           <div className={styles.listBody} role="rowgroup">
-            {[
-              { no: 243, title: "제주 살이 1일차", author: "홍길동", date: "2024.12.16" },
-              { no: 242, title: "강남 살이 100년차", author: "홍길동", date: "2024.12.16" },
-              { no: 241, title: "길 걷고 있었는데 고양이한테 간택 받았어요", author: "홍길동", date: "2024.12.16" },
-              { no: 240, title: "오늘 날씨 너무 좋아서 바다보러 왔어요~", author: "홍길동", date: "2024.12.16" },
-              { no: 239, title: "누가 양양 핫하다고 했어 나밖에 없는데?", author: "홍길동", date: "2024.12.16" },
-              { no: 238, title: "여름에 보드타고 싶은거 저밖에 없나요 🥲", author: "홍길동", date: "2024.12.16" },
-              { no: 237, title: "사무실에서 과자 너무 많이 먹은거 같아요 다이어트하러 여행 가야겠어요", author: "홍길동", date: "2024.12.16" },
-              { no: 236, title: "여기는 기승전 여행이네요 ㅋㅋㅋ", author: "홍길동", date: "2024.12.16" },
-              { no: 235, title: "상여금 들어왔는데 이걸로 다낭갈까 사이판 갈까", author: "홍길동", date: "2024.12.16" },
-              { no: 234, title: "강릉 여름바다 보기 좋네요", author: "홍길동", date: "2024.12.16" },
-            ].map((item) => (
-              <div key={item.no} className={styles.listRow} role="row">
-                <div className={styles.colNo} role="cell">{item.no}</div>
-                <div className={styles.colTitle} role="cell">{item.title}</div>
-                <div className={styles.colAuthor} role="cell">{item.author}</div>
-                <div className={styles.colDate} role="cell">{item.date}</div>
+            {loading ? (
+              <div className={styles.listRow} role="row">
+                <div className={styles.colNo} role="cell">로딩 중...</div>
+                <div className={styles.colTitle} role="cell"></div>
+                <div className={styles.colAuthor} role="cell"></div>
+                <div className={styles.colDate} role="cell"></div>
               </div>
-            ))}
+            ) : error ? (
+              <div className={styles.listRow} role="row">
+                <div className={styles.colNo} role="cell">오류</div>
+                <div className={styles.colTitle} role="cell">{error}</div>
+                <div className={styles.colAuthor} role="cell"></div>
+                <div className={styles.colDate} role="cell"></div>
+              </div>
+            ) : boards.length === 0 ? (
+              <div className={styles.listRow} role="row">
+                <div className={styles.colNo} role="cell">-</div>
+                <div className={styles.colTitle} role="cell">등록된 게시글이 없습니다.</div>
+                <div className={styles.colAuthor} role="cell">-</div>
+                <div className={styles.colDate} role="cell">-</div>
+              </div>
+            ) : (
+              boards.map((item) => (
+                <div key={item.no} className={styles.listRow} role="row">
+                  <div className={styles.colNo} role="cell">{item.no}</div>
+                  <div className={styles.colTitle} role="cell">{item.title}</div>
+                  <div className={styles.colAuthor} role="cell">{item.author}</div>
+                  <div className={styles.colDate} role="cell">{item.date}</div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
