@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import BoardsWriteWireframe from "@/components/boards-write";
+import BoardsWriteWireframe from "@/components/boards-new";
 
 // 새 글 작성 페이지에 보드 작성 와이어프레임 연결
 export default function BoardsNewPage(): JSX.Element {

@@ -21,7 +21,7 @@ export default function BoardsDetailWireframe(): JSX.Element {
     console.log("submit review", { rating, commentLength: comment.length, comment });
   }, [rating, comment]);
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="board-detail-page">
       {/* 제목 영역: 피그마 타이틀 포맷 반영 */}
       <section className={styles.detailTitle}>
         <h1 className={styles.titleText}>살어리 살어리랏다 쳥산(靑山)애 살어리랏다멀위랑 ᄃᆞ래랑 먹고 쳥산(靑山)애 살어리랏다얄리얄리 얄랑셩 얄라리 얄라</h1>

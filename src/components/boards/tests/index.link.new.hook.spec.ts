@@ -6,10 +6,10 @@ test.describe('트립토크 등록 버튼 클릭 테스트', () => {
     await page.goto('/boards');
     
     // 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
-    await page.waitForSelector('[data-testid="boards-container"]', { timeout: 500 });
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 트립토크 등록 버튼 클릭
-    await page.click('[data-testid="trip-talk-register-button"]');
+    await page.click('[data-testid="trip-talk-button"]');
     
     // URL이 /boards/new로 변경되었는지 확인
     await expect(page).toHaveURL('/boards/new');

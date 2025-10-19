@@ -19,8 +19,8 @@
 조건-피그마) 구현될 컴포넌트 노드ID(write-images 영역): 285:32408
 조건-피그마) 구현될 컴포넌트 노드ID(write-footer 영역): 285:32416
 
-조건-파일경로) 구현될 TSX 파일경로: src/components/boards-write/index.tsx
-조건-파일경로) 구현될 CSS 파일경로: src/components/boards-write/styles.module.css
+조건-파일경로) 구현될 TSX 파일경로: src/components/boards-new/index.tsx
+조건-파일경로) 구현될 CSS 파일경로: src/components/boards-new/styles.module.css
 
 ==============================================
 

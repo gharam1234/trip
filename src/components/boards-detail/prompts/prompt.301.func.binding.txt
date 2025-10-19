@@ -9,10 +9,10 @@
 
 ==============================================
 
-조건-파일경로) 참고할 TSX  파일경로: src/components/diaries-detail/index.tsx
-조건-파일경로) 참고할 CSS  파일경로: src/components/diaries-detail/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/diaries-detail/hooks/index.binding.hook.ts
-조건-파일경로) 구현될 TEST 파일경로: src/components/diaries-detail/tests/index.binding.hook.spec.ts
+조건-파일경로) 참고할 TSX  파일경로: src/components/boards-detail/index.tsx
+조건-파일경로) 참고할 CSS  파일경로: src/components/boards-detail/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-detail/hooks/index.binding.hook.ts
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards-detail/tests/index.binding.hook.spec.ts
 
 ==============================================
 
@@ -40,22 +40,34 @@
 
             4) 테스트 데이터타입
                 - 저장소: 로컬스토리지
-                - key: diaries
+                - key: boards
                 - value: [{ 
-                    id: number,
-                    title: string, 
-                    content: string, 
-                    emotion: enum.ts 경로에 정의된 emotion enum 타입을 import하여 사용할 것.
-                    createdAt: string
-                }]
+                    boardId: String,
+                    writer: String,
+                    password: String,
+                    title: String!,
+                    contents: String!,
+                    youtubeUrl: String,
+                    boardAddress: BoardAddressInput{
+                        zipcode: String
+                        address: String
+                        addressDetail: String
+                    }
+                    images: [String!]
 
-핵심요구사항) 다이나믹라우팅된 일기상세페이지의 [id]를 추출하여 Mock데이터를 제거하고, 실제 데이터를 바인딩할 것.
+                }]
+            
+
+핵심요구사항) 다이나믹라우팅된 게시글 상세페이지의 [boardId]를 추출하여 Mock데이터를 제거하고, 실제 데이터를 바인딩할 것.
             1) 바인딩할 데이터
-                - 로컬스토리지에 저장된 diaries 배열 내부의 객체 id와 일치하는 일기상세객체
+                - 로컬스토리지에 저장된 boards 배열 내부의 객체 boardId와 일치하는 일기상세객체
             
             2) 상세내용
-                - 제목: 일기상세객체의 title
-                - 감정아이콘/이미지: 일기상세객체의 emotion => enum.ts 경로에 정의된 emotion enum 타입을 import하여 비교 및 참조할 것.
+                - 제목: 게시글 상세객체의 title
+                - 작성자: 게시글 상세객체의 writer
+                - 제목: 게시글 상세객체의 title
+                - 작성자 : 
+                - 이미지: 일기상세객체의 emotion => enum.ts 경로에 정의된 emotion enum 타입을 import하여 비교 및 참조할 것.
                 - 감정텍스트: 일기상세객체의 emotion => enum.ts 경로에 정의된 emotion enum 타입을 import하여 비교 및 참조할 것.
                 - 작성일: 일기상세객체의 createdAt
                 - 내용: 일기상세객체의 content

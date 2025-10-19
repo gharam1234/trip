@@ -42,7 +42,7 @@ export default function Boards(): JSX.Element {
   }
 
   return (
-    <div className={styles.container} aria-label="boards" data-testid="boards-container">
+    <div className={styles.container} aria-label="boards" data-testid="boards-list-page">
       {/* 간격 40px */}
       <div className={styles.gap40} role="presentation" />
 
@@ -99,7 +99,7 @@ export default function Boards(): JSX.Element {
             size="medium"
             className={styles.wButton}
             onClick={navigateToNewBoard}
-            data-testid="trip-talk-register-button"
+            data-testid="trip-talk-button"
           >
             트립토크 등록
           </Button>

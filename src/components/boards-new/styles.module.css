@@ -58,6 +58,28 @@
   line-height: var(--typo-desktop-title01-lineHeight);
 }
 
+.writeWriter {
+  /* write-writer: 1280 * 80 */
+  width: 1280px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+}
+
+.writePassword {
+  /* write-password: 1280 * 80 */
+  width: 1280px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 0;
+  background: transparent;
+}
+
 .writeTitle {
   /* write-title: 1280 * 80 */
   width: 1280px;
@@ -196,6 +218,59 @@
 /* 공통 유틸: 폭 100% 지정 */
 .fullWidth {
   width: 1280px; /* 피그마 폭과 정확히 일치 */
+}
+
+/* 에러 메시지 스타일 */
+.errorMessage {
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: var(--typo-desktop-body02_s-lineHeight);
+  font-weight: var(--typo-desktop-body02_s-fontWeight);
+  color: var(--color-feedback-danger);
+  margin-top: 4px;
+  margin-left: 4px;
+}
+
+/* 성공 알림 모달 스타일 */
+.alertOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.alertModal {
+  background: var(--color-surface-default);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.alertModal h3 {
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-title01-fontSize);
+  line-height: var(--typo-desktop-title01-lineHeight);
+  font-weight: var(--typo-desktop-title01-fontWeight);
+  color: var(--color-action-neutral);
+  margin: 0 0 12px 0;
+}
+
+.alertModal p {
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-body01-fontSize);
+  line-height: var(--typo-desktop-body01-lineHeight);
+  font-weight: var(--typo-desktop-body01-fontWeight);
+  color: var(--color-text-secondary);
+  margin: 0 0 20px 0;
 }
 
 
