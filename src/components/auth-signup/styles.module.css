@@ -1,0 +1,122 @@
+.wrapper {
+  /* 페이지 전체: 좌/우 분할을 위한 컨테이너 */
+  display: flex;
+  width: 1920px;
+  height: 1080px;
+  margin-top: -40px;
+  /* 레이아웃에서 온 갭 40px 조정 */
+}
+
+.leftSide {
+  /* 왼쪽 영역: 고정 폭 400px, 수직 배치 */
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 1080px;
+  align-items: flex-start;
+  padding: 0 40px;
+}
+
+.leftGapTop {
+  width: 400px;
+  height: 244px;
+}
+
+.title {
+  width: 320px;
+  height: 128px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 타이틀 텍스트: 전역 타이포그래피 토큰을 사용하여 라이트 모드 기준 적용 */
+.titleText {
+  /* 피그마: 헤드라인 크기와 유사한 토큰 선택 */
+  font-size: var(--typo-desktop-title01-fontSize);
+  line-height: var(--typo-desktop-title01-lineHeight);
+  font-weight: var(--typo-desktop-title01-fontWeight);
+  color: var(--color-text-primary);
+  
+}
+
+.leftGapMid1 {
+  width: 320px;
+  height: 24px;
+}
+
+.form {
+  width: 400px;
+  height: 128px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.formRow {
+  width: 400px;
+  height: 56px;
+  display: flex;
+}
+
+/* 공통 컴포넌트 폭만 제어하기 위한 보조 클래스 (className 전달은 width만 허용) */
+.width400 { width: 320px; }
+
+.leftGapMid3{
+  width: 320px;
+  height: 36px;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  
+}
+
+.leftGapMid2 {
+  width: 400px;
+  height: 24px;
+}
+
+/* 버튼 영역: 로그인 버튼과 회원가입 링크 버튼 수직 배치 */
+.buttonArea {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 회원가입: 단순 링크 이동 버튼 스타일 (라이트 모드 기준) */
+.linkButton {
+  width: 320px;
+  height: 56px;
+  display: inline-flex;
+  align-items: end;
+  justify-content: center;
+  border-radius: 12px;
+  /* background: var(--color-surface-muted); */
+  /* border: 1px solid var(--color-outline); */
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-size: var(--typo-desktop-button_small-fontSize);
+  line-height: var(--typo-desktop-button_small-lineHeight);
+  font-weight: var(--typo-desktop-button_small-fontWeight);
+}
+
+.leftGapBottom {
+  width: 400px;
+  height: 440px;
+}
+
+.rightSide {
+  /* 오른쪽 영역: 배경 블록 */
+  width: 1520px;
+  height: 1080px;
+  background: var(--color-surface-default);
+  /* 배경 이미지가 필요하면 아래 주석을 해제하고 파일 경로를 맞출 것 */
+  background-image: url('/images/bg.png');
+  /* background-size: cover; */
+  /* background-position: center; */
+}
+
+
