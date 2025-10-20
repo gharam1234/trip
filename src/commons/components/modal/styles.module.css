@@ -1,0 +1,196 @@
+/* 모달 컴포넌트 스타일 */
+/* 피그마 디자인 시스템 기반 스타일링 */
+/* modal.provider와 함께 사용되므로 자체 backdrop 스타일 없음 */
+
+.root {
+  /* 피그마 기준: 480px 너비, 24px 라운드, 흰색 배경 */
+  width: 480px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* 모달 콘텐츠 영역 */
+.content {
+  /* 피그마 기준: 432px 너비, 24px 패딩 */
+  width: 432px;
+  padding: 24px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 타이틀 스타일 */
+.title {
+  /* 피그마 기준: Pretendard Variable, 중앙 정렬 */
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  color: #000000;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0;
+}
+
+/* single 액션 타이틀: 18px/24px, SemiBold */
+.actionsSingle .title {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+/* dual 액션 타이틀: 24px/32px, Bold */
+.actionsDual .title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+
+/* 설명 스타일 */
+.description {
+  /* 피그마 기준: Pretendard Variable, Medium, 중앙 정렬 */
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  color: #333333;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0;
+}
+
+/* single 액션 설명: 14px/20px */
+.actionsSingle .description {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* dual 액션 설명: 20px/24px */
+.actionsDual .description {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* 버튼 영역 */
+.buttonArea {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* single 액션일 때 확인 버튼만 중앙 정렬 */
+.actionsSingle .buttonArea {
+  justify-content: center;
+}
+
+/* dual 액션일 때 버튼들을 양쪽으로 배치 */
+.actionsDual .buttonArea {
+  justify-content: space-between;
+}
+
+/* 취소 버튼 스타일 */
+.cancelButton {
+  /* dual 액션 기준: 160px 너비 */
+  width: 160px;
+}
+
+/* 확인 버튼 스타일 */
+.confirmButton {
+  /* single 액션: 120px 너비, dual 액션: 160px 너비 */
+}
+
+/* single 액션 확인 버튼 */
+.actionsSingle .confirmButton {
+  width: 120px;
+}
+
+/* dual 액션 확인 버튼 */
+.actionsDual .confirmButton {
+  width: 160px;
+}
+
+/* variant: info 스타일 (기본) */
+.variantInfo {
+  /* info variant는 기본 스타일과 동일 */
+}
+
+/* variant: danger 스타일 */
+.variantDanger .title {
+  /* danger variant는 타이틀 색상을 빨간색으로 변경 */
+  color: #f66a6a;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .root {
+    /* 모바일에서 너비 조정 */
+    width: 90vw;
+    max-width: 400px;
+  }
+  
+  .content {
+    /* 모바일에서 패딩 조정 */
+    width: calc(100% - 32px);
+    padding: 20px 16px;
+  }
+  
+  .actionsSingle .title {
+    /* 모바일에서 폰트 크기 조정 */
+    font-size: 16px;
+    line-height: 22px;
+  }
+  
+  .actionsDual .title {
+    /* 모바일에서 폰트 크기 조정 */
+    font-size: 20px;
+    line-height: 28px;
+  }
+  
+  .actionsSingle .description {
+    /* 모바일에서 폰트 크기 조정 */
+    font-size: 13px;
+    line-height: 18px;
+  }
+  
+  .actionsDual .description {
+    /* 모바일에서 폰트 크기 조정 */
+    font-size: 16px;
+    line-height: 22px;
+  }
+  
+  .actionsSingle .confirmButton {
+    /* 모바일에서 버튼 너비 조정 */
+    width: 100px;
+  }
+  
+  .actionsDual .cancelButton,
+  .actionsDual .confirmButton {
+    /* 모바일에서 버튼 너비 조정 */
+    width: 140px;
+  }
+  
+  .actionsDual .buttonArea {
+    /* 모바일에서 버튼 간격 조정 */
+    gap: 8px;
+  }
+}
+
+/* 매우 작은 화면에서의 추가 조정 */
+@media (max-width: 480px) {
+  .root {
+    width: 95vw;
+    max-width: 350px;
+  }
+  
+  .content {
+    padding: 16px 12px;
+  }
+  
+  .actionsSingle .confirmButton {
+    width: 90px;
+  }
+  
+  .actionsDual .cancelButton,
+  .actionsDual .confirmButton {
+    width: 120px;
+  }
+}
