@@ -9,6 +9,10 @@
             - @03-ui.mdc
 
 ==============================================
+조건-피그마) 활용할MCP: CursorTalkToFigmaMCP(채널명: fqtnwjh1)
+
+조건-피그마) 구현될 컴포넌트 노드ID(로그인상태): 3:1542
+조건-피그마) 구현될 컴포넌트 노드ID(비로그인상태): 3:1542
 
 조건-파일경로) 구현될 TSX 파일경로: src/commons/layout/index.tsx
 조건-파일경로) 구현될 CSS 파일경로: src/commons/layout/styles.module.css
@@ -26,21 +30,20 @@
 
 ==============================================
 
-핵심요구사항) 인증 상태를 나타내는 디자인을 header에 구현할 것.
-            1) 구현방식: 메인페이지의 톤앤매너에 맞게 구현할 것.
-                - 메인페이지 TSX 경로: src/components/diaries/index.tsx
-                - 메인페이지 CSS 경로: src/components/diaries/styles.module.css
+핵심요구사항) 인증 상태를 나타내는 디자인을 navigation에 구현할 것.
+            1) 구현방식: 위에 언급한 피그마 노드ID를 참고하여 똑같이 구현할 것
+                - 메인페이지 TSX 경로: src/components/boards/index.tsx
+                - 메인페이지 CSS 경로: src/components/boards/styles.module.css
 
-            2) 구현위치: header 영역 우측에 구현할 것.
-
-            3) 구현내용: UI만 구현하고, 기능은 구현하지 말 것.
+        
+            2) 구현내용: UI만 구현하고, 기능은 구현하지 말 것.
                 - 로그인상태: 유저이름, 로그아웃 버튼
-                - 비로그인상태: 구현하지 말 것.
+                - 비로그인상태: 로그인 버튼
 
 핵심요구사항) 공통컴포넌트는 다음의 규칙을 지켜 step-by-step 으로 구현하고, 적용 결과를 체크리스트로 반환할 것.
             1) 공통컴포넌트 원본을 수정하지 말고, 아래의 props만 활용할 것.
                 - variant: primary, secondary를 확인하여 구현할 것.
-                - theme: light 모드만 사용할 것.
+                
                 - size: 피그마와 일치할 것.
                 - className 전달: width만 허용할 것.
 
