@@ -7,11 +7,11 @@
 }
 
 .label {
-  /* 피그마 최신 토큰: m(16/24), s(12/20) → 기본 m 사용 */
-  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 500;
+  /* 피그마 사양: 12px, Regular, #333333 */
+  font-family: var(--font-family-ko);
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 400;
   color: #333333;
 }
 
@@ -40,7 +40,7 @@
   border: none;
   outline: none;
   background: transparent;
-  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-ko);
   font-size: 16px; /* m/l: 16/24, s: 14/20 */
   line-height: 24px; /* m/l 기본 */
   color: #111111;
@@ -90,7 +90,7 @@
   font-size: 16px;
   line-height: 24px;
   color: #f66a6a;
-  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-ko);
   font-weight: 500;
 }
 
@@ -98,7 +98,7 @@
   font-size: 12px;
   line-height: 20px; /* 피그마 디자인 기준 */
   color: #6b7280;
-  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-ko);
 }
 
 /* 카운터: 오른쪽 정렬 0/100, Pretendard Medium 16/24, 회색 */
@@ -107,7 +107,7 @@
   justify-content: flex-end;
 }
 .counterText {
-  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-ko);
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;

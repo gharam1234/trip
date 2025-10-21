@@ -10,15 +10,13 @@
 
 ==============================================
 
-조건-피그마) 활용할MCP: CursorTalkToFigmaMCP(채널명: seby4lzh)
+조건-피그마) 활용할MCP: CursorTalkToFigmaMCP(채널명: c7w2dyta)
+조건-피그마) 구현될 컴포넌트 노드ID(title 영역): 285:32718
+조건-피그마) 구현될 컴포넌트 노드ID(form 영역): 285:32722
+조건-피그마) 구현될 컴포넌트 노드ID(button 영역): 285:32727
 
-조건-피그마) 구현될 컴포넌트 노드ID(header 영역): 285:32646
-조건-피그마) 구현될 컴포넌트 노드ID(title 영역): 285:32648
-조건-피그마) 구현될 컴포넌트 노드ID(form 영역): 285:32651
-조건-피그마) 구현될 컴포넌트 노드ID(button 영역): 285:32655
-
-조건-파일경로) 구현될 TSX 파일경로: src/components/auth-signup/index.tsx
-조건-파일경로) 구현될 CSS 파일경로: src/components/auth-signup/styles.module.css
+조건-파일경로) 구현될 TSX 파일경로: src/components/auth-login/index.tsx
+조건-파일경로) 구현될 CSS 파일경로: src/components/auth-login/styles.module.css
 
 ==============================================
 
@@ -34,19 +32,19 @@
 ==============================================
 
 핵심요구사항) 완성된 컴포넌트를 페이지에서 import하여 연결시킬 것.
-            - 연결될 경로: src/app/auth/signup/page.tsx
+            - 연결될 경로: src/app/auth/login/page.tsx
 
 핵심요구사항) 공통컴포넌트는 다음의 규칙을 지켜 step-by-step 으로 구현하고, 적용 결과를 체크리스트로 반환할 것.
             1) 공통컴포넌트 원본을 수정하지 말고, 아래의 props만 활용할 것.
                 - variant: primary, secondary를 확인하여 구현할 것.
+                - theme: light 모드만 사용할 것.
                 - size: 피그마와 일치할 것.
                 - className 전달: width만 허용할 것.
 
             2) 적용될 공통컴포넌트 목록을 구현할 것.
-                -header영역: 공통컴포넌트 없음
                 -title영역:공통컴포넌트 없음
-                - form영역: <Input /> (우편번호검색은 없어야함)
-                - button영역: <Button />
-                - 기존에 설계된 right-side, left-side 규격을 무너뜨리지 말것
-                 
+                - form영역: <Input />
+                - button영역:
+                 1.로그인버튼은 <Button />으로
+                 2.회원가입은 단순한 링크이동 button으로 만들 것
                 

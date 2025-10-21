@@ -18,7 +18,7 @@
 
 /* 공통 라벨 스타일: Pretendard 18/24, 세미볼드 */
 .label {
-  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-ko);
   font-size: 18px;
   line-height: 24px;
   font-weight: 600;

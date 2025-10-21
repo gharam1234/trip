@@ -15,7 +15,7 @@ export type InputProps = {
   label?: string; // 외부 라벨 텍스트
   helperText?: string; // 보조 설명 텍스트
   showCount?: boolean; // 글자 수 카운터 표시 여부 (피그마: 우측 정렬 0/100)
-  className?: string; // 외부 클래스 확장 지점
+  className?: string | undefined; // 외부 클래스 확장 지점
   inputClassName?: string; // 인풋 엘리먼트 확장 지점
   placeholder?: string; // 플레이스홀더 텍스트
 } & React.InputHTMLAttributes<HTMLInputElement>;

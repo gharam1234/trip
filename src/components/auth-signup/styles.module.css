@@ -13,98 +13,100 @@
   flex-direction: column;
   width: 400px;
   height: 1080px;
-  align-items: flex-start;
+  align-items: center;
   padding: 0 40px;
 }
 
 .leftGapTop {
-  width: 400px;
+  /* 상단 갭: 244px */
+  width: 320px;
   height: 244px;
 }
 
-.title {
-  width: 320px;
-  height: 128px;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* 타이틀 텍스트: 전역 타이포그래피 토큰을 사용하여 라이트 모드 기준 적용 */
-.titleText {
-  /* 피그마: 헤드라인 크기와 유사한 토큰 선택 */
-  font-size: var(--typo-desktop-title01-fontSize);
-  line-height: var(--typo-desktop-title01-lineHeight);
-  font-weight: var(--typo-desktop-title01-fontWeight);
-  color: var(--color-text-primary);
-  
-}
-
-.leftGapMid1 {
+/* 헤더 영역: "회원가입" (피그마: 18px, SemiBold, 중앙 정렬, 320px 폭) */
+.header {
   width: 320px;
   height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerText {
+  /* 헤더 텍스트: 피그마 토큰 기반 (18px, SemiBold, 검정색) */
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.gapHeaderToTitle {
+  /* 헤더-타이틀 갭: 20px */
+  width: 320px;
+  height: 20px;
+}
+
+/* 타이틀 영역: "회원가입을 위해 아래 빈칸을 모두 채워 주세요." (피그마: 14px, Medium, 중앙 정렬, 320px 폭) */
+.title {
+  width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titleText {
+  /* 타이틀 텍스트: 피그마 토큰 기반 (14px, Medium, 회색) */
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: 0;
+}
+
+.gapTitleToForm {
+  /* 타이틀-폼 갭: 16px */
+  width: 320px;
+  height: 16px;
 }
 
 .form {
-  width: 400px;
-  height: 128px;
+  /* 폼 영역: 320px 폭, 4개 행 × 72px = 288px */
+  width: 320px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 0;
 }
 
 .formRow {
-  width: 400px;
-  height: 56px;
-  display: flex;
-}
-
-/* 공통 컴포넌트 폭만 제어하기 위한 보조 클래스 (className 전달은 width만 허용) */
-.width400 { width: 320px; }
-
-.leftGapMid3{
+  /* 각 폼 행: 320px × 72px (라벨 24px + 갭 8px + 필드 40px) */
   width: 320px;
-  height: 36px;
+  height: 72px;
   display: flex;
-  align-items: start;
-  justify-content: center;
-  
 }
 
-.leftGapMid2 {
-  width: 400px;
+/* 공통 컴포넌트 폭 제어: width만 허용 */
+.width320 {
+  width: 320px;
+}
+
+.gapFormToButton {
+  /* 폼-버튼 갭: 24px */
+  width: 320px;
   height: 24px;
 }
 
-/* 버튼 영역: 로그인 버튼과 회원가입 링크 버튼 수직 배치 */
+/* 버튼 영역: 회원가입 버튼 수직 배치 */
 .buttonArea {
   width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-/* 회원가입: 단순 링크 이동 버튼 스타일 (라이트 모드 기준) */
-.linkButton {
-  width: 320px;
-  height: 56px;
-  display: inline-flex;
-  align-items: end;
-  justify-content: center;
-  border-radius: 12px;
-  /* background: var(--color-surface-muted); */
-  /* border: 1px solid var(--color-outline); */
-  color: var(--color-text-primary);
-  text-decoration: none;
-  font-size: var(--typo-desktop-button_small-fontSize);
-  line-height: var(--typo-desktop-button_small-lineHeight);
-  font-weight: var(--typo-desktop-button_small-fontWeight);
 }
 
 .leftGapBottom {
-  width: 400px;
+  /* 하단 갭: 440px */
+  width: 320px;
   height: 440px;
 }
 
@@ -115,8 +117,31 @@
   background: var(--color-surface-default);
   /* 배경 이미지가 필요하면 아래 주석을 해제하고 파일 경로를 맞출 것 */
   background-image: url('/images/bg.png');
-  /* background-size: cover; */
+  background-size: cover;
   /* background-position: center; */
 }
 
+/* 반응형 디자인을 위한 미디어 쿼리 */
+/* @media (max-width: 1920px) {
+  .rightSide {
+    width: calc(100vw - 400px);
+    height: 100vh;
+  }
+} */
 
+/* @media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+  }
+  
+  .leftSide {
+    width: 100%;
+    height: auto;
+    padding: 40px 20px;
+  }
+  
+  .rightSide {
+    width: 100%;
+    height: 200px;
+  }
+} */
