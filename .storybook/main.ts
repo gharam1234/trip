@@ -3,6 +3,7 @@ const config = {
     "../src/stories/**/*.mdx",
     "../src/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../src/commons/components/button/index.stories.@(js|jsx|mjs|ts|tsx)",
+    "../src/commons/components/modal/index.stories.@(js|jsx|mjs|ts|tsx)",
     "../src/commons/components/input/index.stories.@(js|jsx|mjs|ts|tsx)",
     "../src/commons/components/pagination/index.stories.@(js|jsx|mjs|ts|tsx)",
     "../src/commons/components/searchbar/index.stories.@(js|jsx|mjs|ts|tsx)",
