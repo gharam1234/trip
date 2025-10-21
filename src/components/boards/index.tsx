@@ -50,7 +50,7 @@ export default function Boards(): JSX.Element {
   }
 
   return (
-    <div className={styles.container} aria-label="boards" data-testid="boards-list-page">
+    <div className={styles.container} aria-label="boards" data-testid="boards-container">
       {/* 간격 40px */}
       <div className={styles.gap40} role="presentation" />
 

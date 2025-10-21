@@ -70,9 +70,11 @@ export function useLoginForm() {
    */
   const [loginUser, { loading: loginLoading }] = useMutation(LOGIN_USER, {
     onCompleted: async (data: any) => {
+      console.log('로그인 성공 - 응답 데이터:', data);
       try {
         // accessToken을 로컬스토리지에 저장
         localStorage.setItem('accessToken', data.loginUser.accessToken);
+        console.log('accessToken 저장 완료:', data.loginUser.accessToken);
         
         // 사용자 정보 조회를 위한 Apollo Client 설정
         const { ApolloClient, InMemoryCache } = await import('@apollo/client');
@@ -102,6 +104,7 @@ export function useLoginForm() {
           name: userResult.data.fetchUserLoggedIn.name,
         };
         localStorage.setItem('user', JSON.stringify(userData));
+        console.log('사용자 정보 저장 완료:', userData);
         
         // 로그인완료모달 표시
         openModal('login-success-modal');
@@ -113,7 +116,10 @@ export function useLoginForm() {
       }
     },
     onError: (error: any) => {
-      console.error('로그인 실패:', error);
+      console.error('로그인 실패 - 에러 상세:', error);
+      console.error('에러 메시지:', error.message);
+      console.error('에러 네트워크:', error.networkError);
+      console.error('에러 그래프QL:', error.graphQLErrors);
       // 로그인실패모달 표시
       openModal('login-fail-modal');
     },

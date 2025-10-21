@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import styles from "./styles.module.css";
 import Image from "next/image";
 import { useLinkRouting } from "./hooks/index.link.routing.hook";
 import { useAreaVisibility } from "./hooks/index.area.hook";
+import { useLayoutAuth } from "./hooks/index.auth.hook";
+import { Button } from "../components/button";
 
 type LayoutWireframeProps = {
   children: React.ReactNode;
@@ -14,6 +16,28 @@ type LayoutWireframeProps = {
 export default function LayoutWireframe({ children }: LayoutWireframeProps) {
   const { handleLogoClick } = useLinkRouting();
   const { showBanner, showNavigation, routeKey } = useAreaVisibility();
+  const { isLoggedIn, userName, handleLoginClick, handleLogoutClick, handleDropdownToggle } = useLayoutAuth();
+  
+  // 드롭다운 메뉴 상태 관리
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // 드롭다운 외부 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   return (
     <div className={styles.container} data-testid="layout-container" data-route-key={routeKey} data-show-banner={showBanner} data-show-navigation={showNavigation}>
@@ -22,7 +46,7 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
         <div className={styles.navigationInner}>
           {/* 좌측: 로고 + 탭 */}
           <div className={styles.navLeftGroup}>
-            <img 
+            <Image 
               src="/images/logo.png" 
               alt="logo" 
               width={51.52} 
@@ -47,9 +71,64 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
             </div>
           </div>
 
-          {/* 우측: 로그인 버튼 (또는 프로필 영역 대체 가능) */}
+          {/* 우측: 인증 상태에 따른 UI */}
           <div className={styles.navRightGroup}>
-            <button className={styles.loginButton} type="button">로그인</button>
+            {isLoggedIn ? (
+              // 로그인 상태: 프로필 영역
+              <div className={styles.profileArea} ref={dropdownRef}>
+                <div className={styles.profileImage}>
+                  <Image 
+                    src="/icons/profile.png" 
+                    alt="프로필 이미지" 
+                    width={40} 
+                    height={40}
+                    className={styles.profileImg}
+                  />
+                </div>
+                <span className={styles.userName} data-testid="user-name">{userName}</span>
+                <div 
+                  className={styles.dropdownIcon}
+                  data-testid="user-dropdown"
+                  onClick={() => {
+                    setIsDropdownOpen(!isDropdownOpen);
+                    handleDropdownToggle();
+                  }}
+                >
+                  <Image 
+                    src="/icons/down_arrow.png" 
+                    alt="드롭다운 화살표" 
+                    width={24} 
+                    height={24}
+                  />
+                </div>
+                
+                {/* 드롭다운 메뉴 */}
+                {isDropdownOpen && (
+                  <div className={styles.dropdownMenu}>
+                    <div 
+                      className={styles.dropdownMenuItem}
+                      onClick={() => {
+                        handleLogoutClick();
+                        setIsDropdownOpen(false);
+                      }}
+                    >
+                      로그아웃
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              // 비로그인 상태: 로그인 버튼
+              <Button
+                variant="primary"
+                size="small"
+                style={{ width: '93px' }}
+                onClick={handleLoginClick}
+                data-testid="layout-login-button"
+              >
+                로그인
+              </Button>
+            )}
           </div>
         </div>
       </nav>

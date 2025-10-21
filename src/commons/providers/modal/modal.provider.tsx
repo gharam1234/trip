@@ -119,7 +119,7 @@ export function Modal({ id, children, isOpen, onClose, className = "" }: ModalPr
     } else {
       closeModal(id);
     }
-  }, [isOpen, id, openModal, closeModal]);
+  }, [isOpen, id]);
 
   if (!mounted) return null;
 

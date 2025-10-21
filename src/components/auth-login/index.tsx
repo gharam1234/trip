@@ -29,7 +29,7 @@ export default function AuthLogin() {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-testid="login-container">
       <div className={styles.leftSide}>
         <div className={styles.leftGapTop} />
         <h1 className={styles.title}>
@@ -120,7 +120,7 @@ export default function AuthLogin() {
             data-testid="modal-confirm-button"
             onClick={handleModalConfirm}
           >
-            확인
+            완료
           </button>
         </div>
       </Modal>

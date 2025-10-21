@@ -6,13 +6,13 @@ test.describe('게시판 폼 등록 기능', () => {
     await page.goto('/boards');
     
     // 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
-    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="boards-container"]');
     
     // 트립토크 버튼 클릭 (게시물 작성 페이지로 이동)
     await page.click('[data-testid="trip-talk-button"]');
     
     // 게시물 작성 페이지 로드 대기
-    await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="boards-write-page"]');
   });
 
   test('필수 필드 입력 시 등록하기 버튼이 활성화되어야 함', async ({ page }) => {

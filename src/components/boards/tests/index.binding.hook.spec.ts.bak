@@ -105,13 +105,13 @@ test.describe('Boards 데이터 바인딩 테스트', () => {
     }, longTitleData);
     
     await page.reload();
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 로딩 상태가 완료될 때까지 대기 (로딩 텍스트가 사라질 때까지)
     await page.waitForFunction(() => {
       const loadingElement = document.querySelector('[class*="listRow"]');
       return loadingElement && !loadingElement.textContent?.includes('로딩 중');
-    });
+    }, { timeout: 500 });
     
     const listRows = page.locator('[class*="listRow"]');
     await expect(listRows).toHaveCount(1);
@@ -130,7 +130,7 @@ test.describe('Boards 데이터 바인딩 테스트', () => {
     });
     
     await page.reload();
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 빈 리스트 메시지가 표시되는지 확인
     const listRows = page.locator('[class*="listRow"]');
@@ -145,7 +145,7 @@ test.describe('Boards 데이터 바인딩 테스트', () => {
     });
     
     await page.reload();
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 오류가 발생해도 오류 메시지가 표시되는지 확인
     const listRows = page.locator('[class*="listRow"]');
@@ -208,13 +208,13 @@ test.describe('Boards 데이터 바인딩 테스트', () => {
     }, unsortedData);
     
     await page.reload();
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 로딩 상태가 완료될 때까지 대기 (로딩 텍스트가 사라질 때까지)
     await page.waitForFunction(() => {
       const loadingElement = document.querySelector('[class*="listRow"]');
       return loadingElement && !loadingElement.textContent?.includes('로딩 중');
-    });
+    }, { timeout: 500 });
     
     const listRows = page.locator('[class*="listRow"]');
     await expect(listRows).toHaveCount(3);
@@ -265,13 +265,13 @@ test.describe('Boards 데이터 바인딩 테스트', () => {
     }, dateTestData);
     
     await page.reload();
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 로딩 상태가 완료될 때까지 대기 (로딩 텍스트가 사라질 때까지)
     await page.waitForFunction(() => {
       const loadingElement = document.querySelector('[class*="listRow"]');
       return loadingElement && !loadingElement.textContent?.includes('로딩 중');
-    });
+    }, { timeout: 500 });
     
     const listRows = page.locator('[class*="listRow"]');
     await expect(listRows).toHaveCount(2);

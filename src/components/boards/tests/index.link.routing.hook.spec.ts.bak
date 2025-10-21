@@ -51,10 +51,10 @@ test.describe('게시글 라우팅 기능', () => {
     await page.goto('/boards');
     
     // 페이지 로드 완료 대기 (data-testid 사용, 500ms 타임아웃)
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 게시글 데이터가 로드될 때까지 대기
-    await page.waitForSelector('[role="row"]:nth-child(2)');
+    await page.waitForSelector('[role="row"]:nth-child(2)', { timeout: 500 });
     
     // 최신 게시글 행 클릭 (헤더 제외하고 첫 번째 행 = 최신순 정렬되므로 board-002)
     const firstBoardRow = page.locator('[role="row"]').nth(1);
@@ -64,7 +64,7 @@ test.describe('게시글 라우팅 기능', () => {
     await firstBoardRow.click();
     
     // URL이 /boards/board-002로 변경되었는지 확인 (최신 게시글이므로)
-    await expect(page).toHaveURL('/boards/board-002');
+    await expect(page).toHaveURL('/boards/board-002', { timeout: 500 });
   });
 
   test('이전 게시글 (board-001)을 클릭시 해당 상세페이지로 이동해야 함', async ({ page }) => {
@@ -72,11 +72,11 @@ test.describe('게시글 라우팅 기능', () => {
     await page.goto('/boards');
     
     // 페이지 로드 완료 대기
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 게시글 데이터가 로드될 때까지 대기 (최소 2개 행이 있어야 함)
-    await page.waitForSelector('[role="row"]');
-    await page.waitForSelector('[role="row"]:nth-child(2)');
+    await page.waitForSelector('[role="row"]', { timeout: 500 });
+    await page.waitForSelector('[role="row"]:nth-child(2)', { timeout: 500 });
     
     // 이전 게시글 행 클릭 (헤더 제외하고 두 번째 행 = board-001)
     const secondBoardRow = page.locator('[role="row"]').nth(2);
@@ -86,7 +86,7 @@ test.describe('게시글 라우팅 기능', () => {
     await secondBoardRow.click();
     
     // URL이 /boards/board-001로 변경되었는지 확인
-    await expect(page).toHaveURL('/boards/board-001');
+    await expect(page).toHaveURL('/boards/board-001', { timeout: 500 });
   });
 
   test('게시글 행에 cursor: pointer 스타일이 적용되어야 함', async ({ page }) => {
@@ -94,10 +94,10 @@ test.describe('게시글 라우팅 기능', () => {
     await page.goto('/boards');
     
     // 페이지 로드 완료 대기
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // 게시글 데이터가 로드될 때까지 대기
-    await page.waitForSelector('[role="row"]:nth-child(2)');
+    await page.waitForSelector('[role="row"]:nth-child(2)', { timeout: 500 });
     
     // 게시글 행의 CSS 스타일 확인 (헤더 제외하고 첫 번째 행)
     const boardRow = page.locator('[role="row"]').nth(1);
@@ -120,7 +120,7 @@ test.describe('게시글 라우팅 기능', () => {
     await page.goto('/boards');
     
     // 페이지 로드 완료 대기
-    await page.waitForSelector('[data-testid="boards-container"]');
+    await page.waitForSelector('[data-testid="boards-list-page"]', { timeout: 500 });
     
     // "등록된 게시글이 없습니다" 메시지 확인
     const emptyMessage = page.locator('text=등록된 게시글이 없습니다');
