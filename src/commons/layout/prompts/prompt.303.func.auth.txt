@@ -16,7 +16,7 @@
 
 ==============================================
 
-핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD기반으로 구현하고, 테스트에 통과할 때까지 반복할 것.
+기존히스토리 참고만 - 핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD기반으로 구현하고, 테스트에 통과할 때까지 반복할 것.
             1) 테스트 제외 라이브러리
                 - jest
                 - @testing-library/react
@@ -48,7 +48,7 @@
                 8. /boards에 접속하여 페이지 로드 확인
                 9. layout에 로그인버튼 노출여부 확인
 
-핵심요구사항) 로그인 여부에 따라 로그인 상태표시 기능을 구현할 것.
+기존히스토리 참고만 - 핵심요구사항) 로그인 여부에 따라 로그인 상태표시 기능을 구현할 것.
             1) 로그인 상태표시 조건
                 - 인증 프로바이더 경로: src/commons/providers/auth/auth.provider.tsx
                 - 이미 셋팅되어있는 auth.provider를 사용할 것.
@@ -64,3 +64,36 @@
 
                 - 비로그인유저
                     - 인증 프로바이더의 로그인기능을 이미 만들어져있는 로그인버튼에 연결할 것.
+==============================================
+
+보강조건-동기화) 라우트 변화에 따른 인증상태 재동기화
+            - 목적: 로그인 직후 새로고침 없이도 레이아웃 우측(프로필/유저이름/셀렉트박스)이 즉시 반영되도록 함.
+            - 전제: 기존 `auth.provider.tsx`는 수정하지 말 것. 해당 파일의 `checkAuthStatus()`만 활용할 것.
+            - 구현가이드:
+                1) 얇은 훅을 생성하여 경로가 바뀔 때마다 `checkAuthStatus()`를 호출할 것.
+                    - 파일경로: src/commons/layout/hooks/use.auth.route.sync.hook.ts
+                    - 샘플코드:
+                      ```ts
+                      'use client';
+
+                      import { useEffect } from 'react';
+                      import { usePathname } from 'next/navigation';
+                      import { useAuth } from '@/commons/providers/auth/auth.provider';
+
+                      export function useAuthRouteSync() {
+                        const pathname = usePathname();
+                        const { checkAuthStatus } = useAuth();
+
+                        useEffect(() => {
+                          // 경로 변경 시마다 로컬스토리지와 인증컨텍스트를 즉시 동기화
+                          checkAuthStatus();
+                        }, [pathname, checkAuthStatus]);
+                      }
+                      ```
+                
+                    
+                2) 내비게이션은 가능하면 SPA 방식(`router.push`)을 사용하고,
+                   로그인/로그아웃 직후에는 필요 시 `router.refresh()` 또는 커스텀 이벤트(`auth-changed`)로 동기화를 보강할 수 있음.
+            - 테스트요구:
+                - 로그인 성공 모달 확인 후 `/boards`로 이동 시, 새로고침 없이도 `data-testid="user-name"`, `data-testid="user-dropdown"`이 노출되어야 한다.
+                - 페이지 로드 식별은 data-testid 기반으로만 수행하며, networkidle은 금지한다.

@@ -16,8 +16,8 @@ test.describe('비로그인 유저 인증 테스트', () => {
   test('layout의 로그인버튼 노출여부 확인', async ({ page }) => {
     await page.goto('/boards');
     
-    // 로그인 버튼이 노출되는지 확인
-    await expect(page.locator('button:has-text("로그인")')).toBeVisible();
+    // 로그인 버튼이 노출되는지 확인 (data-testid 기반)
+    await expect(page.locator('[data-testid="layout-login-button"]')).toBeVisible();
   });
 
   test('로그인버튼 클릭하여 /auth/login 페이지로 이동', async ({ page }) => {
@@ -79,8 +79,7 @@ test.describe('로그인 유저 인증 테스트', () => {
   });
 
   test('layout에서 유저이름, 셀렉트박스버튼 노출여부 확인', async ({ page }) => {
-    // 이 테스트는 이미 로그인한 사용자가 /boards에 접속한 경우를 시뮬레이션
-    // 로그인 시나리오 1-6까지 통과 후, 로컬스토리지에 이미 인증 정보가 있는 상태
+    // 로그인 수행
     await page.goto('/auth/login');
     await page.fill('input[type="email"]', '123123@123123.com');
     await page.fill('input[type="password"]', 'qwer1234');
@@ -91,30 +90,73 @@ test.describe('로그인 유저 인증 테스트', () => {
     // /boards 페이지로 이동되고 인증 정보 저장됨
     await expect(page).toHaveURL('/boards');
     await expect(page.locator('[data-testid="layout-container"]')).toBeVisible();
+    
+    // 로그인 상태에서 유저이름과 드롭다운 버튼이 노출되는지 확인
+    await expect(page.locator('[data-testid="user-name"]')).toBeVisible();
+    await expect(page.locator('[data-testid="user-dropdown"]')).toBeVisible();
   });
 
   test('셀렉트박스를 열어서 로그아웃버튼 클릭하여 /auth/login 페이지 로드 확인', async ({ page }) => {
-    // 비로그인 상태 확인 대체 테스트로 간소화
-    await page.goto('/boards');
+    // 로그인 수행
+    await page.goto('/auth/login');
+    await page.fill('input[type="email"]', '123123@123123.com');
+    await page.fill('input[type="password"]', 'qwer1234');
+    await page.click('[data-testid="login-button"]');
+    await expect(page.locator('[data-testid="login-success-modal"]')).toBeVisible();
+    await page.click('[data-testid="modal-confirm-button"]');
     
-    // 로그인 버튼이 노출되는지 확인 (비로그인 상태)
-    await expect(page.locator('[data-testid="layout-login-button"]')).toBeVisible();
+    // /boards 페이지로 이동
+    await expect(page).toHaveURL('/boards');
+    
+    // 드롭다운 버튼 클릭
+    await page.click('[data-testid="user-dropdown"]');
+    
+    // 로그아웃 버튼 클릭
+    await page.click('text=로그아웃');
+    
+    // /auth/login 페이지로 이동 확인
+    await expect(page).toHaveURL('/auth/login');
+    await expect(page.locator('[data-testid="login-container"]')).toBeVisible();
   });
 
   test('로그아웃 후 /boards에 접속하여 페이지 로드 확인', async ({ page }) => {
-    // 간단한 /boards 페이지 로드 확인
-    await page.goto('/boards');
+    // 로그인 후 로그아웃 수행
+    await page.goto('/auth/login');
+    await page.fill('input[type="email"]', '123123@123123.com');
+    await page.fill('input[type="password"]', 'qwer1234');
+    await page.click('[data-testid="login-button"]');
+    await expect(page.locator('[data-testid="login-success-modal"]')).toBeVisible();
+    await page.click('[data-testid="modal-confirm-button"]');
+    await expect(page).toHaveURL('/boards');
     
-    // 페이지 로드 확인
+    // 로그아웃 수행
+    await page.click('[data-testid="user-dropdown"]');
+    await page.click('text=로그아웃');
+    await expect(page).toHaveURL('/auth/login');
+    
+    // /boards에 접속하여 페이지 로드 확인
+    await page.goto('/boards');
     await expect(page.locator('[data-testid="layout-container"]')).toBeVisible();
     await expect(page.locator('[data-testid="boards-container"]')).toBeVisible();
   });
 
   test('로그아웃 후 layout에 로그인버튼 노출여부 확인', async ({ page }) => {
-    // 로그인 버튼이 노출되는지 간단히 확인
-    await page.goto('/boards');
+    // 로그인 후 로그아웃 수행
+    await page.goto('/auth/login');
+    await page.fill('input[type="email"]', '123123@123123.com');
+    await page.fill('input[type="password"]', 'qwer1234');
+    await page.click('[data-testid="login-button"]');
+    await expect(page.locator('[data-testid="login-success-modal"]')).toBeVisible();
+    await page.click('[data-testid="modal-confirm-button"]');
+    await expect(page).toHaveURL('/boards');
     
-    // 로그인 버튼이 노출되는지 확인
+    // 로그아웃 수행
+    await page.click('[data-testid="user-dropdown"]');
+    await page.click('text=로그아웃');
+    await expect(page).toHaveURL('/auth/login');
+    
+    // /boards에 접속하여 로그인 버튼이 노출되는지 확인
+    await page.goto('/boards');
     await expect(page.locator('[data-testid="layout-login-button"]')).toBeVisible();
   });
 });
