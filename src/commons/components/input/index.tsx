@@ -18,7 +18,7 @@ export type InputProps = {
   className?: string | undefined; // 외부 클래스 확장 지점
   inputClassName?: string; // 인풋 엘리먼트 확장 지점
   placeholder?: string; // 플레이스홀더 텍스트
-} & React.InputHTMLAttributes<HTMLInputElement>;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>;
 
 // 내부 유틸: 클래스 병합
 function cx(...args: Array<string | false | null | undefined>): string {

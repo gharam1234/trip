@@ -112,6 +112,7 @@
 .leftGapBottom {
   width: 400px;
   height: 440px;
+  pointer-events: none;
 }
 
 .rightSide {
@@ -123,6 +124,15 @@
   background-image: url('/images/bg.png');
   background-size: cover;
   /* background-position: center; */
+}
+
+/* 에러 메시지 스타일 */
+.errorMessage {
+  color: var(--color-text-danger);
+  font-size: var(--typo-desktop-caption-fontSize);
+  line-height: var(--typo-desktop-caption-lineHeight);
+  font-weight: var(--typo-desktop-caption-fontWeight);
+  margin-top: 4px;
 }
 
 

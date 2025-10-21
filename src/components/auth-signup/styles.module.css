@@ -145,3 +145,14 @@
     height: 200px;
   }
 } */
+
+/* 에러 메시지 스타일 */
+.errorMessage {
+  font-family: var(--font-family-ko);
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: var(--typo-desktop-body02_s-lineHeight);
+  font-weight: var(--typo-desktop-body02_s-fontWeight);
+  color: var(--color-feedback-danger);
+  margin-top: 4px;
+  margin-left: 4px;
+}
