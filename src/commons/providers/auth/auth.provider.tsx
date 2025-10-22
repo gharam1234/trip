@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { getPath } from '@/commons/constants/url';
 
@@ -42,8 +42,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     checkAuthStatus();
   }, []);
 
-  // 로그인 상태 확인 함수
-  const checkAuthStatus = (): boolean => {
+  // 로그인 상태 확인 함수 (useCallback으로 메모이제이션)
+  const checkAuthStatus = useCallback((): boolean => {
     if (typeof window === 'undefined') return false;
     
     const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -58,8 +58,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser(parsedUser);
       } catch (error) {
         console.error('사용자 정보 파싱 오류:', error);
-        // 파싱 오류 시 로그아웃 처리
-        logout();
+        // 파싱 오류 시 로그아웃 처리 (직접 상태 초기화)
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
+        setIsAuthenticated(false);
+        setUser(null);
         return false;
       }
     } else {
@@ -67,10 +70,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
     
     return isLoggedIn;
-  };
+  }, []);
 
-  // 로그인 함수
-  const login = (userData: any, accessToken: string): void => {
+  // 로그인 함수 (useCallback으로 메모이제이션)
+  const login = useCallback((userData: any, accessToken: string): void => {
     if (typeof window === 'undefined') return;
     
     try {
@@ -87,10 +90,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } catch (error) {
       console.error('로그인 처리 오류:', error);
     }
-  };
+  }, [router]);
 
-  // 로그아웃 함수
-  const logout = (): void => {
+  // 로그아웃 함수 (useCallback으로 메모이제이션)
+  const logout = useCallback((): void => {
     if (typeof window === 'undefined') return;
     
     try {
@@ -107,10 +110,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } catch (error) {
       console.error('로그아웃 처리 오류:', error);
     }
-  };
+  }, [router]);
 
-  // 사용자 정보 조회 함수
-  const getUserInfo = (): any | null => {
+  // 사용자 정보 조회 함수 (useCallback으로 메모이제이션)
+  const getUserInfo = useCallback((): any | null => {
     if (typeof window === 'undefined') return null;
     
     const userData = localStorage.getItem(USER_KEY);
@@ -122,7 +125,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.error('사용자 정보 조회 오류:', error);
       return null;
     }
-  };
+  }, []);
 
   // 로그인 페이지로 이동하는 함수
   const redirectToLogin = (): void => {

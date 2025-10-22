@@ -15,5 +15,5 @@ export function useAuthRouteSync() {
   useEffect(() => {
     // 경로 변경 시마다 로컬스토리지와 인증컨텍스트를 즉시 동기화
     checkAuthStatus();
-  }, [pathname, checkAuthStatus]);
+  }, [pathname]); // checkAuthStatus 의존성 제거
 }
