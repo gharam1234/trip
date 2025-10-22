@@ -2,7 +2,7 @@
 // - 요구사항 요약:
 //   1) 로그인:            /auth/login,     [누구나],     banner X, navigation X
 //   2) 회원가입:          /auth/signup,    [누구나],     banner X, navigation X
-//   3) 게시글목록:        /boards,         [회원전용],   banner O, navigation O
+//   3) 게시글목록:        /boards,         [누구나],     banner O, navigation O
 //   4) 게시글상세:        /boards/[BoardId],[회원전용],  banner O, navigation O
 //   5) 게시글쓰기:        /boards/new,     [회원전용],   banner X, navigation X
 //   6) 게시글수정:        /boards/[BoardId]/edit, [회원전용], banner X, navigation X
@@ -62,7 +62,7 @@ export const URLS = {
   BOARDS_LIST: {
     name: '게시글목록',
     pathTemplate: '/boards',
-    access: 'MEMBER_ONLY',
+    access: 'PUBLIC',
     showBanner: true,
     showNavigation: true,
   },

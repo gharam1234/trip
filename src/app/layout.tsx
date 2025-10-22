@@ -4,6 +4,7 @@ import "./globals.css";
 import LayoutWireframe from "@/commons/layout";
 import { ModalProvider } from "@/commons/providers/modal/modal.provider";
 import { AuthProvider } from "@/commons/providers/auth/auth.provider";
+import { AuthGuard } from "@/commons/providers/auth/auth.guard";
 import ApolloClientProvider from "@/commons/providers/apollo-client/apollo-client.provider";
 
 const geistSans = localFont({
@@ -35,7 +36,9 @@ export default function RootLayout({
         <AuthProvider>
           <ApolloClientProvider>
             <ModalProvider>
-              <LayoutWireframe>{children}</LayoutWireframe>
+              <AuthGuard>
+                <LayoutWireframe>{children}</LayoutWireframe>
+              </AuthGuard>
             </ModalProvider>
           </ApolloClientProvider>
         </AuthProvider>

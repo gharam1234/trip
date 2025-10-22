@@ -35,17 +35,32 @@ const TEST_BOARDS = [
 ];
 
 test.describe("게시글 상세 데이터 바인딩 기능", () => {
+  // 테스트 환경 설정
+  test.beforeEach(async ({ page, context }) => {
+    // 테스트 환경 설정
+    await page.addInitScript(() => {
+      window.__TEST_ENV__ = 'test';
+      window.__TEST_BYPASS__ = true;
+    });
+    
+    // 홈페이지 로드하여 localStorage에 접근 가능하게 설정
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+  });
+
   // 성공 시나리오: 유효한 boardId로 데이터가 올바르게 바인딩되는지 확인
   test("유효한 boardId로 게시글 데이터가 올바르게 바인딩되어야 함", async ({
     page,
+    context,
   }) => {
-    // 로컬스토리지에 테스트 데이터 설정
-    await page.addInitScript((data) => {
+    // 스토리지 초기화 및 테스트 데이터 설정 후 페이지로 이동
+    // beforeEach에서 이미 "/"로 로드했으므로 스토리지 설정만 수행
+    await page.evaluate((data) => {
+      localStorage.clear();
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
     // /boards/1 페이지로 이동
-    await page.goto("/boards/1", { waitUntil: "domcontentloaded" });
+    await page.goto("/boards/1", { waitUntil: "networkidle" });
 
     // 페이지 완전 로드 확인: data-testid 기반 대기 (500ms 이내)
     await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
@@ -89,11 +104,11 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
   test("다른 boardId로 접근 시 해당하는 게시글 데이터가 바인딩되어야 함", async ({
     page,
   }) => {
-    await page.addInitScript((data) => {
+    await page.evaluate((data) => {
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
-    await page.goto("/boards/2", { waitUntil: "domcontentloaded" });
+    await page.goto("/boards/2", { waitUntil: "networkidle" });
     await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
@@ -127,11 +142,11 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
     page,
   }) => {
     // 로컬스토리지를 초기화하여 빈 상태로 설정
-    await page.addInitScript(() => {
+    await page.evaluate(() => {
       localStorage.clear();
     });
 
-    await page.goto("/boards/1", { waitUntil: "domcontentloaded" });
+    await page.goto("/boards/1", { waitUntil: "networkidle" });
     await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
@@ -147,12 +162,12 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
   test("존재하지 않는 boardId로 접근 시 게시글을 찾을 수 없다는 메시지가 표시되어야 함", async ({
     page,
   }) => {
-    await page.addInitScript((data) => {
+    await page.evaluate((data) => {
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
     // 존재하지 않는 boardId로 접근
-    await page.goto("/boards/999", { waitUntil: "domcontentloaded" });
+    await page.goto("/boards/999", { waitUntil: "networkidle" });
     await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
@@ -168,7 +183,7 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
   test("boards 배열이 비어있을 때 에러 메시지가 표시되어야 함", async ({
     page,
   }) => {
-    await page.addInitScript(() => {
+    await page.evaluate(() => {
       localStorage.setItem("boards", JSON.stringify([]));
     });
 
@@ -186,12 +201,16 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
 
   // 성공 시나리오: 이미지가 없는 경우 처리
   test("이미지가 없는 게시글도 올바르게 렌더링되어야 함", async ({ page }) => {
-    await page.addInitScript((data) => {
+    // 스토리지 초기화 위해 먼저 페이지 로드
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    
+    await page.evaluate((data) => {
+      localStorage.clear();
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
     // boardId 2는 images가 빈 배열
-    await page.goto("/boards/2", { waitUntil: "domcontentloaded" });
+    await page.goto("/boards/2", { waitUntil: "networkidle" });
     await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
@@ -214,7 +233,7 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
   test("유튜브 URL이 없는 게시글도 올바르게 렌더링되어야 함", async ({
     page,
   }) => {
-    await page.addInitScript((data) => {
+    await page.evaluate((data) => {
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
@@ -236,7 +255,7 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
 
   // 추가 테스트: 모든 바인딩 데이터 개별 검증
   test("모든 바인딩 데이터가 정확하게 표시되어야 함", async ({ page }) => {
-    await page.addInitScript((data) => {
+    await page.evaluate((data) => {
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
@@ -306,7 +325,11 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
       createdAt: "2024-01-20",
     }];
 
-    await page.addInitScript((data) => {
+    // 스토리지 초기화 위해 먼저 페이지 로드
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    await page.evaluate((data) => {
+      localStorage.clear();
       localStorage.setItem("boards", JSON.stringify(data));
     }, numericBoardData);
 
@@ -328,7 +351,7 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
   // 추가 테스트: JSON 파싱 오류 처리
   test("잘못된 JSON 데이터가 있을 때 에러 메시지가 표시되어야 함", async ({ page }) => {
     // 잘못된 JSON 데이터를 로컬스토리지에 저장
-    await page.addInitScript(() => {
+    await page.evaluate(() => {
       localStorage.setItem("boards", "{ invalid json data }");
     });
 
@@ -346,7 +369,7 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
 
   // 추가 테스트: boardId가 빈 문자열일 때 처리 (훅 레벨에서 테스트)
   test("boardId가 빈 문자열일 때 에러 메시지가 표시되어야 함", async ({ page }) => {
-    await page.addInitScript((data) => {
+    await page.evaluate((data) => {
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 

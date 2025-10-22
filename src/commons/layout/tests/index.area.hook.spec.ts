@@ -46,6 +46,14 @@ function shouldSkipPath(path: string): boolean {
 }
 
 test.describe("Area Visibility Hook (TDD 기반 테스트)", () => {
+  // 테스트 환경 설정
+  test.beforeEach(async ({ page, context }) => {
+    await page.addInitScript(() => {
+      window.__TEST_ENV__ = 'test';
+      window.__TEST_BYPASS__ = true;
+    });
+  });
+
   // 각 테스트 케이스에 대한 테스트 실행
   for (const testCase of TEST_CASES) {
     const { path, expectedBanner, expectedNavigation, description } = testCase;

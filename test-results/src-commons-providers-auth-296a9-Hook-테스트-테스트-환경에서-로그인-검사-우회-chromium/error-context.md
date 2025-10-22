@@ -1,0 +1,85 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - img "logo" [ref=e7] [cursor=pointer]
+          - generic [ref=e8]:
+            - button "트립토크" [ref=e9] [cursor=pointer]
+            - button "숙박권 구매" [ref=e10] [cursor=pointer]
+            - button "마이 페이지" [ref=e11] [cursor=pointer]
+        - button "로그인" [pressed] [ref=e13] [cursor=pointer]:
+          - generic [ref=e14]: 로그인
+    - region "main visual banner" [ref=e15]:
+      - generic [ref=e16]:
+        - button "← Previous" [ref=e17] [cursor=pointer]
+        - generic [ref=e19]:
+          - img [ref=e23]
+          - img "배너 1" [ref=e27]
+          - img [ref=e31]
+          - img [ref=e35]
+          - img [ref=e39]
+        - button "→ Next" [ref=e40] [cursor=pointer]
+        - list [ref=e41]:
+          - listitem [ref=e42] [cursor=pointer]:
+            - button "• 1" [ref=e43]
+          - listitem [ref=e44] [cursor=pointer]:
+            - button "• 2" [ref=e45]
+          - listitem [ref=e46] [cursor=pointer]:
+            - button "• 3" [ref=e47]
+    - main [ref=e49]:
+      - generic "boards" [ref=e50]:
+        - generic "boards-title" [ref=e51]: 트립토크 게시판
+        - generic "boards-search" [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e55]:
+              - textbox "YYYY.MM.DD" [ref=e57]
+              - generic "to" [ref=e59]:
+                - img "swap-right" [ref=e60]:
+                  - img [ref=e61]
+              - textbox "YYYY.MM.DD" [ref=e64]
+              - generic:
+                - img "calendar":
+                  - img
+            - search [ref=e66]:
+              - textbox "검색어 입력" [ref=e67]:
+                - /placeholder: 제목을 검색해 주세요.
+            - button "검색" [pressed] [ref=e69] [cursor=pointer]:
+              - generic [ref=e70]: 검색
+          - button "트립토크 등록" [active] [pressed] [ref=e71] [cursor=pointer]:
+            - generic [ref=e72]: 트립토크 등록
+        - generic "boards-main" [ref=e73]:
+          - generic [ref=e74]:
+            - row "번호 제목 작성자 날짜" [ref=e75]:
+              - columnheader "번호" [ref=e76]
+              - columnheader "제목" [ref=e77]
+              - columnheader "작성자" [ref=e78]
+              - columnheader "날짜" [ref=e79]
+            - rowgroup [ref=e80]:
+              - row "- 등록된 게시글이 없습니다. - -" [ref=e81] [cursor=pointer]:
+                - cell "-" [ref=e82]
+                - cell "등록된 게시글이 없습니다." [ref=e83]
+                - cell "-" [ref=e84]
+                - cell "-" [ref=e85]
+        - generic "boards-pagination" [ref=e86]:
+          - navigation "페이지네이션 내비게이션" [ref=e88]:
+            - button "이전 페이지" [disabled] [ref=e89]:
+              - img [ref=e90]
+            - list [ref=e92]:
+              - listitem "1 페이지" [ref=e93] [cursor=pointer]: "1"
+              - listitem "2 페이지" [ref=e94] [cursor=pointer]: "2"
+              - listitem "3 페이지" [ref=e95] [cursor=pointer]: "3"
+              - listitem "4 페이지" [ref=e96] [cursor=pointer]: "4"
+              - listitem "5 페이지" [ref=e97] [cursor=pointer]: "5"
+              - listitem "6 페이지" [ref=e98] [cursor=pointer]: "6"
+              - listitem "7 페이지" [ref=e99] [cursor=pointer]: "7"
+              - listitem "8 페이지" [ref=e100] [cursor=pointer]: "8"
+              - listitem "9 페이지" [ref=e101] [cursor=pointer]: "9"
+              - listitem "10 페이지" [ref=e102] [cursor=pointer]: "10"
+            - button "다음 페이지" [ref=e103] [cursor=pointer]:
+              - img [ref=e104]
+```

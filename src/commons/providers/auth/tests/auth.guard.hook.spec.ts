@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Auth Guard Hook 테스트', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context }) => {
     // 테스트 환경 설정
     await page.addInitScript(() => {
       window.__TEST_ENV__ = 'test';
