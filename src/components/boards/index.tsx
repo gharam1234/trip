@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import { useLinkToNewBoard } from "./hooks/index.link.new.hook";
 import { useBoardsBinding } from "./hooks/index.binding.hook";
 import { useBoardRouting } from "./hooks/index.link.routing.hook";
+import { useAuthGuard } from "@/commons/providers/auth/auth.guard.hook";
 
 export default function Boards(): JSX.Element {
   // 영역 순서 가이드
@@ -40,6 +41,9 @@ export default function Boards(): JSX.Element {
   
   // Hook: 게시글 상세페이지로 이동
   const { navigateToBoardDetail } = useBoardRouting();
+  
+  // Hook: 권한 검증 및 모달 관리 (모달 렌더링을 위해 필요)
+  const { LoginConfirmModal } = useAuthGuard();
 
   // 검색 실행 핸들러
   function handleSearchSubmit(): void {
@@ -188,6 +192,9 @@ export default function Boards(): JSX.Element {
 
       {/* 간격 56px */}
       <div className={styles.gap56} role="presentation" />
+      
+      {/* 로그인 확인 모달 (권한 검증 시 표시) */}
+      <LoginConfirmModal />
     </div>
   );
 }

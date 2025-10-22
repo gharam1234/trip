@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('게시판 폼 등록 기능', () => {
   test.beforeEach(async ({ page }) => {
+    // 테스트 환경 설정 - 로그인 검사 우회
+    await page.addInitScript(() => {
+      window.__TEST_ENV__ = 'test';
+      window.__TEST_BYPASS__ = true;
+    });
+
     // /boards 페이지로 이동
     await page.goto('/boards');
     

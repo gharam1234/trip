@@ -103,9 +103,10 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   className?: string;
+  'data-testid'?: string;
 }
 
-export function Modal({ id, children, isOpen, onClose, className = "" }: ModalProps) {
+export function Modal({ id, children, isOpen, onClose, className = "", ...props }: ModalProps) {
   const { openModal, closeModal } = useModal();
   const [mounted, setMounted] = useState(false);
 
@@ -126,7 +127,7 @@ export function Modal({ id, children, isOpen, onClose, className = "" }: ModalPr
   return createPortal(
     <>
       {isOpen && (
-        <div className={`${styles.modalOverlay} ${className}`} onClick={onClose}>
+        <div className={`${styles.modalOverlay} ${className}`} onClick={onClose} {...props}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             {children}
           </div>

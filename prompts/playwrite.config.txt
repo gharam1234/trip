@@ -1,0 +1,4 @@
+@playwright.config.ts 의 command와, url 설정을 변경해줘
+병렬테스트를 위해서, agent-index를 포트번호에 추가하는 방식으로 수정해줘
+worker-index 아니고, agent-index야
+command,url,baseURL 3개만 변경하고 나머지는 건드리지마

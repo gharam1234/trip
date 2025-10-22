@@ -15,47 +15,34 @@ test.describe('Auth Guard Hook 테스트', () => {
       window.__TEST_ENV__ = 'production';
     });
 
-    // 게시글 작성 페이지로 이동 (회원 전용 페이지)
-    await page.goto('/boards/new');
+    // boards 페이지로 이동
+    await page.goto('/boards');
+    await page.waitForSelector('[data-testid="boards-container"]');
     
-    // 페이지가 완전히 로드될 때까지 대기
-    await page.waitForSelector('[data-testid="boards-new-container"]', { timeout: 500 });
+    // 트립토크 등록 버튼 클릭 (권한 검증 필요)
+    await page.click('[data-testid="trip-talk-button"]');
     
-    // 권한이 필요한 기능 버튼 클릭 (예: 저장 버튼)
-    const protectedButton = page.locator('[data-testid="save-button"]');
-    if (await protectedButton.isVisible()) {
-      await protectedButton.click();
-      
-      // 로그인 확인 모달 표시 확인
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible();
-      
-      // 모달 내용 확인
-      await expect(page.locator('text=로그인이 필요합니다')).toBeVisible();
-      await expect(page.locator('text=이 기능을 사용하려면 로그인이 필요합니다')).toBeVisible();
-    }
+    // 로그인 모달이 표시되는지 확인 (권한 검증 동작)
+    await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible({ timeout: 400 });
   });
 
   test('테스트 환경에서 로그인 검사 우회', async ({ page }) => {
     // 테스트 환경 설정 (기본적으로 로그인 검사 우회)
     await page.addInitScript(() => {
       window.__TEST_ENV__ = 'test';
-      window.__TEST_BYPASS__ = undefined;
+      window.__TEST_BYPASS__ = true;
     });
 
-    // 게시글 작성 페이지로 이동
-    await page.goto('/boards/new');
+    // boards 페이지로 이동
+    await page.goto('/boards');
+    await page.waitForSelector('[data-testid="boards-container"]');
     
-    // 페이지가 완전히 로드될 때까지 대기
-    await page.waitForSelector('[data-testid="boards-new-container"]', { timeout: 500 });
+    // 트립토크 등록 버튼 클릭
+    await page.click('[data-testid="trip-talk-button"]');
     
-    // 권한이 필요한 기능 버튼 클릭
-    const protectedButton = page.locator('[data-testid="save-button"]');
-    if (await protectedButton.isVisible()) {
-      await protectedButton.click();
-      
-      // 모달이 표시되지 않아야 함 (로그인 검사 우회)
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).not.toBeVisible();
-    }
+    // 게시글 작성 페이지로 이동되는지 확인 (로그인 검사 우회)
+    await expect(page).toHaveURL('/boards/new', { timeout: 400 });
+    await expect(page.locator('[data-testid="boards-write-page"]')).toBeVisible();
   });
 
   test('테스트 환경에서 비회원 가드 테스트', async ({ page }) => {
@@ -65,20 +52,15 @@ test.describe('Auth Guard Hook 테스트', () => {
       window.__TEST_BYPASS__ = false; // 명시적으로 검사 수행
     });
 
-    // 게시글 작성 페이지로 이동
-    await page.goto('/boards/new');
+    // boards 페이지로 이동
+    await page.goto('/boards');
+    await page.waitForSelector('[data-testid="boards-container"]');
     
-    // 페이지가 완전히 로드될 때까지 대기
-    await page.waitForSelector('[data-testid="boards-new-container"]', { timeout: 500 });
+    // 트립토크 등록 버튼 클릭
+    await page.click('[data-testid="trip-talk-button"]');
     
-    // 권한이 필요한 기능 버튼 클릭
-    const protectedButton = page.locator('[data-testid="save-button"]');
-    if (await protectedButton.isVisible()) {
-      await protectedButton.click();
-      
-      // 로그인 확인 모달 표시 확인
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible();
-    }
+    // 로그인 모달이 표시되는지 확인
+    await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible({ timeout: 400 });
   });
 
   test('로그인 확인 모달 - 로그인 버튼 클릭', async ({ page }) => {
@@ -87,29 +69,21 @@ test.describe('Auth Guard Hook 테스트', () => {
       window.__TEST_ENV__ = 'production';
     });
 
-    // 게시글 작성 페이지로 이동
-    await page.goto('/boards/new');
+    // boards 페이지로 이동
+    await page.goto('/boards');
+    await page.waitForSelector('[data-testid="boards-container"]');
     
-    // 페이지가 완전히 로드될 때까지 대기
-    await page.waitForSelector('[data-testid="boards-new-container"]', { timeout: 500 });
+    // 트립토크 등록 버튼 클릭
+    await page.click('[data-testid="trip-talk-button"]');
     
-    // 권한이 필요한 기능 버튼 클릭
-    const protectedButton = page.locator('[data-testid="save-button"]');
-    if (await protectedButton.isVisible()) {
-      await protectedButton.click();
-      
-      // 로그인 확인 모달 표시 확인
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible();
-      
-      // 로그인 버튼 클릭
-      await page.click('[data-testid="modal-login-button"]');
-      
-      // 로그인 페이지로 이동 확인
-      await expect(page).toHaveURL('/auth/login');
-      
-      // 모달이 닫혔는지 확인
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).not.toBeVisible();
-    }
+    // 로그인 모달 표시 확인
+    await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible({ timeout: 400 });
+    
+    // 모달 내 로그인 버튼 클릭 (확인 버튼이 로그인)
+    await page.locator('[data-testid="login-confirm-modal"]').locator('button:has-text("로그인")').first().click({ force: true });
+    
+    // 로그인 페이지로 이동 확인
+    await expect(page).toHaveURL('/auth/login');
   });
 
   test('로그인 확인 모달 - 취소 버튼 클릭', async ({ page }) => {
@@ -118,29 +92,24 @@ test.describe('Auth Guard Hook 테스트', () => {
       window.__TEST_ENV__ = 'production';
     });
 
-    // 게시글 작성 페이지로 이동
-    await page.goto('/boards/new');
+    // boards 페이지로 이동
+    await page.goto('/boards');
+    await page.waitForSelector('[data-testid="boards-container"]');
     
-    // 페이지가 완전히 로드될 때까지 대기
-    await page.waitForSelector('[data-testid="boards-new-container"]', { timeout: 500 });
+    // 트립토크 등록 버튼 클릭
+    await page.click('[data-testid="trip-talk-button"]');
     
-    // 권한이 필요한 기능 버튼 클릭
-    const protectedButton = page.locator('[data-testid="save-button"]');
-    if (await protectedButton.isVisible()) {
-      await protectedButton.click();
-      
-      // 로그인 확인 모달 표시 확인
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible();
-      
-      // 취소 버튼 클릭
-      await page.click('[data-testid="modal-cancel-button"]');
-      
-      // 모달이 닫혔는지 확인
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).not.toBeVisible();
-      
-      // 페이지가 그대로 유지되는지 확인
-      await expect(page).toHaveURL('/boards/new');
-    }
+    // 로그인 모달 표시 확인
+    await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible({ timeout: 400 });
+    
+    // 모달 내 취소 버튼 클릭
+    await page.locator('[data-testid="login-confirm-modal"]').locator('button:has-text("취소")').click({ force: true });
+    
+    // 모달이 닫혔는지 확인
+    await expect(page.locator('[data-testid="login-confirm-modal"]')).not.toBeVisible();
+    
+    // 페이지가 그대로 유지되는지 확인
+    await expect(page).toHaveURL('/boards');
   });
 
   test('모달 중복 표시 방지', async ({ page }) => {
@@ -149,23 +118,20 @@ test.describe('Auth Guard Hook 테스트', () => {
       window.__TEST_ENV__ = 'production';
     });
 
-    // 게시글 작성 페이지로 이동
-    await page.goto('/boards/new');
+    // boards 페이지로 이동
+    await page.goto('/boards');
+    await page.waitForSelector('[data-testid="boards-container"]');
     
-    // 페이지가 완전히 로드될 때까지 대기
-    await page.waitForSelector('[data-testid="boards-new-container"]', { timeout: 500 });
+    // 첫 번째 버튼 클릭
+    const tripTalkButton = page.locator('[data-testid="trip-talk-button"]');
+    await tripTalkButton.click();
     
-    // 권한이 필요한 기능 버튼을 여러 번 클릭
-    const protectedButton = page.locator('[data-testid="save-button"]');
-    if (await protectedButton.isVisible()) {
-      await protectedButton.click();
-      await protectedButton.click();
-      await protectedButton.click();
-      
-      // 모달이 하나만 표시되는지 확인
-      const modalCount = await page.locator('[data-testid="login-confirm-modal"]').count();
-      expect(modalCount).toBeLessThanOrEqual(1);
-    }
+    // 모달 표시 대기
+    await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible({ timeout: 400 });
+    
+    // 버튼이 클릭된 후 모달이 존재하는지 확인 (모달 개수는 1개여야 함)
+    const modalCount = await page.locator('[data-testid="login-confirm-modal"]').count();
+    expect(modalCount).toBe(1);
   });
 
   test('테스트 환경 설정 함수 동작 확인', async ({ page }) => {

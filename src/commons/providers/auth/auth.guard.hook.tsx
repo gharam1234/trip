@@ -44,8 +44,8 @@ export function useAuthGuard() {
     
     // 테스트 환경인 경우
     if (isTestEnvironment()) {
-      // window.__TEST_BYPASS__가 명시적으로 false로 설정된 경우에만 검사 수행
-      return window.__TEST_BYPASS__ !== false;
+      // window.__TEST_BYPASS__가 명시적으로 true로 설정된 경우에만 우회
+      return window.__TEST_BYPASS__ === true;
     }
     
     // 실제 환경에서는 항상 검사 수행
@@ -54,9 +54,9 @@ export function useAuthGuard() {
 
   // 로그인 상태 확인
   const checkLoginStatus = useCallback(() => {
-    // 우회 조건 확인
+    // 우회 조건 확인 (테스트 환경에서 우회 시 로그인된 것으로 간주)
     if (shouldBypassAuth()) {
-      return true; // 테스트 환경에서 우회 시 로그인된 것으로 간주
+      return true;
     }
     
     // 실제 로그인 상태 확인
@@ -133,24 +133,30 @@ export function useAuthGuard() {
     isTestEnvironment,
     shouldBypassAuth,
     // 모달 컴포넌트 렌더링을 위한 props
-    LoginConfirmModal: () => (
-      <ProviderModal
-        id={LOGIN_CONFIRM_MODAL_ID}
-        isOpen={isModalOpen(LOGIN_CONFIRM_MODAL_ID)}
-        onClose={handleCancelClick}
-      >
-        <CommonModal
-          variant="info"
-          actions="dual"
-          title="로그인이 필요합니다"
-          description="이 기능을 사용하려면 로그인이 필요합니다. 로그인하시겠습니까?"
-          confirmText="로그인"
-          cancelText="취소"
-          onConfirm={handleLoginClick}
-          onCancel={handleCancelClick}
-        />
-      </ProviderModal>
-    ),
+    LoginConfirmModal: () => {
+      const isOpen = isModalOpen(LOGIN_CONFIRM_MODAL_ID);
+      if (!isOpen) return null;
+      
+      return (
+        <ProviderModal
+          id={LOGIN_CONFIRM_MODAL_ID}
+          isOpen={isOpen}
+          onClose={handleCancelClick}
+          data-testid="login-confirm-modal"
+        >
+          <CommonModal
+            variant="info"
+            actions="dual"
+            title="로그인이 필요합니다"
+            description="이 기능을 사용하려면 로그인이 필요합니다. 로그인하시겠습니까?"
+            confirmText="로그인"
+            cancelText="취소"
+            onConfirm={handleLoginClick}
+            onCancel={handleCancelClick}
+          />
+        </ProviderModal>
+      );
+    },
   };
 }
 
