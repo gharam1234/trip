@@ -52,7 +52,7 @@ async function createUserApi(email: string, password: string, name: string) {
     }
   `;
 
-  const response = await fetch(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'http://main-practice.codebootcamp.co.kr/graphql', {
+  const response = await fetch(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'https://main-practice.codebootcamp.co.kr/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

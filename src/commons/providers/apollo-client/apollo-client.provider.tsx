@@ -8,7 +8,7 @@ import { ReactNode } from "react";
 
 // 업로드 링크 생성
 const uploadLink = new UploadHttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "http://main-practice.codebootcamp.co.kr/graphql",
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "https://main-practice.codebootcamp.co.kr/graphql",
 });
 
 // Apollo Client 인스턴스 생성

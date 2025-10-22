@@ -82,7 +82,7 @@ export function useLoginForm() {
         
         // 새로운 Apollo Client 인스턴스 생성 (인증 헤더 포함)
         const httpLink = createHttpLink({
-          uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "http://main-practice.codebootcamp.co.kr/graphql",
+          uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "https://main-practice.codebootcamp.co.kr/graphql",
           headers: {
             Authorization: `Bearer ${data.loginUser.accessToken}`,
           },
