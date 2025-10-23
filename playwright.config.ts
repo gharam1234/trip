@@ -1,49 +1,28 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
+ * Playwright 설정 파일
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  // 공통 테스트 설정
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    // 기본 URL (개발 서버)
+    baseURL: `http://localhost:${3000 + Number(process.env.AGENT_INDEX || '0')}`,
   },
 
-  /* Configure projects for major browsers */
+  // 브라우저 프로젝트 설정
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
-  /* Run your local dev server before starting the tests */
+  // 개발 서버 설정 (테스트 실행 시 자동으로 Next.js 서버 시작)
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
+    command: `PORT=${3000 + Number(process.env.AGENT_INDEX || '0')} npm run dev`,
+    url: `http://localhost:${3000 + Number(process.env.AGENT_INDEX || '0')}`,
     reuseExistingServer: !process.env.CI,
     env:{
       NEXT_PUBLIC_TEST_ENV:'test',

@@ -1,0 +1,26 @@
+아래의 조건을 모두 적용하여, 아래의 요구사항을 모두 구현할 것.
+구현 결과를 체크리스트로 반환할 것.
+
+==============================================
+
+조건-커서룰) 아래의 커서룰을 적용하여 작업하고, 이 작업이 끝나면 해당 rules 적용 결과를 체크리스트로 반환할 것.
+            - @01-common.mdc
+            - @04-func.mdc
+
+==============================================
+
+조건-파일경로) 참고할 TSX  파일경로: src/components/boards-new/index.tsx
+조건-파일경로) 참고할 CSS  파일경로: src/components/boards-new/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-new/hooks/index.update.hook.tsx
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards-new/tests/index.update.hook.spec.ts
+
+==============================================
+
+핵심요구사항) 완성된 컴포넌트를 페이지에서 import하여 연결시킬 것.
+            - 연결될 경로: src/app/boards/[BaordId]/edit/page.tsx
+
+핵심요구사항) 다음의 조건에 맞게 게시판 수정 기능을 step-by-step 으로 구현하고, 적용 결과를 체크리스트로 반환할 것.
+            1) boards-new/index.tsx의 컴포넌트가 글 등록페이지와 글 수정페이지에 공통되게 사용될 것
+             1-1.글등록페이지 : /boards/new/page.tsx - 이미 만들어져있음 
+             1-2.글 수정페이지 : /boards/[BaordId]/edit/page.tsx -만들어야 함
+            2) props.isEdit을 활용하여 true면 boards-new/index.tsx가 수정페이지로 false면 boards-new/index.tsx가 글 등록 페이지로 사용될 것

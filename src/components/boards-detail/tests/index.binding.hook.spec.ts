@@ -63,12 +63,12 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
     await page.goto("/boards/1", { waitUntil: "networkidle" });
 
     // 페이지 완전 로드 확인: data-testid 기반 대기 (500ms 이내)
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
 
     // 제목 검증
@@ -109,12 +109,12 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
     }, TEST_BOARDS);
 
     await page.goto("/boards/2", { waitUntil: "networkidle" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
 
     // 제목 검증
@@ -147,13 +147,13 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
     });
 
     await page.goto("/boards/1", { waitUntil: "networkidle" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     // 에러 메시지 확인
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
     await expect(boardDetailContainer).toContainText(/게시글|오류|데이터/);
   });
@@ -168,13 +168,13 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
 
     // 존재하지 않는 boardId로 접근
     await page.goto("/boards/999", { waitUntil: "networkidle" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     // 게시글을 찾을 수 없다는 메시지 확인
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
     await expect(boardDetailContainer).toContainText("게시글을 찾을 수 없습니다.");
   });
@@ -183,18 +183,22 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
   test("boards 배열이 비어있을 때 에러 메시지가 표시되어야 함", async ({
     page,
   }) => {
+    // 홈페이지로 먼저 이동하여 localStorage 접근 가능하게 설정
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
     await page.evaluate(() => {
+      localStorage.clear();
       localStorage.setItem("boards", JSON.stringify([]));
     });
 
-    await page.goto("/boards/1", { waitUntil: "domcontentloaded" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await page.goto("/boards/1", { waitUntil: "networkidle" });
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     // 에러 메시지 확인
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
     await expect(boardDetailContainer).toContainText(/게시글|오류|비어/);
   });
@@ -211,12 +215,12 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
 
     // boardId 2는 images가 빈 배열
     await page.goto("/boards/2", { waitUntil: "networkidle" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
 
     // heroImage 영역이 존재하고 배경이미지가 없음을 확인
@@ -233,18 +237,22 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
   test("유튜브 URL이 없는 게시글도 올바르게 렌더링되어야 함", async ({
     page,
   }) => {
+    // 홈페이지로 먼저 이동하여 localStorage 접근 가능하게 설정
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
     await page.evaluate((data) => {
+      localStorage.clear();
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
     // boardId 2는 youtubeUrl이 빈 문자열
-    await page.goto("/boards/2", { waitUntil: "domcontentloaded" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await page.goto("/boards/2", { waitUntil: "networkidle" });
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
 
     // 비디오가 없습니다 메시지 확인
@@ -255,17 +263,21 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
 
   // 추가 테스트: 모든 바인딩 데이터 개별 검증
   test("모든 바인딩 데이터가 정확하게 표시되어야 함", async ({ page }) => {
+    // 홈페이지로 먼저 이동하여 localStorage 접근 가능하게 설정
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
     await page.evaluate((data) => {
+      localStorage.clear();
       localStorage.setItem("boards", JSON.stringify(data));
     }, TEST_BOARDS);
 
-    await page.goto("/boards/1", { waitUntil: "domcontentloaded" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await page.goto("/boards/1", { waitUntil: "networkidle" });
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
 
     // 1. 제목 바인딩 검증
@@ -335,12 +347,12 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
 
     // 문자열 boardId로 접근 (URL에서는 항상 문자열)
     await page.goto("/boards/1", { waitUntil: "domcontentloaded" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
 
     // 숫자형 boardId가 문자열로 변환되어 매칭되는지 확인
@@ -356,13 +368,13 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
     });
 
     await page.goto("/boards/1", { waitUntil: "domcontentloaded" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     // JSON 파싱 오류 메시지 확인
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
     await expect(boardDetailContainer).toContainText(/오류|JSON|파싱/);
   });
@@ -376,13 +388,13 @@ test.describe("게시글 상세 데이터 바인딩 기능", () => {
     // 빈 boardId로 접근하는 대신, 훅이 빈 문자열을 받았을 때의 처리를 테스트
     // 실제로는 Next.js 라우팅에서 처리되므로, 이 테스트는 훅의 내부 로직을 검증
     await page.goto("/boards/1", { waitUntil: "domcontentloaded" });
-    await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible(
+    await expect(page.locator('[data-testid="boards-detail-page"]')).toBeVisible(
       { timeout: 500 }
     );
 
     // 정상적인 boardId로 접근했으므로 정상적으로 로드되어야 함
     const boardDetailContainer = page.locator(
-      '[data-testid="board-detail-page"]'
+      '[data-testid="boards-detail-page"]'
     );
     await expect(boardDetailContainer.locator("h1")).toContainText("첫 번째 게시글");
   });

@@ -1,17 +1,26 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import styles from "./styles.module.css";
 import { Input } from "@/commons/components/input";
 import { Textarea } from "@/commons/components/textarea";
 import { Button } from "@/commons/components/button";
-import Image from "next/image";
+import { Modal } from "@/commons/providers/modal/modal.provider";
 import { useBoardForm } from "./hooks/index.form.hook";
+import { useBoardUpdateForm } from "./hooks/index.update.form.hook";
 
-// 보드 작성 UI 컴포넌트
-// - 피그마 노드 레이아웃을 기준으로 고정 사이즈를 적용
-// - 공통컴포넌트는 variant/size/className만 사용 (원본 수정 금지)
-export default function BoardsWriteUI(): JSX.Element {
+/**
+ * 보드 작성 UI 컴포넌트
+ * - 피그마 노드 레이아웃을 기준으로 고정 사이즈를 적용
+ * - 공통컴포넌트는 variant/size/className만 사용 (원본 수정 금지)
+ */
+export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: boolean; boardId?: string }): JSX.Element {
+  // 수정 모드일 때는 수정 전용 훅 사용, 그렇지 않으면 일반 폼 훅 사용
+  const formHook = isEdit && boardId 
+    ? useBoardUpdateForm({ boardId })
+    : useBoardForm({ isEdit, boardId });
+
   const {
     form,
     onSubmit,
@@ -25,7 +34,7 @@ export default function BoardsWriteUI(): JSX.Element {
     writerController,
     passwordController,
     youtubeUrlController
-  } = useBoardForm();
+  } = formHook;
 
   return (
     <section className={styles.writeContainer} data-testid="boards-write-page">
@@ -34,7 +43,7 @@ export default function BoardsWriteUI(): JSX.Element {
 
       {/* write-header: 1280 * 68 (노드: 285:32386) */}
       <header className={styles.writeHeader}>
-        <h1 className={styles.headerTitle}>게시물 등록</h1>
+        <h1 className={styles.headerTitle}>{isEdit ? '게시물 수정' : '게시물 등록'}</h1>
       </header>
       {/* 수평선 */}
       <div className={styles.divider} />
@@ -265,27 +274,30 @@ export default function BoardsWriteUI(): JSX.Element {
             disabled={!isFormValid || isSubmitting}
             onClick={onSubmit}
           >
-            {isSubmitting ? '등록 중...' : '등록하기'}
+            {isSubmitting ? (isEdit ? '수정 중...' : '등록 중...') : (isEdit ? '수정하기' : '등록하기')}
           </Button>
         </div>
       </footer>
 
       {/* 성공 알림 모달 */}
-      {showSuccessAlert && (
-        <div className={styles.alertOverlay} data-testid="success-alert">
-          <div className={styles.alertModal}>
-            <h3>등록 완료</h3>
-            <p>게시물이 성공적으로 등록되었습니다.</p>
-            <Button 
-              variant="primary" 
-              onClick={handleSuccessAlertConfirm}
-              data-testid="success-alert-confirm"
-            >
-              확인
-            </Button>
-          </div>
+      <Modal
+        id="success-alert"
+        isOpen={showSuccessAlert}
+        onClose={handleSuccessAlertConfirm}
+        data-testid="success-alert"
+      >
+        <div className={styles.alertModal}>
+          <h3>{isEdit ? '수정 완료' : '등록 완료'}</h3>
+          <p>{isEdit ? '게시물이 성공적으로 수정되었습니다.' : '게시물이 성공적으로 등록되었습니다.'}</p>
+          <Button 
+            variant="primary" 
+            onClick={handleSuccessAlertConfirm}
+            data-testid="success-alert-confirm"
+          >
+            확인
+          </Button>
         </div>
-      )}
+      </Modal>
     </section>
   );
 }

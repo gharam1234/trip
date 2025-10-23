@@ -29,8 +29,8 @@ alwaysApply: false
     - 이미 설치된 zod를 사용하여 검증로직을 구현할 것.
 
 5. API 조건
-    - 이미 설치된 @tanstack/react-query를 사용할 것.
-    - 이미 commons에 셋팅된 @tanstack/react-query를 사용할 것.
+    - 이미 설치된 @apollo-client를 사용할 것.
+    - 이미 commons에 셋팅된 @apollo-client를 사용할 것.
 
 6. TEST 조건
     - TDD기반으로 playwright 테스트를 먼저 작성할 것.

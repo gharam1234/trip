@@ -6,6 +6,8 @@ import styles from "./styles.module.css";
 import Button from "@/commons/components/button";
 import Textarea from "@/commons/components/textarea";
 import { useBoardDetailBinding } from "./hooks/index.binding.hook";
+import { useBoardEditLink } from "./hooks/index.link.update.hook";
+import { useBoardListLink } from "./hooks/index.link.boards.hook";
 
 /**
  * 보드 상세 와이어프레임 컴포넌트
@@ -20,6 +22,10 @@ export default function BoardsDetailWireframe(): JSX.Element {
 
   // 실제 데이터 바인딩 훅 사용
   const { boardData, loading, error } = useBoardDetailBinding(boardId);
+  // 게시글 수정 페이지 이동 훅 사용
+  const { navigateToEdit } = useBoardEditLink();
+  // 게시글 목록 페이지 이동 훅 사용
+  const { navigateToList } = useBoardListLink();
   // 별점/댓글 입력 상태 관리 (주석은 항상 한국어)
   const [rating, setRating] = React.useState<number>(0);
   const [comment, setComment] = React.useState<string>("");
@@ -30,10 +36,22 @@ export default function BoardsDetailWireframe(): JSX.Element {
     console.log("submit review", { rating, commentLength: comment.length, comment });
   }, [rating, comment]);
 
+  // 수정 버튼 클릭 처리: 게시글 수정 페이지로 이동
+  const handleEditClick = React.useCallback(() => {
+    if (boardId) {
+      navigateToEdit(boardId);
+    }
+  }, [boardId, navigateToEdit]);
+
+  // 목록으로 버튼 클릭 처리: 게시글 목록 페이지로 이동
+  const handleListClick = React.useCallback(() => {
+    navigateToList();
+  }, [navigateToList]);
+
   // 로딩 상태 처리
   if (loading) {
     return (
-      <div className={styles.container} data-testid="board-detail-page">
+      <div className={styles.container} data-testid="boards-detail-page">
         <div>로딩 중...</div>
       </div>
     );
@@ -42,7 +60,7 @@ export default function BoardsDetailWireframe(): JSX.Element {
   // 에러 상태 처리
   if (error) {
     return (
-      <div className={styles.container} data-testid="board-detail-page">
+      <div className={styles.container} data-testid="boards-detail-page">
         <div>오류가 발생했습니다: {error}</div>
       </div>
     );
@@ -51,14 +69,14 @@ export default function BoardsDetailWireframe(): JSX.Element {
   // 데이터가 없을 때 처리
   if (!boardData) {
     return (
-      <div className={styles.container} data-testid="board-detail-page">
+      <div className={styles.container} data-testid="boards-detail-page">
         <div>게시글을 찾을 수 없습니다.</div>
       </div>
     );
   }
 
   return (
-    <div className={styles.container} data-testid="board-detail-page">
+    <div className={styles.container} data-testid="boards-detail-page">
       {/* 제목 영역: 실제 데이터 바인딩 */}
       <section className={styles.detailTitle}>
         <h1 className={styles.titleText}>{boardData.title}</h1>
@@ -81,7 +99,7 @@ export default function BoardsDetailWireframe(): JSX.Element {
         <div className={styles.writerDivider} />
         <div className={styles.writerRowBottom}>
           <div className={styles.iconLink} aria-label="링크 아이콘" />
-          <div className={styles.iconLocation} aria-label={`위치: ${boardData.addressDetail || '위치 정보 없음'}`} />
+          <div className={styles.iconLocation} aria-label={`위치: ${(boardData as any).addressDetail || '위치 정보 없음'}`} />
         </div>
       </section>
 
@@ -153,8 +171,15 @@ export default function BoardsDetailWireframe(): JSX.Element {
 
       {/* 푸터 영역: 버튼 2개 */}
       <section className={styles.detailFooter}>
-        <Button variant="secondary" size="small">목록으로</Button>
-        <Button variant="secondary" size="small">수정하기</Button>
+        <Button 
+          variant="secondary" 
+          size="small" 
+          onClick={handleListClick}
+          data-testid="list-button"
+        >
+          목록으로
+        </Button>
+        <Button variant="secondary" size="small" onClick={handleEditClick} data-testid="edit-button">수정하기</Button>
       </section>
 
       {/* gap 24 */}

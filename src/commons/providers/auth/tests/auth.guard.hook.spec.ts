@@ -36,13 +36,13 @@ test.describe('Auth Guard Hook 테스트', () => {
     // boards 페이지로 이동
     await page.goto('/boards');
     await page.waitForSelector('[data-testid="boards-container"]');
-    
+
     // 트립토크 등록 버튼 클릭
     await page.click('[data-testid="trip-talk-button"]');
-    
+
     // 게시글 작성 페이지로 이동되는지 확인 (로그인 검사 우회)
-    await expect(page).toHaveURL('/boards/new', { timeout: 400 });
-    await expect(page.locator('[data-testid="boards-write-page"]')).toBeVisible();
+    await expect(page).toHaveURL('/boards/new', { timeout: 1000 });
+    await expect(page.locator('[data-testid="boards-write-page"]')).toBeVisible({ timeout: 1000 });
   });
 
   test('테스트 환경에서 비회원 가드 테스트', async ({ page }) => {

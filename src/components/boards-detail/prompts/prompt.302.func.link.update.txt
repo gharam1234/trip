@@ -9,10 +9,10 @@
 
 ==============================================
 
-조건-파일경로) 참고할 TSX  파일경로: src/components/boards/index.tsx
-조건-파일경로) 참고할 CSS  파일경로: src/components/boards/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/boards/hooks/index.link.new.hook.tsx
-조건-파일경로) 구현될 TEST 파일경로: src/components/boards/tests/index.link.new.hook.spec.ts
+조건-파일경로) 참고할 TSX  파일경로: src/components/boards-deatil/index.tsx
+조건-파일경로) 참고할 CSS  파일경로: src/components/boards-deatil/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-deatil/hooks/index.link.update.hook.tsx
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards-deatil/tests/index.link.update.hook.spec.ts
 
 ==============================================
 
@@ -28,13 +28,13 @@
                     - 페이지 로드 식별 금지사항: networkidle 대기 방법
 
             3) 테스트 시나리오
-                - 버튼 클릭 전 URL 확인: /boards
-                - 버튼 클릭 후 URL 확인: /boards/new
+                - 버튼 클릭 전 URL 확인: /boards/[BoardId]
+                - 버튼 클릭 후 URL 확인: /boards/[BoardId]/edit
                 - 페이지 이동 완료 대기 시간: 1000ms 이내
 
 ==============================================
 
-핵심요구사항) 트립토크 등록버튼 클릭시, url.ts의 페이지URL에 정의된 경로로 이동할 것.
+핵심요구사항) 수정버튼 클릭시, url.ts의 페이지URL에 정의된 경로로 이동할 것.
             1) 경로: commons/constants/url.ts
             2) 조건
                 - CSS는 cursor: pointer만 추가할 것.
@@ -42,21 +42,6 @@
                 - Next.js App Router의 useRouter 사용 필수
 
             3) 트립토크 글등록 버튼 클릭시
-                - url.ts에 정의된 게시글등록 페이지 => /boards/new
-                - BOARD_NEW 키를 사용하여 getPath 함수로 경로 생성
-
-==============================================
-
-구현 체크리스트:
-□ 1. Hook 파일 생성 및 구현 (useLinkToNewBoard)
-□ 2. url.ts에서 BOARD_NEW 경로 import
-□ 3. getPath 함수를 사용한 동적 경로 생성
-□ 4. Next.js useRouter를 사용한 클라이언트 사이드 라우팅
-□ 5. CSS에 cursor: pointer 스타일 추가
-□ 6. data-testid="trip-talk-button" 속성 추가
-□ 7. Playwright 테스트 파일 생성
-□ 8. 페이지 로드 대기 로직 구현 (data-testid 기반)
-□ 9. URL 변경 검증 테스트 구현
-□ 10. timeout 500ms 이하 설정
+                - url.ts에 정의된 게시글등록 페이지 => /boards/[BoardId]/edit/page.tsx
                 
-                
+

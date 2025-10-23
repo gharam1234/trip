@@ -39,37 +39,31 @@ const boardFormSchema = z.object({
   images: z.array(z.string()).optional()
 });
 
-// 게시판 폼 훅
-export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; boardId?: string } = {}) {
+// 게시판 수정 폼 훅
+export function useBoardUpdateForm({ boardId }: { boardId: string }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [initialData, setInitialData] = useState<BoardData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 로컬스토리지에서 게시물 데이터 가져오기 (수정 모드일 때)
+  // 로컬스토리지에서 게시물 데이터 가져오기
   useEffect(() => {
-    if (isEdit && boardId) {
+    if (boardId) {
       const boards = getBoardsFromLocalStorage();
       const board = boards.find(b => b.boardId === boardId);
       if (board) {
         setInitialData(board);
       }
+      setIsLoading(false);
     }
-  }, [isEdit, boardId]);
+  }, [boardId]);
 
   // React Hook Form 설정
   const form = useForm<BoardFormData>({
     resolver: zodResolver(boardFormSchema),
-    defaultValues: initialData ? {
-      writer: initialData.writer,
-      password: initialData.password,
-      title: initialData.title,
-      contents: initialData.contents,
-      youtubeUrl: initialData.youtubeUrl,
-      boardAddress: initialData.boardAddress,
-      images: initialData.images || []
-    } : {
+    defaultValues: {
       writer: '',
       password: '',
       title: '',
@@ -86,9 +80,9 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
     reValidateMode: 'onChange' // 실시간 재검증
   });
 
-  // 폼 값이 변경될 때 기본값 업데이트
+  // 초기 데이터가 로드되면 폼에 설정
   useEffect(() => {
-    if (initialData) {
+    if (initialData && !isLoading) {
       form.reset({
         writer: initialData.writer,
         password: initialData.password,
@@ -99,65 +93,41 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
         images: initialData.images || []
       });
     }
-  }, [initialData, form]);
+  }, [initialData, isLoading, form]);
 
-  // 폼 제출 핸들러
+  // 폼 제출 핸들러 (수정 전용)
   const onSubmit = async (data: BoardFormData) => {
     try {
       setIsSubmitting(true);
 
-      if (isEdit && boardId && initialData) {
-        // 수정 모드: 기존 게시물 업데이트
-        const allBoards = getBoardsFromLocalStorage();
-        const updatedBoards = allBoards.map(board =>
-          board.boardId === boardId
-            ? {
-                ...board,
-                writer: data.writer,
-                password: data.password,
-                title: data.title,
-                contents: data.contents,
-                youtubeUrl: data.youtubeUrl || '',
-                boardAddress: data.boardAddress,
-                images: data.images || []
-              }
-            : board
-        );
-        saveBoardsToLocalStorage(updatedBoards);
-      } else {
-        // 신규 등록 모드: 새 게시물 생성
-        const existingBoards = getBoardsFromLocalStorage();
-        
-        // 새로운 게시물 ID 생성 (기존 데이터가 있으면 가장 큰 ID + 1, 없으면 1)
-        const newBoardId = existingBoards.length > 0 
-          ? String(Math.max(...existingBoards.map(board => parseInt(board.boardId))) + 1)
-          : '1';
-
-        // 새로운 게시물 데이터 생성
-        const newBoard: BoardData = {
-          boardId: newBoardId,
-          writer: data.writer,
-          password: data.password,
-          title: data.title,
-          contents: data.contents,
-          youtubeUrl: data.youtubeUrl || '',
-          boardAddress: data.boardAddress,
-          images: data.images || [],
-          createdAt: new Date().toISOString()
-        };
-
-        // 기존 데이터에 새 게시물 추가
-        const updatedBoards = [...existingBoards, newBoard];
-        
-        // 로컬스토리지에 저장
-        saveBoardsToLocalStorage(updatedBoards);
+      if (!boardId || !initialData) {
+        throw new Error('수정할 게시물 정보를 찾을 수 없습니다.');
       }
+
+      // 기존 게시물 업데이트
+      const allBoards = getBoardsFromLocalStorage();
+      const updatedBoards = allBoards.map(board =>
+        board.boardId === boardId
+          ? {
+              ...board,
+              writer: data.writer,
+              password: data.password,
+              title: data.title,
+              contents: data.contents,
+              youtubeUrl: data.youtubeUrl || '',
+              boardAddress: data.boardAddress,
+              images: data.images || []
+            }
+          : board
+      );
+      
+      saveBoardsToLocalStorage(updatedBoards);
 
       // 성공 알림 표시
       setShowSuccessAlert(true);
 
     } catch (error) {
-      console.error('게시물 처리 중 오류가 발생했습니다:', error);
+      console.error('게시물 수정 중 오류가 발생했습니다:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -167,23 +137,9 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
   const handleSuccessAlertConfirm = () => {
     setShowSuccessAlert(false);
     
-    if (isEdit && boardId) {
-      // 수정 완료 후 상세페이지로 이동
-      const detailPath = getPath('BOARD_DETAIL', { BoardId: boardId });
-      router.push(detailPath);
-    } else {
-      // 등록 완료 후 상세페이지로 이동
-      // 폼 데이터에서 boardId 가져오기 (방금 저장한 데이터)
-      const formData = form.getValues();
-      const existingBoards = getBoardsFromLocalStorage();
-      const newBoardId = existingBoards.length > 0 
-        ? String(Math.max(...existingBoards.map(board => parseInt(board.boardId))))
-        : '1';
-
-      // 게시판 상세페이지로 리다이렉트
-      const detailPath = getPath('BOARD_DETAIL', { BoardId: newBoardId });
-      router.push(detailPath);
-    }
+    // 수정 완료 후 상세페이지로 이동
+    const detailPath = getPath('BOARD_DETAIL', { BoardId: boardId });
+    router.push(detailPath);
   };
 
   // 로컬스토리지에서 boards 데이터 가져오기
@@ -212,38 +168,48 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
 
   // 폼 리셋
   const resetForm = () => {
-    form.reset();
+    if (initialData) {
+      form.reset({
+        writer: initialData.writer,
+        password: initialData.password,
+        title: initialData.title,
+        contents: initialData.contents,
+        youtubeUrl: initialData.youtubeUrl,
+        boardAddress: initialData.boardAddress,
+        images: initialData.images || []
+      });
+    }
   };
 
-  // useController를 사용하여 title과 contents 필드 제어
+  // useController를 사용하여 필드 제어
   const titleController = useController({
     name: 'title',
     control: form.control,
-    defaultValue: initialData?.title || ''
+    defaultValue: ''
   });
   
   const contentsController = useController({
     name: 'contents',
     control: form.control,
-    defaultValue: initialData?.contents || ''
+    defaultValue: ''
   });
   
   const writerController = useController({
     name: 'writer',
     control: form.control,
-    defaultValue: initialData?.writer || ''
+    defaultValue: ''
   });
   
   const passwordController = useController({
     name: 'password',
     control: form.control,
-    defaultValue: initialData?.password || ''
+    defaultValue: ''
   });
   
   const youtubeUrlController = useController({
     name: 'youtubeUrl',
     control: form.control,
-    defaultValue: initialData?.youtubeUrl || ''
+    defaultValue: ''
   });
   
   // 폼 값 변경 감지 및 유효성 검사 (writer, password, title, contents 필수)
@@ -271,6 +237,8 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
     handleSuccessAlertConfirm,
     resetForm,
     isFormValid,
+    isLoading,
+    initialData,
     errors: form.formState.errors,
     titleController,
     contentsController,
