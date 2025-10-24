@@ -9,75 +9,100 @@
 
 ==============================================
 
-조건-파일경로) 참고할 TSX  파일경로: src/components/boards-new/index.tsx
-조건-파일경로) 참고할 CSS  파일경로: src/components/boards-new/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-new/hooks/index.form.hook.tsx
-조건-파일경로) 구현될 TEST 파일경로: src/components/boards-new/tests/index.form.hook.spec.ts
+조건-파일경로)
+    - 참고할 TSX 파일경로: src/components/boards-new/index.tsx
+    - 참고할 CSS 파일경로: src/components/boards-new/styles.module.css
+    - 구현될 HOOK 파일경로: src/components/boards-new/hooks/index.form.hook.tsx
+    - 구현될 TEST 파일경로: src/components/boards-new/tests/index.form.hook.spec.ts
 
 ==============================================
 
-핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD기반으로 구현할 것.
-            1) 테스트 제외 라이브러리
-                - jest
-                - @testing-library/react
+핵심요구사항)
+다음의 기능을 playwright 테스트를 활용하여 TDD 기반으로 구현할 것.
 
-            2) 테스트 조건
-                - timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
-                - /boards 페이지가 완전히 로드된 후 트립토크 버튼 클릭한 이후 테스트할 것.
-                    - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
-                    - 페이지 로드 식별 금지사항: networkidle 대기 방법
+1) 테스트 제외 라이브러리
+    - jest
+    - @testing-library/react
 
-            3) 테스트 로컬스토리지 조건
-                3-1) 데이터
-                    - 실제데이터를 사용할 것.
-                    - Mock데이터 사용하지 말 것.
+2) 테스트 조건
+    - timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
+    - 페이지가 완전히 로드된 후 "트립토크" 버튼 클릭 이후 테스트할 것.
+        - 페이지 로드 식별 요구사항: 고정식별자(data-testid) 대기 방법 사용
+        - **중요금지사항**: networkidle 대기 방식 사용 금지
 
-                3-2) 성공시나리오
-                    - 로컬스토리지 모킹하지 말 것.
+3) 테스트 데이터 조건
+    - 실제 백엔드 API 요청을 사용할 것.
+    - Mocking 금지.
+    - 성공 및 실패 시나리오 모두 실제 서버 응답으로 검증할 것.
 
-                3-3) 실패시나리오
-                    - 로컬스토리지 모킹하지 말 것.
-
-핵심요구사항) 다음의 조건에 맞게 게시판 폼 등록 기능을 step-by-step 으로 구현하고, 적용 결과를 체크리스트로 반환할 것.
-            1) 라이브러리조건
-                - 폼: 이미 설치되어있는 react-hook-form, @hookform/resolvers를 사용할 것.
-                - 검증: 이미 설치되어있는 zod를 사용할 것.
-
-            2) 데이터조건
-                - 저장소: 로컬스토리지
-                - key: boards
-                - value: [{ 
-                    boardId: String,
-                    writer: String,
-                    password: String,
-                    title: String!,
-                    contents: String!,
-                    youtubeUrl: String,
-                    boardAddress: BoardAddressInput{
-                        zipcode: String
-                        address: String
-                        addressDetail: String
-                    }
-                    images: [String!]
-                    createdAt:String
-
-                }]
-            
-            3) 유저시나리오(등록하기)
-                1. writer,password,title,contents 인풋이 입력되면 등록하기버튼을 활성화 할 것.
-                2. 등록하기버튼을 클릭시, 로컬스토리지에 이미 boards가 존재하는지 확인하고,
-                   존재하면 기존의 boards에 push하되, id를 가장큰 id+1로 설정하여 재등록하고, 
-                   존재하지 않으면 새로운 boards 배열을 생성하여 id는 1로 설정하여 등록할 것.
-                3. 등록이 완료되면, 등록완료 alect를 노출할 것
-                4. 등록완료 alect를 확인하면 페이지 라우팅 할것                
-
-                    4-1) 페이지이동조건
-                        - commons/constants/url.ts의 페이지URL에 정의된 경로로 이동할 것.
-                        - 등록된 id를 사용하여 게시판 상세페이지로 다이나믹라우팅 할 것.
-                        - 게시판 상세페이지: url.ts에 정의된 게시판 상세페이지 => /boards/[BoardsId]
 ==============================================
 
-기존히스토리 참고만 - 핵심요구사항) 다음의 문제를 해결할것
-- 현재상황 : 로컬스토리지에 writer와 password가 필드가 없어서 저장되고 있지 않음
+핵심요구사항) 게시판 폼 등록 기능 (Apollo 기반)
+
+다음의 조건에 맞게 게시판 등록 폼을 구현하고, 테스트를 통과시킬 것.
+
+1) 라이브러리 조건
+    - 폼: react-hook-form, @hookform/resolvers
+    - 검증: zod
+    - API 통신: @apollo/client
+
+2) 데이터 조건
+    - 저장소: 백엔드 서버(GraphQL API)
+    - 요청방식: createBoard mutation
+    - 요청 파라미터 구조 :
+
+        mutation createBoard($createBoardInput: CreateBoardInput!) {
+          createBoard(createBoardInput: $createBoardInput) {
+            _id: ID!
+writer: String
+title: String!
+contents: String!
+youtubeUrl: String
+likeCount: Int!
+dislikeCount: Int!
+images: [String!]
+boardAddress: BoardAddress
+user: User
+createdAt: DateTime!
+updatedAt: DateTime!
+deletedAt: DateTime
+          }
+        }
+
+    - 입력값 구조:
+
+        {
+          writer: String
+password: String
+title: String!
+contents: String!
+youtubeUrl: String
+boardAddress: BoardAddressInput
+images: [String!]
+        }
+
+3) 유저시나리오 (등록하기)
+    1. writer, password, title, contents 인풋이 모두 입력되면 "등록하기" 버튼 활성화
+    2. "등록하기" 버튼 클릭 시
+        - Apollo Client의 useMutation을 이용하여 createBoard mutation 요청
+        - 요청 성공 시 응답의 _id 값을 반환받을 것
+    3. 등록 성공 시 "등록 완료" Modal 노출 ( modal provider 와 공통컴포넌트 <Modal />을 사용할 것)
+    4. alert 확인 시 페이지 이동
+        - commons/constants/url.ts의 게시판 상세 페이지 URL로 이동
+        - 이동 시 응답받은 _id를 사용하여 다이나믹 라우팅할 것
+        - 상세 페이지 경로: /boards/[BoardsId]
+
+4) 실패 시나리오
+    - 네트워크 또는 서버 오류 발생 시
+        - "등록 실패" Modal 노출 ( modal provider 와 공통컴포넌트 <Modal />을 사용할 것)
+        - 페이지 이동 금지
+
 ==============================================
-핵심요구사항) 스토리지에 boards 키에 createdAt 밸류를 추가할 것
+
+✅ 구현 체크리스트
+- [ ] react-hook-form + zod로 폼 검증 구현
+- [ ] Apollo useMutation으로 createBoard 요청 구현
+- [ ] 성공 시 modal 및 페이지 라우팅 구현
+- [ ] 실패 시 modal 노출 및 중단
+- [ ] Playwright 테스트로 성공/실패 시나리오 검증
+- [ ] timeout < 500ms 및 data-testid 대기 확인

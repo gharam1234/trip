@@ -1,0 +1,27 @@
+아래의 조건을 모두 적용하여, 아래의 요구사항을 모두 구현할 것.
+구현 결과를 체크리스트로 반환할 것.
+
+==============================================
+
+조건-커서룰) 아래의 커서룰을 적용하여 작업하고, 이 작업이 끝나면 해당 rules 적용 결과를 체크리스트로 반환할 것.
+            - @01-common.mdc
+            - @04-func.mdc
+
+==============================================
+조건-사용할 Mpc서버) context7
+
+조건-파일경로) 참고할 TSX  파일경로: src/components/boards-new/index.tsx
+조건-파일경로) 참고할 CSS  파일경로: src/components/boards-new/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-new/hooks/index.address.hook.tsx
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards-new/tests/index.address.hook.spec.ts
+
+==============================================
+
+핵심요구사항) 다음의 조건에 맞게 우편번호및 주소기입 기능을 step-by-step 으로 구현하고, 적용 결과를 체크리스트로 반환할 것.
+
+            조건 1) 이미 설치되어있는 react-daum-postcode 라이브러리를 사용할 것
+            조건 2) 모달을 열어서 사용자가 주소를 선택하면 선택한 주소의 우편번호와 주소가
+            공통컴포넌트 <Input /> boardAddress.zipcode 와 boardAddress.address 에 들어가서 텍스트로 ui애 표현 될 것
+            조건 3) ui로 표현될 뿐만 아니라 react-hook-form 의 register에 연결하여 react-hook.form이 관리하게 할 것
+            조건 4) 이미 설치되어있는 antd 라이브러리속의 Modal 을 사용할 것
+            조건 5) <DaumPostcodeEmbed onComplete={handleComplete}/> 태그를 사용할 것

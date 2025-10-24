@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { useForm, useController } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@apollo/client/react";
 import { getPath } from "@/commons/constants/url";
-import { BoardAddressInput, BoardFormData, BoardData } from "@/commons/constants/enum";
+import { BoardAddressInput, BoardFormData } from "@/commons/constants/enum";
+import { CREATE_BOARD, CreateBoardInput } from "../graphql/mutations";
 
 // Zod 스키마 정의
 const boardFormSchema = z.object({
@@ -44,32 +46,17 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [initialData, setInitialData] = useState<BoardData | null>(null);
+  const [createdBoardId, setCreatedBoardId] = useState<string | null>(null);
 
-  // 로컬스토리지에서 게시물 데이터 가져오기 (수정 모드일 때)
-  useEffect(() => {
-    if (isEdit && boardId) {
-      const boards = getBoardsFromLocalStorage();
-      const board = boards.find(b => b.boardId === boardId);
-      if (board) {
-        setInitialData(board);
-      }
-    }
-  }, [isEdit, boardId]);
+  // Apollo Client useMutation
+  const [createBoard, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_BOARD);
 
   // React Hook Form 설정
   const form = useForm<BoardFormData>({
     resolver: zodResolver(boardFormSchema),
-    defaultValues: initialData ? {
-      writer: initialData.writer,
-      password: initialData.password,
-      title: initialData.title,
-      contents: initialData.contents,
-      youtubeUrl: initialData.youtubeUrl,
-      boardAddress: initialData.boardAddress,
-      images: initialData.images || []
-    } : {
+    defaultValues: {
       writer: '',
       password: '',
       title: '',
@@ -86,78 +73,51 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
     reValidateMode: 'onChange' // 실시간 재검증
   });
 
-  // 폼 값이 변경될 때 기본값 업데이트
-  useEffect(() => {
-    if (initialData) {
-      form.reset({
-        writer: initialData.writer,
-        password: initialData.password,
-        title: initialData.title,
-        contents: initialData.contents,
-        youtubeUrl: initialData.youtubeUrl,
-        boardAddress: initialData.boardAddress,
-        images: initialData.images || []
-      });
-    }
-  }, [initialData, form]);
-
   // 폼 제출 핸들러
   const onSubmit = async (data: BoardFormData) => {
     try {
       setIsSubmitting(true);
+      setShowFailureAlert(false);
 
-      if (isEdit && boardId && initialData) {
-        // 수정 모드: 기존 게시물 업데이트
-        const allBoards = getBoardsFromLocalStorage();
-        const updatedBoards = allBoards.map(board =>
-          board.boardId === boardId
-            ? {
-                ...board,
-                writer: data.writer,
-                password: data.password,
-                title: data.title,
-                contents: data.contents,
-                youtubeUrl: data.youtubeUrl || '',
-                boardAddress: data.boardAddress,
-                images: data.images || []
-              }
-            : board
-        );
-        saveBoardsToLocalStorage(updatedBoards);
+      // Apollo Client를 사용한 createBoard mutation 요청
+      const createBoardInput: CreateBoardInput = {
+        writer: data.writer,
+        password: data.password,
+        title: data.title,
+        contents: data.contents,
+        youtubeUrl: data.youtubeUrl,
+        boardAddress: data.boardAddress.zipcode || data.boardAddress.address || data.boardAddress.addressDetail
+          ? {
+              zipcode: data.boardAddress.zipcode,
+              address: data.boardAddress.address,
+              addressDetail: data.boardAddress.addressDetail
+            }
+          : undefined,
+        images: data.images && data.images.length > 0 ? data.images : undefined
+      };
+
+      const result = await createBoard({
+        variables: {
+          createBoardInput
+        }
+      });
+
+      // 성공 시 응답에서 _id 추출
+      const boardId = result.data?.createBoard?._id;
+
+      if (boardId) {
+        setCreatedBoardId(boardId);
+        // 성공 알림 표시
+        setShowSuccessAlert(true);
       } else {
-        // 신규 등록 모드: 새 게시물 생성
-        const existingBoards = getBoardsFromLocalStorage();
-        
-        // 새로운 게시물 ID 생성 (기존 데이터가 있으면 가장 큰 ID + 1, 없으면 1)
-        const newBoardId = existingBoards.length > 0 
-          ? String(Math.max(...existingBoards.map(board => parseInt(board.boardId))) + 1)
-          : '1';
-
-        // 새로운 게시물 데이터 생성
-        const newBoard: BoardData = {
-          boardId: newBoardId,
-          writer: data.writer,
-          password: data.password,
-          title: data.title,
-          contents: data.contents,
-          youtubeUrl: data.youtubeUrl || '',
-          boardAddress: data.boardAddress,
-          images: data.images || [],
-          createdAt: new Date().toISOString()
-        };
-
-        // 기존 데이터에 새 게시물 추가
-        const updatedBoards = [...existingBoards, newBoard];
-        
-        // 로컬스토리지에 저장
-        saveBoardsToLocalStorage(updatedBoards);
+        // _id가 없는 경우 실패로 처리
+        throw new Error('게시물 ID를 받지 못했습니다.');
       }
 
-      // 성공 알림 표시
-      setShowSuccessAlert(true);
-
     } catch (error) {
-      console.error('게시물 처리 중 오류가 발생했습니다:', error);
+      console.error('게시물 등록 중 오류가 발생했습니다:', error);
+      // 실패 알림 표시
+      setShowFailureAlert(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -166,48 +126,18 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
   // 성공 알림 확인 핸들러
   const handleSuccessAlertConfirm = () => {
     setShowSuccessAlert(false);
-    
-    if (isEdit && boardId) {
-      // 수정 완료 후 상세페이지로 이동
-      const detailPath = getPath('BOARD_DETAIL', { BoardId: boardId });
-      router.push(detailPath);
-    } else {
-      // 등록 완료 후 상세페이지로 이동
-      // 폼 데이터에서 boardId 가져오기 (방금 저장한 데이터)
-      const formData = form.getValues();
-      const existingBoards = getBoardsFromLocalStorage();
-      const newBoardId = existingBoards.length > 0 
-        ? String(Math.max(...existingBoards.map(board => parseInt(board.boardId))))
-        : '1';
 
-      // 게시판 상세페이지로 리다이렉트
-      const detailPath = getPath('BOARD_DETAIL', { BoardId: newBoardId });
+    // 응답받은 _id를 사용하여 게시판 상세페이지로 이동
+    if (createdBoardId) {
+      const detailPath = getPath('BOARD_DETAIL', { BoardId: createdBoardId });
       router.push(detailPath);
     }
   };
 
-  // 로컬스토리지에서 boards 데이터 가져오기
-  const getBoardsFromLocalStorage = (): BoardData[] => {
-    if (typeof window === 'undefined') return [];
-    
-    try {
-      const stored = localStorage.getItem('boards');
-      return stored ? JSON.parse(stored) : [];
-    } catch (error) {
-      console.error('로컬스토리지에서 boards 데이터를 가져오는 중 오류가 발생했습니다:', error);
-      return [];
-    }
-  };
-
-  // 로컬스토리지에 boards 데이터 저장하기
-  const saveBoardsToLocalStorage = (boards: BoardData[]) => {
-    if (typeof window === 'undefined') return;
-    
-    try {
-      localStorage.setItem('boards', JSON.stringify(boards));
-    } catch (error) {
-      console.error('로컬스토리지에 boards 데이터를 저장하는 중 오류가 발생했습니다:', error);
-    }
+  // 실패 알림 확인 핸들러
+  const handleFailureAlertConfirm = () => {
+    setShowFailureAlert(false);
+    // 페이지 이동 금지 (사용자가 데이터 수정 가능하도록)
   };
 
   // 폼 리셋
@@ -215,35 +145,35 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
     form.reset();
   };
 
-  // useController를 사용하여 title과 contents 필드 제어
+  // useController를 사용하여 필드 제어
   const titleController = useController({
     name: 'title',
     control: form.control,
-    defaultValue: initialData?.title || ''
+    defaultValue: ''
   });
-  
+
   const contentsController = useController({
     name: 'contents',
     control: form.control,
-    defaultValue: initialData?.contents || ''
+    defaultValue: ''
   });
-  
+
   const writerController = useController({
     name: 'writer',
     control: form.control,
-    defaultValue: initialData?.writer || ''
+    defaultValue: ''
   });
-  
+
   const passwordController = useController({
     name: 'password',
     control: form.control,
-    defaultValue: initialData?.password || ''
+    defaultValue: ''
   });
-  
+
   const youtubeUrlController = useController({
     name: 'youtubeUrl',
     control: form.control,
-    defaultValue: initialData?.youtubeUrl || ''
+    defaultValue: ''
   });
   
   // 폼 값 변경 감지 및 유효성 검사 (writer, password, title, contents 필수)
@@ -268,7 +198,9 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
     onSubmit: form.handleSubmit(onSubmit),
     isSubmitting,
     showSuccessAlert,
+    showFailureAlert,
     handleSuccessAlertConfirm,
+    handleFailureAlertConfirm,
     resetForm,
     isFormValid,
     errors: form.formState.errors,

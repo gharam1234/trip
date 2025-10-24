@@ -6,9 +6,12 @@ import styles from "./styles.module.css";
 import { Input } from "@/commons/components/input";
 import { Textarea } from "@/commons/components/textarea";
 import { Button } from "@/commons/components/button";
-import { Modal } from "@/commons/providers/modal/modal.provider";
+import { Modal } from "antd";
+import DaumPostcodeEmbed from "react-daum-postcode";
 import { useBoardForm } from "./hooks/index.form.hook";
 import { useBoardUpdateForm } from "./hooks/index.update.form.hook";
+import { useAddressSearch } from "./hooks/index.address.hook";
+import { useImageUpload } from "./hooks/index.image.hook";
 
 /**
  * 보드 작성 UI 컴포넌트
@@ -26,7 +29,9 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
     onSubmit,
     isSubmitting,
     showSuccessAlert,
+    showFailureAlert,
     handleSuccessAlertConfirm,
+    handleFailureAlertConfirm,
     isFormValid,
     errors,
     titleController,
@@ -35,6 +40,42 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
     passwordController,
     youtubeUrlController
   } = formHook;
+
+  // 주소 검색 훅 초기화 - 주소 선택 완료 시 폼 필드 업데이트
+  const addressHook = useAddressSearch((data) => {
+    // 우편번호 설정 - shouldValidate, shouldDirty, shouldTouch 옵션으로 UI 업데이트 강제
+    if (data.zipcode) {
+      form.setValue('boardAddress.zipcode', data.zipcode, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      });
+    }
+    // 주소 설정 - shouldValidate, shouldDirty, shouldTouch 옵션으로 UI 업데이트 강제
+    if (data.address) {
+      form.setValue('boardAddress.address', data.address, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      });
+    }
+  });
+
+  // 이미지 업로드 훅 초기화
+  const {
+    imageUrls,
+    fileRefs,
+    onChangeFile,
+    onClickDeleteFile,
+    onClickGrayBox,
+    getUploadedImageUrls,
+  } = useImageUpload();
+
+  // 이미지 URL이 변경될 때마다 폼 필드 업데이트
+  React.useEffect(() => {
+    const uploadedUrls = getUploadedImageUrls();
+    form.setValue('images', uploadedUrls);
+  }, [imageUrls, form, getUploadedImageUrls]);
 
   return (
     <section className={styles.writeContainer} data-testid="boards-write-page">
@@ -172,17 +213,26 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
             variant="primary"
             placeholder="01234"
             disabled
-            {...form.register('boardAddress.zipcode')}
+            value={form.watch('boardAddress.zipcode') || ''}
+            onChange={(e) => form.setValue('boardAddress.zipcode', e.target.value)}
             className={styles.zipInput}
           />
-          <Button variant="secondary" className={styles.zipButton}>우편번호 검색</Button>
+          <Button
+            variant="secondary"
+            className={styles.zipButton}
+            onClick={() => addressHook.handleToggleModal()}
+            type="button"
+          >
+            우편번호 검색
+          </Button>
         </div>
         <div className={styles.addressRow}>
           <Input
             variant="primary"
             placeholder="주소를 입력해 주세요,"
             readOnly
-            {...form.register('boardAddress.address')}
+            value={form.watch('boardAddress.address') || ''}
+            onChange={(e) => form.setValue('boardAddress.address', e.target.value)}
             className={styles.fullWidth}
           />
         </div>
@@ -190,7 +240,8 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
           <Input
             variant="primary"
             placeholder="상세주소"
-            {...form.register('boardAddress.addressDetail')}
+            value={form.watch('boardAddress.addressDetail') || ''}
+            onChange={(e) => form.setValue('boardAddress.addressDetail', e.target.value)}
             className={styles.fullWidth}
           />
         </div>
@@ -238,19 +289,56 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
         <h2 className={styles.sectionTitle}>
           사진 첨부
         </h2>
-        <div className={styles.imageGrid}>
-          <div className={styles.imageItem}>
-            <Image src="/images/add-image.png" alt="이미지 추가" width={160} height={160} />
-            
-          </div>
-          <div className={styles.imageItem}>
-            <Image src="/images/add-image.png" alt="이미지 추가" width={160} height={160} />
-            
-          </div>
-          <div className={styles.imageItem}>
-            <Image src="/images/add-image.png" alt="이미지 추가" width={160} height={160} />
-            
-          </div>
+        <div style={{ display: "flex" }}>
+          {imageUrls.map((url, index) => (
+            <div key={index} style={{ display: "flex", marginRight: "10px" }}>
+              <div
+                style={{
+                  width: "200px",
+                  height: "200px",
+                  backgroundColor: "gray",
+                  cursor: "pointer",
+                }}
+                onClick={(event) => onClickGrayBox(index, event)}
+              >
+                {url ? (
+                  <div className={styles.imageBox}>
+                    <img
+                      src={url}
+                      alt={`업로드된 이미지 ${index + 1}`}
+                      width={200}
+                      height={200}
+                      style={{ objectFit: "contain" }}
+                    />
+                    <button
+                      type="button"
+                      className={styles.deleteBtn}
+                      onClick={(event) => onClickDeleteFile(index, event)}
+                      data-testid={`delete-image-btn-${index}`}
+                    >
+                      X
+                    </button>
+                  </div>
+                ) : (
+                  <Image
+                    src={"/images/add-image.png"}
+                    alt="사진업로드"
+                    width={200}
+                    height={200}
+                  />
+                )}
+              </div>
+
+              <input
+                id={`fileInput_${index}`}
+                style={{ display: "none" }}
+                type="file"
+                ref={fileRefs[index]}
+                accept="image/jpeg, image/png"
+                onChange={(event) => onChangeFile(index, event)}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -279,24 +367,44 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
         </div>
       </footer>
 
-      {/* 성공 알림 모달 */}
+      {/* 주소 검색 모달 - antd Modal 사용 */}
       <Modal
-        id="success-alert"
-        isOpen={showSuccessAlert}
-        onClose={handleSuccessAlertConfirm}
-        data-testid="success-alert"
+        title="우편번호 & 주소찾기"
+        open={addressHook.isModalOpen}
+        onOk={addressHook.handleToggleModal}
+        onCancel={addressHook.handleToggleModal}
+        width={500}
+        data-testid="address-search-modal"
       >
-        <div className={styles.alertModal}>
-          <h3>{isEdit ? '수정 완료' : '등록 완료'}</h3>
-          <p>{isEdit ? '게시물이 성공적으로 수정되었습니다.' : '게시물이 성공적으로 등록되었습니다.'}</p>
-          <Button 
-            variant="primary" 
-            onClick={handleSuccessAlertConfirm}
-            data-testid="success-alert-confirm"
-          >
-            확인
-          </Button>
-        </div>
+        <DaumPostcodeEmbed onComplete={addressHook.handleAddressComplete} />
+      </Modal>
+
+      {/* 성공 알림 모달 - antd Modal 사용 */}
+      <Modal
+        title={isEdit ? '수정 완료' : '등록 완료'}
+        open={showSuccessAlert}
+        onOk={handleSuccessAlertConfirm}
+        onCancel={handleSuccessAlertConfirm}
+        cancelText={null}
+        okText="확인"
+        data-testid="success-alert"
+        centered
+      >
+        <p>{isEdit ? '게시물이 성공적으로 수정되었습니다.' : '게시물이 성공적으로 등록되었습니다.'}</p>
+      </Modal>
+
+      {/* 실패 알림 모달 - antd Modal 사용 */}
+      <Modal
+        title={isEdit ? '수정 실패' : '등록 실패'}
+        open={showFailureAlert}
+        onOk={handleFailureAlertConfirm}
+        onCancel={handleFailureAlertConfirm}
+        cancelText={null}
+        okText="확인"
+        data-testid="failure-alert"
+        centered
+      >
+        <p>{isEdit ? '게시물 수정에 실패했습니다.' : '게시물 등록에 실패했습니다.'}</p>
       </Modal>
     </section>
   );

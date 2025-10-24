@@ -4,72 +4,83 @@
 ==============================================
 
 조건-커서룰) 아래의 커서룰을 적용하여 작업하고, 이 작업이 끝나면 해당 rules 적용 결과를 체크리스트로 반환할 것.
-            - @01-common.mdc
-            - @04-func.mdc
+- @01-common.mdc
+- @04-func.mdc
 
 ==============================================
 
-조건-파일경로) 참고할 TSX  파일경로: src/components/boards-detail/index.tsx
-조건-파일경로) 참고할 CSS  파일경로: src/components/boards-detail/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-detail/hooks/index.binding.hook.ts
-조건-파일경로) 구현될 TEST 파일경로: src/components/boards-detail/tests/index.binding.hook.spec.ts
+조건-파일경로)
+- 참고할 TSX 파일경로: src/components/boards-detail/index.tsx
+- 참고할 CSS 파일경로: src/components/boards-detail/styles.module.css
+- 구현될 HOOK 파일경로: src/components/boards-detail/hooks/index.binding.hook.ts
+- 구현될 TEST 파일경로: src/components/boards-detail/tests/index.binding.hook.spec.ts
 
 ==============================================
 
-핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD기반으로 구현하고, 테스트에 통과할 때까지 반복할 것.
-            1) 테스트 제외 라이브러리
-                - jest
-                - @testing-library/react
+핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD 기반으로 구현하고, 테스트에 통과할 때까지 반복할 것.
 
-            2) 테스트 조건
-                - timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
-                - /boards/[BoardId] 페이지가 완전히 로드된 후 테스트할 것.
-                    - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
-                    - 페이지 로드 식별 금지사항: networkidle 대기 방법
+1) 테스트 제외 라이브러리
+- jest
+- @testing-library/react
 
-            3) 테스트 로컬스토리지 조건
-                3-1) 데이터
-                    - 실제데이터를 사용할 것.
-                    - Mock데이터 사용하지 말 것.
+2) 테스트 조건
+- timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
+- 페이지가 완전히 로드된 후 테스트할 것.
+  - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
+  - **중요금지사항** 페이지 로드 식별 금지사항: networkidle 대기 방법
 
-                3-2) 성공시나리오
-                    - 로컬스토리지 모킹하지 말 것.
+3) 테스트 API 조건
+3-1) 데이터
+- 실제 API 데이터를 사용할 것.
+- Mock 데이터를 사용하지 말 것.
 
-                3-3) 실패시나리오
-                    - 로컬스토리지 모킹하지 말 것.
+3-2) 성공 시나리오
+- API 응답 데이터를 기반으로 바인딩
 
-            4) 테스트 데이터타입
-                - 저장소: 로컬스토리지
-                - key: boards
-                - value: [{ 
-                    boardId: String,
-                    writer: String,
-                    password: String,
-                    title: String!,
-                    contents: String!,
-                    youtubeUrl: String,
-                    boardAddress: BoardAddressInput{
-                        zipcode: String
-                        address: String
-                        addressDetail: String
-                    }
-                    images: [String!]
-                    createdAt:String
+3-3) 실패 시나리오
+- API 호출 실패 또는 해당 boardId 게시글 없음 처리
 
-                }]
-            
+4) 데이터 조건
+    - 저장소: 백엔드 서버(GraphQL API)
+    - 요청방식: fetchBoards qurey
+    - 요청 파라미터 구조 :
 
-핵심요구사항) 다이나믹라우팅된 게시글 상세페이지의 [boardId]를 추출하여 Mock데이터를 제거하고, 실제 데이터를 바인딩할 것.
-            1) 바인딩할 데이터
-                - 로컬스토리지에 저장된 boards 배열 내부의 객체 boardId와 일치하는 게시글 상세객체
-            
-            2) 상세내용
-                - 제목: 게시글 상세객체의 title
-                - 작성자: 게시글 상세객체의 writer
-                - 작성일: 게시글 상세객체의 createdAt:String
-                - iconLink: 게시글 상세객체의 addressDetail
-                - 이미지: 게시글 상세객체의 images
-                - 내용: 게시글 상세객체의 contents
-                - 유튜브링크: 게시글 상세객체의 youtubeUrl
-                
-                
+        query fetchBoard($boardId:ID!) {
+          fetchBoard(boardID: $boardId) {
+            _id: ID!
+writer: String
+title: String!
+contents: String!
+youtubeUrl: String
+likeCount: Int!
+dislikeCount: Int!
+images: [String!]
+boardAddress: BoardAddress
+user: User
+createdAt: DateTime!
+updatedAt: DateTime!
+deletedAt: DateTime
+          }
+        }
+
+핵심요구사항) 다이나믹 라우팅된 게시글 상세페이지의 [boardId]를 추출하여 Mock 데이터를 제거하고, **Apollo Client를 통해 fetchBoard Query API 데이터**를 바인딩할 것.
+
+1) 바인딩할 데이터
+- Apollo Client useQuery(fetchBoard, { variables: { boardId } }) 결과
+- 반환된 fetchBoard 객체를 사용
+
+2) 상세내용
+- 제목: fetchBoard.title
+- 작성자: fetchBoard.writer
+- 작성일: fetchBoard.createdAt
+- 이미지: fetchBoard.images
+- 내용: fetchBoard.contents
+- 유튜브링크: fetchBoard.youtubeUrl
+
+3) CSS 처리
+- 제목, 내용, 이미지 등 화면에 맞게 overflow 처리 및 스타일 적용
+
+4) 테스트
+- 로컬스토리지 모킹 없이 실제 API 데이터를 테스트
+- Playwright 테스트에서 boardId 파라미터 기반 API 호출 후 렌더링된 데이터를 검증
+- data-testid를 활용하여 각 필드 검증

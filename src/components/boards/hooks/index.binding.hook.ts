@@ -1,96 +1,60 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-
-// 게시글 데이터 타입 정의
-export interface BoardAddressInput {
-  zipcode: string;
-  address: string;
-  addressDetail: string;
-}
-
-export interface BoardItem {
-  boardId: string;
-  writer: string;
-  password: string;
-  title: string;
-  contents: string;
-  youtubeUrl: string;
-  boardAddress: BoardAddressInput;
-  images: string[];
-  createdAt: string;
-}
+import React from 'react';
+import { useQuery } from '@apollo/client/react';
+import { FETCH_BOARDS, FetchBoardsResponse, BoardApiItem } from '../graphql/queries';
 
 // 리스트 표시용 데이터 타입
 export interface BoardListItem {
-  no: string; // boardId를 문자열로 변환
+  no: string; // _id를 문자열로 변환
   title: string;
   author: string; // writer를 author로 매핑
   date: string; // createdAt을 포맷팅된 날짜로 변환
 }
 
 /**
- * 로컬스토리지에서 boards 데이터를 가져와서 리스트 표시용으로 변환하는 Hook
- * - 실제 로컬스토리지 데이터를 사용 (Mock 데이터 사용하지 않음)
+ * Apollo Client useQuery를 사용하여 fetchBoards API 데이터를 가져와서 리스트 표시용으로 변환하는 Hook
+ * - 실제 API 데이터를 사용 (Mock 데이터 사용하지 않음)
  * - 데이터가 없을 경우 빈 배열 반환
  * - 제목이 길 경우 "..."으로 표시하여 칸 사이즈 유지
  */
 export function useBoardsBinding() {
-  const [boards, setBoards] = useState<BoardListItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, loading, error } = useQuery<FetchBoardsResponse>(FETCH_BOARDS, {
+    variables: {
+      page: 1
+    }
+  });
 
-  useEffect(() => {
-    // 클라이언트 사이드에서만 실행되도록 확인
-    if (typeof window === 'undefined') {
-      setLoading(false);
-      return;
+  // API 데이터를 리스트 표시용으로 변환
+  const boards: BoardListItem[] = React.useMemo(() => {
+    if (!data?.fetchBoards) {
+      return [];
     }
 
-    const loadBoards = () => {
-      try {
-        // 로컬스토리지에서 boards 데이터 가져오기
-        const boardsData = localStorage.getItem('boards');
-        
-        if (!boardsData) {
-          setBoards([]);
-          setLoading(false);
-          return;
-        }
-
-        // JSON 파싱
-        const parsedBoards: BoardItem[] = JSON.parse(boardsData);
-        
-        // 리스트 표시용 데이터로 변환 (최신 순으로 정렬)
-        const transformedBoards: BoardListItem[] = parsedBoards
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // 최신 순 정렬
-          .map((board, index) => ({
-            no: board.boardId,
-            title: board.title.length > 50 ? `${board.title.substring(0, 50)}...` : board.title,
-            author: board.writer,
-            date: formatDate(board.createdAt)
-          }));
-
-        setBoards(transformedBoards);
-        setError(null);
-      } catch (err) {
-        console.error('로컬스토리지 boards 데이터 파싱 오류:', err);
-        setError('데이터를 불러오는 중 오류가 발생했습니다.');
-        setBoards([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // 즉시 실행
-    loadBoards();
-  }, []);
+    return data.fetchBoards.map((board: BoardApiItem) => ({
+      no: board._id,
+      title: truncateText(board.title, 50),
+      author: board.writer,
+      date: formatDate(board.createdAt)
+    }));
+  }, [data]);
 
   return {
     boards,
     loading,
-    error
+    error: error?.message || null
   };
+}
+
+/**
+ * 텍스트를 최대 길이로 자르고 "..."으로 표시
+ * @param text - 자를 텍스트
+ * @param maxLength - 최대 길이
+ * @returns 자르거나 원본 텍스트
+ */
+function truncateText(text: string, maxLength: number): string {
+  if (!text) return '';
+  return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 }
 
 /**
@@ -104,11 +68,11 @@ function formatDate(dateString: string): string {
     if (isNaN(date.getTime())) {
       return dateString; // 파싱 실패 시 원본 반환
     }
-    
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    
+
     return `${year}.${month}.${day}`;
   } catch {
     return dateString; // 오류 시 원본 반환

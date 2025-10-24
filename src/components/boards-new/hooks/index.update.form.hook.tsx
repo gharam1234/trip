@@ -44,6 +44,7 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [initialData, setInitialData] = useState<BoardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -142,6 +143,12 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
     router.push(detailPath);
   };
 
+  // 실패 알림 확인 핸들러
+  const handleFailureAlertConfirm = () => {
+    setShowFailureAlert(false);
+    // 페이지 이동 금지 (사용자가 데이터 수정 가능하도록)
+  };
+
   // 로컬스토리지에서 boards 데이터 가져오기
   const getBoardsFromLocalStorage = (): BoardData[] => {
     if (typeof window === 'undefined') return [];
@@ -234,7 +241,9 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
     onSubmit: form.handleSubmit(onSubmit),
     isSubmitting,
     showSuccessAlert,
+    showFailureAlert,
     handleSuccessAlertConfirm,
+    handleFailureAlertConfirm,
     resetForm,
     isFormValid,
     isLoading,

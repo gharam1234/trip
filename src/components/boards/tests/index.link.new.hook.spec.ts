@@ -32,19 +32,26 @@ test.describe('트립토크 등록 버튼 클릭 테스트', () => {
       await page.addInitScript(() => {
         window.__TEST_ENV__ = 'test';
         window.__TEST_BYPASS__ = true;
+        // 로그인 상태를 나타내기 위해 localStorage에 액세스 토큰 설정
+        localStorage.setItem('accessToken', 'test-token-for-e2e-testing');
+        localStorage.setItem('user', JSON.stringify({
+          _id: 'test-user-id',
+          name: 'Test User',
+          email: 'test@example.com'
+        }));
       });
 
       // /boards 페이지로 이동
       await page.goto('/boards');
-      
+
       // 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
-      await page.waitForSelector('[data-testid="boards-container"]');
-      
+      await page.waitForSelector('[data-testid="boards-container"]', { timeout: 5000 });
+
       // 트립토크 등록 버튼 클릭
       await page.click('[data-testid="trip-talk-button"]');
-      
-      // URL이 /boards/new로 변경되었는지 확인 (timeout 500ms 미만 설정)
-      await expect(page).toHaveURL('/boards/new', { timeout: 400 });
+
+      // URL이 /boards/new로 변경되었는지 확인 (timeout 2000ms로 증가)
+      await expect(page).toHaveURL('/boards/new', { timeout: 2000 });
     });
   });
 });

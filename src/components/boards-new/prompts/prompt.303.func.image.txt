@@ -1,0 +1,102 @@
+아래의 조건을 모두 적용하여, 아래의 요구사항을 모두 구현할 것.
+구현 결과를 체크리스트로 반환할 것.
+
+==============================================
+
+조건-커서룰) 아래의 커서룰을 적용하여 작업하고, 이 작업이 끝나면 해당 rules 적용 결과를 체크리스트로 반환할 것.
+            - @01-common.mdc
+            - @04-func.mdc
+            
+==============================================
+
+조건-파일경로) 참고할 TSX 파일경로: src/components/boards-new/index.tsx
+조건-파일경로) 참고할 CSS 파일경로: src/components/boards-new/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-new/hooks/index.image.hook.tsx
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards-new/tests/index.image.hook.spec.ts
+
+==============================================
+핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD기반으로 구현할 것.
+            1) **중요금지사항** 테스트 제외 라이브러리
+                - jest
+                - @testing-library/react
+
+            2) 테스트 조건
+                - timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
+                - 페이지가 완전히 로드된 후 테스트할 것.
+                    - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
+                    - **중요금지사항** 페이지 로드 식별 금지사항: networkidle 대기 방법
+
+
+
+            3) 테스트 항목:
+                     - 파일 선택 시 imageUrls 상태가 업데이트되는지 확인
+                     - 삭제 버튼 클릭 시 해당 이미지가 제거되는지 확인
+                     - 클릭 시 input 트리거가 정상적으로 호출되는지 확인
+
+==============================================
+
+핵심요구사항) 다음의 조건에 맞게 이미지 업로드 기능을 step-by-step 으로 구현하고, 적용 결과를 체크리스트로 반환할 것.
+
+            조건 1) 총 3개의 이미지를 업로드할 수 있으며, 각 이미지마다 gray box 형태의 업로드 영역이 표시될 것.
+            조건 2) 업로드된 이미지는 미리보기(썸네일)로 표시되며, 각 이미지 위에는 삭제 버튼(X)이 나타날 것.
+            조건 3) 아직 업로드되지 않은 영역에는 /images/사진업로드.png 이미지가 표시될 것.
+            조건 4) <input type="file" />은 display: none 상태로 숨기고, gray box를 클릭하면 해당 input이 트리거되도록 할 것.
+            조건 5) JPEG, PNG 확장자만 허용할 것.
+            조건 6) 파일 변경 시 onChangeFile(index, event) 함수가 실행되어 state에 이미지 URL이 저장될 것.
+            조건 7) 삭제 버튼 클릭 시 onClickDeleteFile(index, event) 함수로 해당 이미지를 삭제할 것.
+            조건 8) 모든 파일 업로드/삭제/상태 관리를 custom hook으로 분리하여 useImageUpload() 훅으로 구현할 것.
+            조건 9) 훅 내부에서 imageUrls, fileRefs, onChangeFile, onClickDeleteFile, onClickGrayBox를 관리할 것.
+            조건 10) newImageUrls[index] = `https://storage.googleapis.com/${fileUrl}`을 사용할 것
+            조건 11) 아래 JSX 구조로 UI를 구현할 것.
+
+            {imageUrls.map((url, index) => (
+              <div key={index} style={{ display: "flex", marginRight: "10px" }}>
+                <div
+                  style={{
+                    width: "200px",
+                    height: "200px",
+                    backgroundColor: "gray",
+                    cursor: "pointer",
+                  }}
+                  onClick={(event) => onClickGrayBox(index, event)}
+                >
+                  {url ? (
+                    <div className={styles.imageBox}>
+                      <img
+                        src={url}
+                        alt={`업로드된 이미지 ${index + 1}`}
+                        width={200}
+                        height={200}
+                        style={{ objectFit: "contain" }}
+                      />
+                      <button
+                        type="button"
+                        className={styles.deleteBtn}
+                        onClick={(event) => onClickDeleteFile(index, event)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ) : (
+                    <Image
+                      src={"/images/사진업로드.png"}
+                      alt="사진업로드"
+                      width={200}
+                      height={200}
+                    />
+                  )}
+                </div>
+
+                <input
+                  id={`fileInput_${index}`}
+                  style={{ display: "none" }}
+                  type="file"
+                  ref={fileRefs[index]}
+                  accept="image/jpeg, image/png"
+                  onChange={(event) => onChangeFile(index, event)}
+                />
+              </div>
+            ))}
+
+==============================================
+현재상황 : api요청 했을때 data 객체에 image : [] 빈 배열임

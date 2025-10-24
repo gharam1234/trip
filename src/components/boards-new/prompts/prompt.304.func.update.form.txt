@@ -4,75 +4,101 @@
 ==============================================
 
 조건-커서룰) 아래의 커서룰을 적용하여 작업하고, 이 작업이 끝나면 해당 rules 적용 결과를 체크리스트로 반환할 것.
-            - @01-common.mdc
-            - @04-func.mdc
+- @01-common.mdc
+- @04-func.mdc
 
 ==============================================
 
-조건-파일경로) 참고할 TSX  파일경로: src/components/boards-new/index.tsx
-조건-파일경로) 참고할 CSS  파일경로: src/components/boards-new/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/boards-new/hooks/index.update.form.hook.tsx
-조건-파일경로) 구현될 TEST 파일경로: src/components/boards-new/tests/index.update.form.hook.spec.ts
+조건-파일경로)
+- 참고할 TSX 파일경로: src/components/boards-new/index.tsx
+- 참고할 CSS 파일경로: src/components/boards-new/styles.module.css
+- 구현될 HOOK 파일경로: src/components/boards-new/hooks/index.update.form.hook.tsx
+- 구현될 TEST 파일경로: src/components/boards-new/tests/index.update.form.hook.spec.ts
 
 ==============================================
 
-핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD기반으로 구현할 것.
-            1) 테스트 제외 라이브러리
-                - jest
-                - @testing-library/react
+핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD 기반으로 구현할 것.
 
-            2) 테스트 조건
-                - timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
-                - /boards 페이지가 완전히 로드된 후 트립토크 버튼 클릭한 이후 테스트할 것.
-                    - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
-                    - 페이지 로드 식별 금지사항: networkidle 대기 방법
+1) 테스트 제외 라이브러리
+- jest
+- @testing-library/react
 
-            3) 테스트 로컬스토리지 조건
-                3-1) 데이터
-                    - 실제데이터를 사용할 것.
-                    - Mock데이터 사용하지 말 것.
+2) 테스트 조건
+- timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
+- /boards 페이지가 완전히 로드된 후 트립토크 버튼 클릭 이후 테스트할 것.
+  - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
+  - **중요금지사항** 페이지 로드 식별 금지사항: networkidle 대기 방법
 
-                3-2) 성공시나리오
-                    - 로컬스토리지 모킹하지 말 것.
+3) 테스트 API 조건
+3-1) 데이터
+- 실제 API 데이터를 사용할 것.
+- Mock 데이터를 사용하지 말 것.
 
-                3-3) 실패시나리오
-                    - 로컬스토리지 모킹하지 말 것.
+3-2) 성공 시나리오
+- 로컬스토리지 모킹하지 말 것.
+- Apollo Client updateBoard Mutation 호출 성공 후 데이터 바인딩
 
-            4) 테스트 데이터타입
-               - 저장소: 로컬스토리지
-                - key: boards
-                - value: [{ 
-                    boardId: String,
-                    writer: String,
-                    password: String,
-                    title: String!,
-                    contents: String!,
-                    youtubeUrl: String,
-                    boardAddress: BoardAddressInput{
-                        zipcode: String
-                        address: String
-                        addressDetail: String
-                    }
-                    images: [String!]
-                    createdAt:String
+3-3) 실패 시나리오
+- 로컬스토리지 모킹하지 말 것.
+- Mutation 호출 실패 처리
 
-                }]
-             5) 테스트시나리오(로그인유저)
-                1. /boards/[BaordId]에 접속하여 페이지 로드 확인
-                2. 하단 유저시나리오에 적절한 테스트시나리오를 생성하여 진행
+4) 데이터 조건
+- 저장소: 백엔드 서버(GraphQL API)
+- Mutation 방식: updateBoard
+- Mutation 파라미터: updateBoardInput: UpdateBoardInput!
+password: String
+boardId: ID!
 
-핵심요구사항) 다음의 조건에 맞게 게시판 폼 등록 기능을 step-by-step 으로 구현하고, 적용 결과를 체크리스트로 반환할 것.
-          
-            1) 라이브러리조건
-                - 폼: 이미 설치되어있는 react-hook-form, @hookform/resolvers를 사용할 것.
-                - 검증: 이미 설치되어있는 zod를 사용할 것.
-            
-            2) 유저시나리오(수정하기)
-                1. writer,password,title,contents 인풋이 입력되면 수정하기버튼을 활성화 할 것.
-                2. (수정중) 상황에서 수정화면의 writer,password,title,contents등을 변경 후, 수정하기 버튼을 클릭
-                3. 수정이 완료되면, 수정완료모달을 노출할 것 (modal 컴포넌트와 modal provider를 이용할것)
-                4. 수정완료모달을 확인하면 상세페이지로 라우팅 할 것               
-                    4-1) 페이지이동조건
-                        - commons/constants/url.ts의 페이지URL에 정의된 경로로 이동할 것.
-                        - 등록된 id를 사용하여 게시판 상세페이지로 다이나믹라우팅 할 것.
-                        - 게시판 상세페이지: url.ts에 정의된 게시판 상세페이지 => /boards/[BoardsId]
+ -수정할 게시글 데이터:
+ _id: ID!
+writer: String
+title: String!
+contents: String!
+youtubeUrl: String
+likeCount: Int!
+dislikeCount: Int!
+images: [String!]
+boardAddress: BoardAddress
+user: User
+createdAt: DateTime!
+updatedAt: DateTime!
+deletedAt: DateTime
+- 반환값: 수정된 게시글 객체
+
+5) 테스트 시나리오(로그인 유저)
+1. /boards/[BoardId] 접속 후 페이지 로드 확인
+2. writer, password, title, contents 인풋 입력 시 수정하기 버튼 활성화
+3. 수정 중 입력값 변경 후 수정하기 버튼 클릭
+4. 수정 완료 시 Modal 컴포넌트와 Modal Provider를 이용해 수정완료 모달 노출
+5. 모달 확인 시 상세페이지로 라우팅
+  - 라우팅 경로: commons/constants/url.ts에서 정의된 게시판 상세페이지
+  - 다이나믹 라우팅: 게시판 ID를 사용하여 /boards/[BoardId]로 이동
+
+==============================================
+
+핵심요구사항) 폼 라이브러리와 검증 조건
+
+1) 폼 라이브러리
+- react-hook-form, @hookform/resolvers 사용
+
+2) 검증 라이브러리
+- zod 사용
+
+==============================================
+
+핵심요구사항) UI/행동 조건
+
+1) 수정하기 버튼
+- writer, password, title, contents 인풋 값 입력 시 활성화
+- 수정하기 버튼 클릭 시 updateBoard Mutation 실행
+- Mutation 성공 시 수정완료 모달 노출
+- 모달 확인 후 게시판 상세페이지로 이동
+
+2) CSS
+- cursor: pointer 적용
+- 경로 하드코딩 금지, url.ts import 후 적용
+
+3) 테스트
+- Playwright 테스트에서 Mutation 호출과 버튼 클릭 후 Modal/페이지 이동 검증
+- data-testid 활용
+- 로컬스토리지 모킹 없이 실제 API 호출 기반으로 테스트

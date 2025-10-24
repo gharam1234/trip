@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('게시판 폼 등록 기능', () => {
+test.describe('게시판 폼 등록 기능 (Apollo 기반)', () => {
   test.beforeEach(async ({ page }) => {
     // 테스트 환경 설정 - 로그인 검사 우회
     await page.addInitScript(() => {
@@ -10,14 +10,14 @@ test.describe('게시판 폼 등록 기능', () => {
 
     // /boards 페이지로 이동
     await page.goto('/boards');
-    
-    // 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
+
+    // 페이지가 완전히 로드될 때까지 대기 (data-testid 사용, timeout 미설정)
     await page.waitForSelector('[data-testid="boards-container"]');
-    
+
     // 트립토크 버튼 클릭 (게시물 작성 페이지로 이동)
     await page.click('[data-testid="trip-talk-button"]');
-    
-    // 게시물 작성 페이지 로드 대기
+
+    // 게시물 작성 페이지 로드 대기 (data-testid 사용, timeout 미설정)
     await page.waitForSelector('[data-testid="boards-write-page"]');
   });
 
@@ -39,78 +39,81 @@ test.describe('게시판 폼 등록 기능', () => {
     await expect(submitButton).toBeDisabled();
   });
 
-  test('게시물 등록 성공 시나리오', async ({ page }) => {
+  test('게시물 등록 성공 시나리오 (실제 API 요청)', async ({ page }) => {
+    // GraphQL 응답 모니터링
+    const responsePromise = page.waitForResponse(
+      response => response.url().includes('/graphql') && response.request().method() === 'POST'
+    );
+
     // 필수 필드 입력
     await page.fill('[data-testid="board-writer-input"]', '테스트작성자');
     await page.fill('[data-testid="board-password-input"]', '1234');
     await page.fill('[data-testid="board-title-input"]', '테스트 제목');
     await page.fill('[data-testid="board-content-input"]', '테스트 내용입니다.');
-    
+
     // 유튜브 URL 입력 (선택사항)
     await page.fill('[data-testid="board-youtube-input"]', 'https://www.youtube.com/watch?v=test');
-    
+
     // 등록하기 버튼 클릭
     await page.click('[data-testid="board-submit-button"]');
-    
-    // 등록 완료 알림이 표시되는지 확인
-    await expect(page.locator('[data-testid="success-alert"]')).toBeVisible();
-    
-    // 로컬스토리지에 데이터가 저장되었는지 확인
-    const boardsData = await page.evaluate(() => {
-      return JSON.parse(localStorage.getItem('boards') || '[]');
-    });
-    
-    expect(boardsData).toHaveLength(1);
-    expect(boardsData[0]).toMatchObject({
-      writer: '테스트작성자',
-      password: '1234',
-      title: '테스트 제목',
-      contents: '테스트 내용입니다.',
-      youtubeUrl: 'https://www.youtube.com/watch?v=test',
-      boardId: '1',
-      createdAt: expect.any(String)
-    });
-    
+
+    // GraphQL 응답 대기
+    const response = await responsePromise;
+    expect(response.ok()).toBeTruthy();
+
+    // 등록 완료 알림이 표시되는지 확인 (timeout 500ms 미만)
+    await expect(page.locator('[data-testid="success-alert"]')).toBeVisible({ timeout: 500 });
+
     // 등록 완료 알림 확인 버튼 클릭
     await page.click('[data-testid="success-alert-confirm"]');
-    
+
     // 게시판 상세페이지로 리다이렉트되었는지 확인
-    await expect(page).toHaveURL(/\/boards\/1$/);
+    // 응답에서 받은 _id로 리다이렉트되어야 함
+    await expect(page).toHaveURL(/\/boards\/[a-zA-Z0-9]+$/);
   });
 
-  test('기존 게시물이 있을 때 새 게시물 등록 시 ID가 증가해야 함', async ({ page }) => {
-    // 기존 게시물 데이터를 로컬스토리지에 설정
-    await page.evaluate(() => {
-      localStorage.setItem('boards', JSON.stringify([
-        {
-          boardId: '1',
-          writer: '기존작성자',
-          password: '1234',
-          title: '기존 제목',
-          contents: '기존 내용',
-          youtubeUrl: '',
-          boardAddress: { zipcode: '', address: '', addressDetail: '' },
-          images: [],
-          createdAt: '2024-01-01T00:00:00.000Z'
-        }
-      ]));
+  test('게시물 등록 실패 시나리오 (잘못된 데이터)', async ({ page }) => {
+    // 네트워크 오류 시뮬레이션을 위해 잘못된 데이터 입력
+    // (서버가 거부할 수 있는 빈 writer나 짧은 password)
+    await page.fill('[data-testid="board-writer-input"]', '');
+    await page.fill('[data-testid="board-password-input"]', '');
+    await page.fill('[data-testid="board-title-input"]', '테스트 제목');
+    await page.fill('[data-testid="board-content-input"]', '테스트 내용입니다.');
+
+    // 등록하기 버튼이 비활성화되어 있는지 확인
+    const submitButton = page.locator('[data-testid="board-submit-button"]');
+    await expect(submitButton).toBeDisabled();
+  });
+
+  test('게시물 등록 실패 시나리오 (서버 에러)', async ({ page }) => {
+    // GraphQL 요청을 가로채서 에러 응답 반환
+    await page.route('**/graphql', route => {
+      route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          errors: [{ message: 'Internal Server Error' }]
+        })
+      });
     });
-    
-    // 새 게시물 작성
-    await page.fill('[data-testid="board-writer-input"]', '새작성자');
-    await page.fill('[data-testid="board-password-input"]', '5678');
-    await page.fill('[data-testid="board-title-input"]', '새 제목');
-    await page.fill('[data-testid="board-content-input"]', '새 내용입니다.');
-    
+
+    // 필수 필드 입력
+    await page.fill('[data-testid="board-writer-input"]', '테스트작성자');
+    await page.fill('[data-testid="board-password-input"]', '1234');
+    await page.fill('[data-testid="board-title-input"]', '테스트 제목');
+    await page.fill('[data-testid="board-content-input"]', '테스트 내용입니다.');
+
+    // 등록하기 버튼 클릭
     await page.click('[data-testid="board-submit-button"]');
-    
-    // 로컬스토리지에 두 개의 게시물이 있는지 확인
-    const boardsData = await page.evaluate(() => {
-      return JSON.parse(localStorage.getItem('boards') || '[]');
-    });
-    
-    expect(boardsData).toHaveLength(2);
-    expect(boardsData[1].boardId).toBe('2'); // ID가 2로 증가했는지 확인
+
+    // 등록 실패 알림이 표시되는지 확인 (timeout 500ms 미만)
+    await expect(page.locator('[data-testid="failure-alert"]')).toBeVisible({ timeout: 500 });
+
+    // 실패 알림 확인 버튼 클릭
+    await page.click('[data-testid="failure-alert-confirm"]');
+
+    // 페이지 이동이 없는지 확인 (여전히 게시물 작성 페이지에 있어야 함)
+    await expect(page.locator('[data-testid="boards-write-page"]')).toBeVisible();
   });
 
   test('폼 유효성 검사 - 작성자 필드', async ({ page }) => {
