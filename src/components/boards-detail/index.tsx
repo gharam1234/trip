@@ -8,6 +8,7 @@ import Textarea from "@/commons/components/textarea";
 import { useBoardDetailBinding } from "./hooks/index.binding.hook";
 import { useBoardEditLink } from "./hooks/index.link.update.hook";
 import { useBoardListLink } from "./hooks/index.link.boards.hook";
+import { useTooltip } from "./hooks/index.tooltip.hook";
 
 /**
  * 보드 상세 와이어프레임 컴포넌트
@@ -29,6 +30,9 @@ export default function BoardsDetailWireframe(): JSX.Element {
   // 별점/댓글 입력 상태 관리 (주석은 항상 한국어)
   const [rating, setRating] = React.useState<number>(0);
   const [comment, setComment] = React.useState<string>("");
+  
+  // 툴팁 기능 훅 사용
+  const { tooltipState, handleMouseEnter, handleMouseLeave, getTooltipMessage } = useTooltip();
 
   // 등록 버튼 클릭 처리: 현재는 콘솔 출력만 수행
   const handleSubmit = React.useCallback(() => {
@@ -99,7 +103,26 @@ export default function BoardsDetailWireframe(): JSX.Element {
         <div className={styles.writerDivider} />
         <div className={styles.writerRowBottom}>
           <div className={styles.iconLink} aria-label="링크 아이콘" />
-          <div className={styles.iconLocation} aria-label={`위치: ${(boardData as any).addressDetail || '위치 정보 없음'}`} />
+          <div
+            className={styles.iconLocation}
+            data-testid="icon-location"
+            aria-label={`위치: ${boardData.boardAddress?.address || '위치 정보 없음'}`}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          />
+          {/* 툴팁 표시 */}
+          {tooltipState.isVisible && (
+            <div
+              className={`${styles.tooltip} ${styles.tooltipVisible}`}
+              data-testid="tooltip"
+              style={{
+                left: `${tooltipState.position.x}px`,
+                top: `${tooltipState.position.y}px`,
+              }}
+            >
+              {getTooltipMessage(boardData.boardAddress?.address)}
+            </div>
+          )}
         </div>
       </section>
 

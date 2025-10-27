@@ -1,0 +1,400 @@
+/* 댓글 컴포넌트 스타일 */
+.commentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    position: relative;
+    width: 1280px;
+    padding: 16px;
+    border: 1px solid var(--color-outline);
+    border-radius: 8px;
+    background-color: var(--color-surface-default);
+    margin: 0 auto;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+  }
+  
+  .profileSection {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .profile {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .profileImg {
+    position: relative;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-surface-muted);
+  }
+  
+  .profileIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--color-text-tertiary);
+  }
+  
+  .authorName {
+    font-size: var(--typo-desktop-light02-fontSize);
+    line-height: var(--typo-desktop-light02-lineHeight);
+    font-weight: var(--typo-desktop-light02-fontWeight);
+    position: relative;
+    flex-shrink: 0;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+  }
+  
+  .starContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .star {
+    position: relative;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .starSvg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .starButton {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  
+  .actionButtons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .iconButton {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  
+  .icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .iconSvg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .textButton {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: var(--typo-desktop-body02_s-fontSize);
+    line-height: var(--typo-desktop-body02_s-lineHeight);
+    font-weight: var(--typo-desktop-body02_s-fontWeight);
+    color: var(--color-text-secondary);
+  }
+  
+  .content {
+    font-size: var(--typo-desktop-title02-fontSize);
+    line-height: var(--typo-desktop-title02-lineHeight);
+    font-weight: var(--typo-desktop-title02-fontWeight);
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+    color: var(--color-text-secondary);
+    white-space: pre-wrap;
+  }
+  
+  .textarea {
+    font-size: var(--typo-desktop-title02-fontSize);
+    line-height: var(--typo-desktop-title02-lineHeight);
+    font-weight: var(--typo-desktop-title02-fontWeight);
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+    border-radius: 4px;
+    padding: 8px;
+    min-height: 100px;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-outline);
+    background-color: var(--color-surface-default);
+    font-family: var(--font-family-ko);
+  }
+  
+  .dateContainer {
+    display: flex;
+    gap: 8px;
+    height: 24px;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+  }
+  
+  .date {
+    font-size: var(--typo-desktop-body02_s-fontSize);
+    line-height: var(--typo-desktop-body02_s-lineHeight);
+    font-weight: var(--typo-desktop-body02_s-fontWeight);
+    position: relative;
+    flex-shrink: 0;
+    color: var(--color-text-quaternary);
+    white-space: nowrap;
+  }
+  
+  @media (max-width: 767px) {
+    .commentContainer {
+      padding: 12px;
+    }
+  }
+
+/* CommentEditForm 스타일 */
+.editFormContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.starSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.starContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.starButton {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.inputRow {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  max-width: 312px;
+  position: relative;
+  flex-shrink: 0;
+  width: 312px;
+}
+
+.label {
+  display: flex;
+  font-size: var(--typo-desktop-title02-fontSize);
+  line-height: var(--typo-desktop-title02-lineHeight);
+  font-weight: var(--typo-desktop-button_medium-fontWeight);
+  gap: 4px;
+  align-items: flex-start;
+  position: relative;
+  flex-shrink: 0;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.labelText {
+  position: relative;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.required {
+  position: relative;
+  flex-shrink: 0;
+  color: var(--color-danger);
+}
+
+.inputWrapper {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.input {
+  flex-basis: 0;
+  flex-grow: 1;
+  min-height: 1px;
+  min-width: 1px;
+  background-color: var(--color-surface-muted);
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: none;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  font-size: var(--typo-desktop-title02-fontSize);
+  line-height: var(--typo-desktop-title02-lineHeight);
+  font-weight: var(--typo-desktop-title02-fontWeight);
+  color: var(--color-text-primary);
+  width: 100%;
+  font-family: var(--font-family-ko);
+}
+
+.input::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.inputBordered {
+  background-color: var(--color-surface-default);
+  border: 1px solid #d4d3d3;
+}
+
+.textareaContainer {
+  background-color: var(--color-surface-default);
+  height: 144px;
+  position: relative;
+  border-radius: 8px;
+  flex-shrink: 0;
+  width: 100%;
+  border: 1px solid #d4d3d3;
+}
+
+.textareaWrapper {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  font-size: var(--typo-desktop-title02-fontSize);
+  line-height: var(--typo-desktop-title02-lineHeight);
+  font-weight: var(--typo-desktop-button_medium-fontWeight);
+}
+
+.charCount {
+  position: relative;
+  flex-shrink: 0;
+  text-align: right;
+  width: 100%;
+  color: var(--color-text-placeholder);
+  font-size: var(--typo-desktop-title02-fontSize);
+  line-height: var(--typo-desktop-title02-lineHeight);
+  font-weight: var(--typo-desktop-button_medium-fontWeight);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.cancelButton {
+  background-color: var(--color-surface-default);
+  box-sizing: border-box;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 16px;
+  position: relative;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-text-primary);
+  cursor: pointer;
+  font-size: var(--typo-desktop-button_large-fontSize);
+  line-height: var(--typo-desktop-button_large-lineHeight);
+  font-weight: var(--typo-desktop-title02-fontWeight);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.submitButton {
+  background-color: var(--color-text-primary);
+  box-sizing: border-box;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 16px;
+  position: relative;
+  border-radius: 8px;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  font-size: var(--typo-desktop-button_large-fontSize);
+  line-height: var(--typo-desktop-button_large-lineHeight);
+  font-weight: var(--typo-desktop-title02-fontWeight);
+  color: var(--color-text-inverse);
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .inputRow {
+    flex-direction: column;
+  }
+
+  .inputGroup {
+    max-width: 100%;
+    width: 100%;
+  }
+}
