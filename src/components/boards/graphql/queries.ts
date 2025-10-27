@@ -2,10 +2,24 @@ import { gql } from "@apollo/client";
 
 /**
  * 게시판 목록 조회 Query
+ * - search: 제목 검색어
+ * - startDate: 시작 날짜 (DateTime)
+ * - endDate: 종료 날짜 (DateTime)
+ * - page: 페이지 번호
  */
 export const FETCH_BOARDS = gql`
-  query FetchBoards($page: Int) {
-    fetchBoards(page: $page) {
+  query FetchBoards(
+    $search: String
+    $startDate: DateTime
+    $endDate: DateTime
+    $page: Int
+  ) {
+    fetchBoards(
+      search: $search
+      startDate: $startDate
+      endDate: $endDate
+      page: $page
+    ) {
       _id
       writer
       title

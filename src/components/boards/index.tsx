@@ -25,21 +25,30 @@ export default function Boards(): JSX.Element {
   // 영역 순서 가이드
   // {gap40} -> title36 -> {gap24} -> search48 -> {gap24} -> main696 -> {gap8} -> pagination56 -> {gap56}
 
-  // 상태: 검색어, 페이지 (필터 미사용)
+  // 상태: 검색어, 페이지
   const [keyword, setKeyword] = React.useState<string>("");
   const [page, setPage] = React.useState<number>(1);
   const totalPages = 10; // 데모용, 실제 연동 시 데이터 기반으로 설정
 
-  // 상태: 날짜 범위 (데모용)
+  // 상태: 날짜 범위
   const [dateRange, setDateRange] = React.useState<[Dayjs | null, Dayjs | null] | null>(null);
-  // 상태: 포맷된 날짜 문자열 (API 파라미터 연동 대비)
+  // 상태: 포맷된 날짜 문자열 (API 파라미터 연동)
   const [dateRangeText, setDateRangeText] = React.useState<{ start: string | null; end: string | null }>({ start: null, end: null });
+
+  // 상태: 검색 실행 여부 (검색 버튼 클릭 시 true)
+  const [isSearching, setIsSearching] = React.useState<boolean>(false);
 
   // Hook: 트립토크 등록 페이지로 이동
   const { navigateToNewBoard } = useLinkToNewBoard();
 
-  // Hook: GraphQL API로 게시글 데이터 조회
-  const { boards, loading, error } = useBoardsBinding();
+  // Hook: GraphQL API로 게시글 데이터 조회 (검색 기능 통합)
+  // useBoardsBinding을 사용하여 검색 파라미터 전달
+  const { boards, loading, error } = useBoardsBinding(
+    isSearching ? keyword : null,
+    isSearching ? dateRangeText.start : null,
+    isSearching ? dateRangeText.end : null,
+    page
+  );
 
   // Hook: 게시글 상세페이지로 이동
   const { navigateToBoardDetail } = useBoardRouting();
@@ -55,9 +64,9 @@ export default function Boards(): JSX.Element {
 
   // 검색 실행 핸들러
   function handleSearchSubmit(): void {
-    // TODO: 실제 데이터 요청 연동 시 여기에 API 호출/라우팅 로직 연결
-    // 현재 상태: filter, keyword, page
-    // 사용성: 검색 실행 시 페이지를 1로 리셋
+    // 검색 실행 상태 설정
+    setIsSearching(true);
+    // 검색 실행 시 페이지를 1로 리셋
     setPage(1);
   }
 
@@ -158,7 +167,9 @@ export default function Boards(): JSX.Element {
             ) : boards.length === 0 ? (
               <div className={styles.listRow} role="row">
                 <div className={styles.colNo} role="cell">-</div>
-                <div className={styles.colTitle} role="cell">등록된 게시글이 없습니다.</div>
+                <div className={styles.colTitle} role="cell">
+                  {isSearching ? "검색 결과가 없습니다." : "등록된 게시글이 없습니다."}
+                </div>
                 <div className={styles.colAuthor} role="cell">-</div>
                 <div className={styles.colDate} role="cell">-</div>
               </div>

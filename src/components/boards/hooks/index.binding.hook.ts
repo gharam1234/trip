@@ -17,11 +17,26 @@ export interface BoardListItem {
  * - 실제 API 데이터를 사용 (Mock 데이터 사용하지 않음)
  * - 데이터가 없을 경우 빈 배열 반환
  * - 제목이 길 경우 "..."으로 표시하여 칸 사이즈 유지
+ * - 검색 파라미터 지원 (search, startDate, endDate, page)
+ *
+ * @param search - 제목 검색어 (선택사항)
+ * @param startDate - 시작 날짜 YYYY-MM-DD 형식 (선택사항)
+ * @param endDate - 종료 날짜 YYYY-MM-DD 형식 (선택사항)
+ * @param page - 페이지 번호 (기본값: 1)
+ * @returns { boards, loading, error } - 변환된 게시글 리스트 및 상태
  */
-export function useBoardsBinding() {
+export function useBoardsBinding(
+  search?: string | null,
+  startDate?: string | null,
+  endDate?: string | null,
+  page: number = 1
+) {
   const { data, loading, error } = useQuery<FetchBoardsResponse>(FETCH_BOARDS, {
     variables: {
-      page: 1
+      search: search || undefined,
+      startDate: startDate || undefined,
+      endDate: endDate || undefined,
+      page: page
     },
     fetchPolicy: 'network-only' // 항상 서버에서 최신 데이터 가져오기
   });
