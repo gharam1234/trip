@@ -13,15 +13,15 @@ interface CommentItemProps {
   rating: number;
   content: string;
   date: string;
-  onEdit: (id: string, content: string, rating: number) => void;
-  onDelete: (id: string) => void;
+  onEdit: (id: string, content: string, rating: number, password: string) => void | Promise<void>;
+  onDelete: (id: string, password: string) => void | Promise<void>;
 }
 
 interface CommentEditFormProps {
   initialContent: string;
   initialRating: number;
   initialAuthor: string;
-  onSave: (content: string, rating: number, author: string, password: string) => void;
+  onSave: (content: string, rating: number, author: string, password: string) => void | Promise<void>;
   onCancel: () => void;
 }
 
@@ -286,16 +286,75 @@ export { CommentSubmitForm };
 
 export default function CommentItem({ id, author, rating, content, date, onEdit, onDelete }: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
 
-  const handleSave = (newContent: string, newRating: number, newAuthor: string, password: string) => {
-    // 실제 환경에서는 비밀번호 검증이 필요합니다
-    onEdit(id, newContent, newRating);
-    setIsEditing(false);
+  const handleSave = async (newContent: string, newRating: number, newAuthor: string, password: string) => {
+    try {
+      await onEdit(id, newContent, newRating, password);
+      setIsEditing(false);
+    } catch (err) {
+      console.error("댓글 수정 실패:", err);
+    }
   };
 
   const handleCancel = () => {
     setIsEditing(false);
+    setIsDeleting(false);
+    setDeletePassword("");
   };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (!deletePassword.trim()) {
+        alert("비밀번호를 입력해주세요.");
+        return;
+      }
+      await onDelete(id, deletePassword);
+      setIsDeleting(false);
+      setDeletePassword("");
+    } catch (err) {
+      console.error("댓글 삭제 실패:", err);
+    }
+  };
+
+  if (isDeleting) {
+    return (
+      <div className={styles.commentContainer}>
+        <div className={styles.deleteConfirmModal}>
+          <h3>댓글 삭제</h3>
+          <p>댓글을 삭제하시겠습니까?</p>
+          <Input
+            variant="primary"
+            size="small"
+            label="비밀번호"
+            placeholder="비밀번호를 입력해주세요."
+            type="password"
+            value={deletePassword}
+            onChange={(e) => setDeletePassword(e.target.value)}
+          />
+          <div className={styles.buttonGroup}>
+            <Button
+              variant="secondary"
+              size="medium"
+              type="button"
+              onClick={handleCancel}
+            >
+              취소
+            </Button>
+            <Button
+              variant="primary"
+              size="medium"
+              type="button"
+              onClick={handleDeleteConfirm}
+            >
+              삭제하기
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isEditing) {
     return (
@@ -326,10 +385,10 @@ export default function CommentItem({ id, author, rating, content, date, onEdit,
           </div>
         </div>
         <div className={styles.actionButtons}>
-          <button onClick={() => setIsEditing(true)} className={styles.iconButton} type="button">
+          <button onClick={() => setIsEditing(true)} className={styles.iconButton} type="button" data-testid="edit-button">
             <IconEdit />
           </button>
-          <button onClick={() => onDelete(id)} className={styles.iconButton} type="button">
+          <button onClick={() => setIsDeleting(true)} className={styles.iconButton} type="button" data-testid="delete-button">
             <IconClose />
           </button>
         </div>

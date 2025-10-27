@@ -392,6 +392,39 @@
   white-space: nowrap;
 }
 
+.deleteConfirmModal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  padding: 24px;
+  background-color: var(--color-surface-default);
+  border: 1px solid var(--color-outline);
+  border-radius: 8px;
+}
+
+.deleteConfirmModal h3 {
+  font-size: var(--typo-desktop-title02-fontSize);
+  line-height: var(--typo-desktop-title02-lineHeight);
+  font-weight: var(--typo-desktop-title02-fontWeight);
+  color: var(--color-text-primary);
+  margin: 0;
+  width: 100%;
+}
+
+.deleteConfirmModal p {
+  font-size: var(--typo-desktop-body02_s-fontSize);
+  line-height: var(--typo-desktop-body02_s-lineHeight);
+  font-weight: var(--typo-desktop-body02_s-fontWeight);
+  color: var(--color-text-secondary);
+  margin: 0;
+  width: 100%;
+}
+
 @media (max-width: 767px) {
   .inputRow {
     flex-direction: column;

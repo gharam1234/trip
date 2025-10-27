@@ -96,3 +96,78 @@ export interface CreateBoardResponse {
     deletedAt?: string;
   };
 }
+
+/**
+ * 게시판 수정 Mutation
+ */
+export const UPDATE_BOARD = gql`
+  mutation updateBoard($updateBoardInput: UpdateBoardInput!, $password: String, $boardId: ID!) {
+    updateBoard(updateBoardInput: $updateBoardInput, password: $password, boardId: $boardId) {
+      _id
+      writer
+      title
+      contents
+      youtubeUrl
+      likeCount
+      dislikeCount
+      images
+      boardAddress {
+        zipcode
+        address
+        addressDetail
+      }
+      user {
+        _id
+        email
+        name
+      }
+      createdAt
+      updatedAt
+      deletedAt
+    }
+  }
+`;
+
+/**
+ * UpdateBoardInput 타입 정의
+ */
+export interface UpdateBoardInput {
+  title: string;
+  contents: string;
+  youtubeUrl?: string;
+  boardAddress?: {
+    zipcode?: string;
+    address?: string;
+    addressDetail?: string;
+  };
+  images?: string[];
+}
+
+/**
+ * UpdateBoard Mutation 응답 타입
+ */
+export interface UpdateBoardResponse {
+  updateBoard: {
+    _id: string;
+    writer: string;
+    title: string;
+    contents: string;
+    youtubeUrl?: string;
+    likeCount: number;
+    dislikeCount: number;
+    images?: string[];
+    boardAddress?: {
+      zipcode?: string;
+      address?: string;
+      addressDetail?: string;
+    };
+    user?: {
+      _id: string;
+      email: string;
+      name: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+    deletedAt?: string;
+  };
+}

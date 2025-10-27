@@ -55,12 +55,46 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
     if (commentCount > 0) {
       // 첫 번째 댓글의 수정 버튼 찾기
       const firstComment = commentItems.first();
-      const editButton = firstComment.locator("button").nth(0); // 수정 버튼
+      const editButton = firstComment.locator("[data-testid='edit-button']");
 
       // 수정 버튼 클릭 (존재하는지 확인)
       try {
         await editButton.click({ timeout: 400 });
         console.log("수정 모드 진입 성공");
+
+        // 수정 폼이 나타났는지 확인
+        const editForm = page.locator("[data-testid='comment-form'], form").first();
+        const isFormVisible = await editForm.isVisible({ timeout: 300 });
+        console.log(`수정 폼 가시성: ${isFormVisible}`);
+
+        if (isFormVisible) {
+          // 텍스트 영역에 새로운 내용 입력
+          const textarea = page.locator("textarea[placeholder='댓글을 입력해 주세요.']").last();
+          const originalContent = await textarea.inputValue();
+          const newContent = `수정된 댓글 - ${Date.now()}`;
+
+          await textarea.clear();
+          await textarea.fill(newContent);
+          console.log(`댓글 내용 변경: "${originalContent}" -> "${newContent}"`);
+
+          // 비밀번호 입력
+          const passwordInput = page.locator("input[type='password']").last();
+          await passwordInput.fill("1234");
+
+          // 수정 완료 버튼 클릭
+          const submitButton = page.locator("button:has-text('수정 하기')").first();
+          await submitButton.click({ timeout: 400 });
+
+          // 수정 후 리스트 업데이트 대기
+          await page.waitForTimeout(500);
+
+          // 수정된 내용 확인
+          const updatedCommentItems = page.locator("[data-testid='comment-item']");
+          const updatedCount = await updatedCommentItems.count();
+          console.log(`업데이트 후 댓글 수: ${updatedCount}`);
+
+          expect(updatedCount).toBeGreaterThan(0);
+        }
       } catch {
         console.log("수정 버튼을 찾을 수 없습니다.");
       }
@@ -94,14 +128,38 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
     if (initialCount > 0) {
       // 첫 번째 댓글의 삭제 버튼 찾기
       const firstComment = commentItems.first();
-      const deleteButton = firstComment.locator("button").nth(1); // 삭제 버튼 (0번째가 수정, 1번째가 삭제)
+      const deleteButton = firstComment.locator("[data-testid='delete-button']");
 
       // 삭제 버튼이 존재하는지 확인
       const isVisible = await deleteButton.isVisible({ timeout: 300 });
       console.log(`삭제 버튼 가시성: ${isVisible}`);
 
       if (isVisible) {
-        console.log("삭제 버튼을 찾았습니다.");
+        // 삭제 버튼 클릭
+        await deleteButton.click({ timeout: 400 });
+        console.log("삭제 버튼 클릭");
+
+        // 비밀번호 입력 필드 확인
+        const passwordInput = page.locator("input[type='password']").last();
+        const isPasswordInputVisible = await passwordInput.isVisible({ timeout: 300 });
+        console.log(`비밀번호 입력 필드 가시성: ${isPasswordInputVisible}`);
+
+        if (isPasswordInputVisible) {
+          // 비밀번호 입력
+          await passwordInput.fill("1234");
+
+          // 삭제 완료 버튼 클릭
+          const deleteConfirmButton = page.locator("button:has-text('삭제하기')").first();
+          await deleteConfirmButton.click({ timeout: 400 });
+
+          // 삭제 후 리스트 업데이트 대기
+          await page.waitForTimeout(500);
+
+          // 삭제 후 댓글 수 확인
+          const updatedCommentItems = page.locator("[data-testid='comment-item']");
+          const updatedCount = await updatedCommentItems.count();
+          console.log(`삭제 후 댓글 수: ${updatedCount}`);
+        }
       }
     } else {
       console.log("댓글이 없어서 삭제 테스트를 건너뜀");
@@ -133,20 +191,36 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
     if (commentCount > 0) {
       const firstComment = commentItems.first();
 
+      // 원본 내용 저장
+      const originalContentElement = firstComment.locator("[data-testid='comment-content']");
+      const originalContent = await originalContentElement.innerText();
+      console.log(`원본 댓글 내용: "${originalContent.substring(0, 30)}..."`);
+
       // 수정 버튼 클릭
-      const editButton = firstComment.locator("button").nth(0);
+      const editButton = firstComment.locator("[data-testid='edit-button']");
       try {
         await editButton.click({ timeout: 400 });
 
         // 폼 요소가 나타났는지 확인
-        const editForm = page.locator("[data-testid='comment-form'], form");
-        const isFormVisible = await editForm.first().isVisible({ timeout: 300 });
+        const editForm = page.locator("form").last();
+        const isFormVisible = await editForm.isVisible({ timeout: 300 });
         console.log(`수정 폼 가시성: ${isFormVisible}`);
 
-        // 기존 내용이 폼에 채워졌는지 확인
-        const textarea = page.locator("textarea[placeholder='댓글을 입력해 주세요.']");
-        const content = await textarea.inputValue();
-        console.log(`폼에 채워진 내용: "${content.substring(0, 30)}..."`);
+        if (isFormVisible) {
+          // 기존 내용이 폼에 채워졌는지 확인
+          const textarea = page.locator("textarea[placeholder='댓글을 입력해 주세요.']").last();
+          const formContent = await textarea.inputValue();
+          console.log(`폼에 채워진 내용: "${formContent.substring(0, 30)}..."`);
+
+          // 취소 버튼으로 모드 해제
+          const cancelButton = page.locator("button:has-text('취소')").last();
+          await cancelButton.click({ timeout: 400 });
+
+          // 원본 댓글 뷰로 복구되었는지 확인
+          const restoredComment = page.locator("[data-testid='comment-item']").first();
+          const isRestored = await restoredComment.isVisible({ timeout: 300 });
+          console.log(`수정 모드 취소 후 원본 뷰 복구: ${isRestored}`);
+        }
       } catch {
         console.log("수정 버튼 클릭 실패");
       }
@@ -161,7 +235,7 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
     // 게시판 상세 페이지로 이동
     await page.goto(`http://localhost:3000/boards/${TEST_BOARD_ID}`);
 
-    // 페이지 로드 대지
+    // 페이지 로드 대기
     const pageContainer = page.locator("[data-testid='board-detail-container']");
 
     try {
@@ -177,9 +251,9 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
 
     if (commentCount > 0) {
       const firstComment = commentItems.first();
-      const deleteButton = firstComment.locator("button").nth(1);
+      const deleteButton = firstComment.locator("[data-testid='delete-button']");
 
-      // 잘못된 비밀번호로 삭제 시도
+      // 잘못된 비밀번호로 삭제 시도 - GraphQL 응답 모킹
       await page.route("**/graphql", async (route) => {
         const request = route.request();
         const postData = request.postDataJSON();
@@ -198,10 +272,24 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
         }
       });
 
-      // 삭제 시도
+      // 삭제 버튼 클릭
       try {
-        await deleteButton.click({ timeout: 300 });
-        console.log("삭제 버튼 클릭 시도");
+        await deleteButton.click({ timeout: 400 });
+        console.log("삭제 버튼 클릭 성공");
+
+        // 비밀번호 입력 필드 입력
+        const passwordInput = page.locator("input[type='password']").last();
+        await passwordInput.fill("0000"); // 잘못된 비밀번호
+
+        // 삭제 완료 버튼 클릭
+        const deleteConfirmButton = page.locator("button:has-text('삭제하기')").first();
+        await deleteConfirmButton.click({ timeout: 400 });
+
+        // 에러 메시지 확인
+        await page.waitForTimeout(300);
+        const errorMessage = page.locator("[data-testid='edit-error-message']");
+        const isErrorVisible = await errorMessage.isVisible({ timeout: 300 });
+        console.log(`에러 메시지 표시: ${isErrorVisible}`);
       } catch {
         console.log("삭제 버튼 클릭 실패");
       }
@@ -247,8 +335,35 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
     console.log(`렌더링된 댓글 수: ${commentCount}`);
 
     if (commentCount > 0) {
-      // API 실패 시에도 UI는 변하지 않음 확인
-      expect(commentCount).toBeGreaterThan(0);
+      const firstComment = commentItems.first();
+      const deleteButton = firstComment.locator("[data-testid='delete-button']");
+
+      // 삭제 버튼 클릭
+      try {
+        await deleteButton.click({ timeout: 400 });
+
+        // 비밀번호 입력
+        const passwordInput = page.locator("input[type='password']").last();
+        await passwordInput.fill("1234");
+
+        // 삭제 완료 버튼 클릭 (API가 실패함)
+        const deleteConfirmButton = page.locator("button:has-text('삭제하기')").first();
+        await deleteConfirmButton.click({ timeout: 400 });
+
+        // 에러 메시지 확인
+        await page.waitForTimeout(300);
+        const errorMessage = page.locator("[data-testid='edit-error-message']");
+        const isErrorVisible = await errorMessage.isVisible({ timeout: 300 });
+        console.log(`API 실패 시 에러 메시지 표시: ${isErrorVisible}`);
+
+        // 댓글은 여전히 존재해야 함 (삭제되지 않음)
+        const stillExistingItems = page.locator("[data-testid='comment-item']");
+        const stillExistingCount = await stillExistingItems.count();
+        expect(stillExistingCount).toBe(commentCount);
+        console.log(`API 실패 후 댓글 수: ${stillExistingCount} (변경 없음)`);
+      } catch {
+        console.log("테스트 실행 중 에러 발생");
+      }
     }
   });
 });

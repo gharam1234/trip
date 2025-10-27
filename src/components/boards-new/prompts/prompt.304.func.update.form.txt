@@ -58,12 +58,17 @@ youtubeUrl: String
 likeCount: Int!
 dislikeCount: Int!
 images: [String!]
-boardAddress: BoardAddress
+boardAddress: BoardAddressInput
 user: User
 createdAt: DateTime!
 updatedAt: DateTime!
 deletedAt: DateTime
+-BoardAddressInput구조 :
+zipcode: String
+address: String
+addressDetail: String
 - 반환값: 수정된 게시글 객체
+
 
 5) 테스트 시나리오(로그인 유저)
 1. /boards/[BoardId] 접속 후 페이지 로드 확인

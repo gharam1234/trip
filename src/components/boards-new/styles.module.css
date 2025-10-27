@@ -209,10 +209,12 @@
 .footerButtonLeft {
   /* secondary 버튼 너비만 className으로 제어 */
   width: 64px; /* 피그마 취소 버튼 폭 */
+  cursor: pointer;
 }
 .footerButtonRight {
   /* primary 버튼 너비만 className으로 제어 */
   width: 95px; /* 피그마 등록하기 버튼 폭 */
+  cursor: pointer;
 }
 
 /* 공통 유틸: 폭 100% 지정 */
