@@ -41,26 +41,22 @@
 - API 호출 실패 또는 빈 배열 처리
 
 4) 데이터 조건
-    - 저장소: 백엔드 서버(GraphQL API)
-    - 요청방식: fetchBoardComments query
-    - 요청 파라미터 구조:
-
-        query fetchBoardComments($boardId: ID!, $page: Int) {
-          fetchBoardComments(boardId: $boardId, page: $page) {
-            _id
-            writer
-            contents
-            rating
-            createdAt
-            updatedAt
-            deletedAt
-            user {
-              _id
-              email
-              name
-            }
-          }
-        }
+                - 저장소: 백엔드 서버(GraphQL API)
+                - 요청방식: fetchBoardComments Query
+                - 1.요청 파라미터 구조:
+                (
+page: Int
+boardId: ID!
+)
+                - 2.반환 값 :
+_id: ID!
+writer: String
+contents: String!
+rating: Float!
+user: User
+createdAt: DateTime!
+updatedAt: DateTime!
+deletedAt: DateTime
 
 핵심요구사항) 현재의 모든 구조를 그대로 유지하고, 하드코딩된 Mock데이터를 제거하고, 실제 fetchBoardComments API 데이터를 바인딩할 것.
 
@@ -80,3 +76,4 @@
 4) 테스트
 - 로컬스토리지 모킹 없이 실제 API 데이터를 테스트
 - Playwright 테스트에서 API 호출 후 렌더링된 댓글 데이터를 검증
+- 테스트할 boardID : 68fee6f59bffc00029cce4ab

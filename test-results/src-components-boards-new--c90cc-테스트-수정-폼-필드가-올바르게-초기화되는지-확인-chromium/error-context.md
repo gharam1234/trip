@@ -1,0 +1,77 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - link "logo" [ref=e6] [cursor=pointer]:
+            - /url: /boards
+            - img "logo" [ref=e7]
+          - generic [ref=e8]:
+            - button "트립토크" [ref=e9]
+            - button "숙박권 구매" [ref=e10]
+            - button "마이 페이지" [ref=e11]
+        - generic [ref=e13]:
+          - img "프로필 이미지" [ref=e15]
+          - text: Test User
+          - img "드롭다운 화살표" [ref=e17]
+    - region "main visual banner" [ref=e18]:
+      - generic [ref=e19]:
+        - button "Previous" [ref=e20]
+        - generic [ref=e22]:
+          - img [ref=e26]
+          - img [ref=e30]
+          - img [ref=e34]
+          - img "배너 3" [ref=e38]
+          - img [ref=e42]
+        - button "Next" [ref=e43]
+        - list [ref=e44]:
+          - listitem [ref=e45]:
+            - button "1" [ref=e46]
+          - listitem [ref=e47]:
+            - button "2" [ref=e48]
+          - listitem [ref=e49]:
+            - button "3" [ref=e50]
+    - main [ref=e51]:
+      - generic [ref=e53]: "오류가 발생했습니다: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"Board\""
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - button [ref=e58]:
+                - generic:
+                  - img
+              - button [ref=e61]:
+                - generic:
+                  - img
+              - button [ref=e64]:
+                - generic:
+                  - img
+              - button [ref=e67]:
+                - generic:
+                  - img
+              - button [ref=e70]:
+                - generic:
+                  - img
+            - generic [ref=e73]:
+              - generic [ref=e74]:
+                - generic [ref=e75]: 작성자*
+                - textbox "작성자*" [ref=e77]:
+                  - /placeholder: 작성자를 입력해 주세요.
+              - generic [ref=e78]:
+                - text: 비밀번호
+                - textbox "비밀번호" [ref=e80]:
+                  - /placeholder: 비밀번호를 입력해 주세요.
+          - generic [ref=e81]:
+            - generic [ref=e82]: 댓글*
+            - generic [ref=e83]:
+              - textbox "댓글* 0/100" [ref=e84]:
+                - /placeholder: 댓글을 입력해 주세요.
+              - generic [ref=e86]: 0/100
+          - button "댓글 작성" [pressed] [ref=e88]
+        - generic [ref=e89]: 댓글을 불러오는 데 실패했습니다.
+        - generic [ref=e90]: 댓글이 없습니다.
+  - alert [ref=e91]
+```

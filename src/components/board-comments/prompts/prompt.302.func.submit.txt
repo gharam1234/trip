@@ -43,25 +43,36 @@
             4) 데이터 조건
                 - 저장소: 백엔드 서버(GraphQL API)
                 - 요청방식: createBoardComment mutation
-                - 요청 파라미터 구조:
+                - 1.요청 파라미터 구조:
                 
-                    mutation createBoardComment($createBoardCommentInput: CreateBoardCommentInput!) {
-                      createBoardComment(createBoardCommentInput: $createBoardCommentInput) {
-                        _id
-                        writer
-                        contents
-                        rating
-                        createdAt
-                      }
-                    }
+                    createBoardComment(
+createBoardCommentInput: CreateBoardCommentInput!
+boardId: ID!
+)
+-2.CreateBoardCommentInput 구조 :
+writer: String
+password: String
+contents: String!
+rating: Float!
+
+                - 3.반환 값 :
+_id: ID!
+writer: String
+contents: String!
+rating: Float!
+user: User
+createdAt: DateTime!
+updatedAt: DateTime!
+deletedAt: DateTime
+            
 
 핵심요구사항) 댓글 작성 폼에서 데이터를 입력받아 createBoardComment API를 호출하고, 성공 시 댓글 목록을 새로고침할 것.
 
 1) 입력 필드
-- 작성자: writer (필수, String, 로그인 사용자 정보에서 자동 입력)
-- 내용: contents (필수, String)
-- 비밀번호: password (필수, String, 4자리 숫자)
-- 평점: rating (필수, Number, 1~5점)
+- 작성자: writer (필수아님, String, 로그인 사용자 정보에서 자동 입력)
+- 내용: contents (필수 String!)
+- 비밀번호: password (필수아님, String, 4자리 숫자)
+- 평점: rating (필수, Float!, 1~5점)
 
 2) 유효성 검증
 - 내용: 1자 이상 입력

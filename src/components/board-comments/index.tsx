@@ -2,6 +2,9 @@ import svgPaths from "../../../public/icons/svg-35larhhclq";
 import svgPathsEdit from "../../../public/icons/svg-kk6hs9thik";
 import { useState } from "react";
 import { User } from "lucide-react";
+import { Input } from "@/commons/components/input";
+import { Textarea } from "@/commons/components/textarea";
+import { Button } from "@/commons/components/button";
 import styles from "./styles.module.css";
 
 interface CommentItemProps {
@@ -20,6 +23,12 @@ interface CommentEditFormProps {
   initialAuthor: string;
   onSave: (content: string, rating: number, author: string, password: string) => void;
   onCancel: () => void;
+}
+
+interface CommentSubmitFormProps {
+  onSubmit: (content: string, rating: number, author: string, password: string) => Promise<void>;
+  isLoading?: boolean;
+  error?: string;
 }
 
 function ProfileImg() {
@@ -56,6 +65,103 @@ function EditableStarButton({ filled, onClick }: { filled: boolean; onClick: () 
   );
 }
 
+function CommentSubmitForm({
+  onSubmit,
+  isLoading = false,
+  error,
+}: CommentSubmitFormProps) {
+  const [content, setContent] = useState("");
+  const [rating, setRating] = useState(3);
+  const [author, setAuthor] = useState("");
+  const [password, setPassword] = useState("");
+
+  const maxLength = 100;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (content.trim() && author.trim()) {
+      try {
+        await onSubmit(content, rating, author, password);
+        // 폼 초기화
+        setContent("");
+        setRating(3);
+        setAuthor("");
+        setPassword("");
+      } catch {
+        // 에러는 상위 컴포넌트에서 처리
+      }
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className={styles.editFormContainer} data-testid="comment-form">
+      {error && <div style={{ color: "red", marginBottom: "16px" }} data-testid="error-message">{error}</div>}
+
+      <div className={styles.starSection}>
+        <div className={styles.starContainer}>
+          {[1, 2, 3, 4, 5].map((starIndex) => (
+            <EditableStarButton
+              key={starIndex}
+              filled={starIndex <= rating}
+              onClick={() => setRating(starIndex)}
+            />
+          ))}
+        </div>
+
+        <div className={styles.inputRow}>
+          <Input
+            variant="primary"
+            size="small"
+            label="작성자"
+            placeholder="작성자를 입력해 주세요."
+            type="text"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            required
+          />
+
+          <Input
+            variant="primary"
+            size="small"
+            label="비밀번호"
+            placeholder="비밀번호를 입력해 주세요."
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <Textarea
+        variant="primary"
+        size="medium"
+        label="댓글"
+        placeholder="댓글을 입력해 주세요."
+        value={content}
+        onChange={(e) => {
+          if (e.target.value.length <= maxLength) {
+            setContent(e.target.value);
+          }
+        }}
+        maxLength={maxLength}
+        showCount
+        required
+      />
+
+      <div className={styles.buttonGroup}>
+        <Button
+          variant="primary"
+          size="medium"
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading ? "작성 중..." : "댓글 작성"}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
 function CommentEditForm({
   initialContent,
   initialRating,
@@ -69,7 +175,6 @@ function CommentEditForm({
   const [password, setPassword] = useState("");
 
   const maxLength = 100;
-  const contentLength = content.length;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,67 +197,62 @@ function CommentEditForm({
         </div>
 
         <div className={styles.inputRow}>
-          <div className={styles.inputGroup}>
-            <div className={styles.label}>
-              <p className={styles.labelText}>작성자</p>
-              <p className={styles.required}>*</p>
-            </div>
-            <div className={styles.inputWrapper}>
-              <input
-                type="text"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                className={styles.input}
-                required
-              />
-            </div>
-          </div>
-
-          <div className={styles.inputGroup}>
-            <div className={styles.label}>
-              <p className={styles.labelText}>비밀번호</p>
-              <p className={styles.required}>*</p>
-            </div>
-            <div className={styles.inputWrapper}>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="비밀번호를 입력해 주세요."
-                className={`${styles.input} ${styles.inputBordered}`}
-                required
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.textareaContainer}>
-        <div className={styles.textareaWrapper}>
-          <textarea
-            value={content}
-            onChange={(e) => {
-              if (e.target.value.length <= maxLength) {
-                setContent(e.target.value);
-              }
-            }}
-            placeholder="댓글을 입력해 주세요."
-            className={styles.textarea}
+          <Input
+            variant="primary"
+            size="small"
+            label="작성자"
+            placeholder="작성자를 입력해 주세요."
+            type="text"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
             required
           />
-          <p className={styles.charCount}>
-            {contentLength}/{maxLength}
-          </p>
+
+          <Input
+            variant="primary"
+            size="small"
+            label="비밀번호"
+            placeholder="비밀번호를 입력해 주세요."
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
       </div>
 
+      <Textarea
+        variant="primary"
+        size="medium"
+        label="댓글"
+        placeholder="댓글을 입력해 주세요."
+        value={content}
+        onChange={(e) => {
+          if (e.target.value.length <= maxLength) {
+            setContent(e.target.value);
+          }
+        }}
+        maxLength={maxLength}
+        showCount
+        required
+      />
+
       <div className={styles.buttonGroup}>
-        <button type="button" onClick={onCancel} className={styles.cancelButton}>
+        <Button
+          variant="secondary"
+          size="medium"
+          type="button"
+          onClick={onCancel}
+        >
           취소
-        </button>
-        <button type="submit" className={styles.submitButton}>
+        </Button>
+        <Button
+          variant="primary"
+          size="medium"
+          type="submit"
+        >
           수정 하기
-        </button>
+        </Button>
       </div>
     </form>
   );
@@ -182,6 +282,8 @@ function IconClose() {
   );
 }
 
+export { CommentSubmitForm };
+
 export default function CommentItem({ id, author, rating, content, date, onEdit, onDelete }: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -210,14 +312,14 @@ export default function CommentItem({ id, author, rating, content, date, onEdit,
   }
 
   return (
-    <div className={styles.commentContainer}>
+    <div className={styles.commentContainer} data-testid="comment-item">
       <div className={styles.header}>
         <div className={styles.profileSection}>
           <div className={styles.profile}>
             <ProfileImg />
-            <p className={styles.authorName}>{author}</p>
+            <p className={styles.authorName} data-testid="comment-author">{author}</p>
           </div>
-          <div className={styles.starContainer}>
+          <div className={styles.starContainer} data-testid="comment-rating">
             {[1, 2, 3, 4, 5].map((starIndex) => (
               <ReadOnlyStar key={starIndex} filled={starIndex <= rating} />
             ))}
@@ -232,11 +334,11 @@ export default function CommentItem({ id, author, rating, content, date, onEdit,
           </button>
         </div>
       </div>
-      <div className={styles.content}>
+      <div className={styles.content} data-testid="comment-content">
         {content}
       </div>
       <div className={styles.dateContainer}>
-        <p className={styles.date}>{date}</p>
+        <p className={styles.date} data-testid="comment-date">{date}</p>
       </div>
     </div>
   );

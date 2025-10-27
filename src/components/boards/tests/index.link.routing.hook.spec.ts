@@ -116,9 +116,25 @@ test.describe('게시글 라우팅 기능', () => {
   });
 
   test('게시글이 없을 때는 빈 상태 메시지가 표시되어야 함', async ({ page }) => {
-    // 빈 로컬스토리지 설정 (실제 빈 상태 시뮬레이션)
-    await page.addInitScript(() => {
-      localStorage.setItem('boards', JSON.stringify([]));
+    // GraphQL API 응답을 가로채서 빈 배열 반환
+    await page.route('**/graphql', async (route) => {
+      const request = route.request();
+      const postData = request.postData();
+
+      // fetchBoards 쿼리에 빈 배열 응답 반환
+      if (postData && postData.includes('fetchBoards')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: {
+              fetchBoards: []
+            }
+          })
+        });
+      } else {
+        await route.continue();
+      }
     });
 
     // /boards 페이지로 이동
@@ -131,8 +147,8 @@ test.describe('게시글 라우팅 기능', () => {
     await page.waitForTimeout(500);
 
     // 두 가지 가능한 상태 중 하나를 확인
-    // 1) "등록된 게시글이 없습니다" 메시지
-    const emptyMessage = page.locator('text=등록된 게시글이 없습니다');
+    // 1) "등록된 게시글이 없습니다." 메시지
+    const emptyMessage = page.locator('text=등록된 게시글이 없습니다.');
     const hasEmptyMessage = await emptyMessage.isVisible().catch(() => false);
 
     // 2) 테이블 행이 1개(헤더)만 있거나 아무것도 없음
