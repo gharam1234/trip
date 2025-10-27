@@ -28,7 +28,7 @@ interface AuthGuardProps {
 // AuthGuard 컴포넌트
 export function AuthGuard({ children }: AuthGuardProps) {
   const pathname = usePathname();
-  const { isAuthenticated, checkAuthStatus } = useAuth();
+  const { isAuthenticated, mounted, checkAuthStatus } = useAuth();
   const { openModal, closeAllModals, isModalOpen } = useModal();
   
   // 상태 관리
@@ -93,29 +93,27 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   // 권한 검증 함수
   const checkAuthorization = useCallback(async () => {
-    // AuthProvider 초기화 대기
-    const authStatus = checkAuthStatus();
-    
     // 우회 조건 확인 (테스트 환경에서 우회 시 로그인된 것으로 간주)
     if (shouldBypassAuth()) {
       setIsAuthorized(true);
       setIsInitialized(true);
       return;
     }
-    
+
     // 현재 경로에 해당하는 라우트 키 찾기
     const routeKey = getCurrentRouteKey();
-    
+
     if (!routeKey) {
       // 라우트 키를 찾을 수 없는 경우 (404 등) 접근 허용
       setIsAuthorized(true);
       setIsInitialized(true);
       return;
     }
-    
+
     // 접근 권한 확인 - isAccessible 함수는 isAuthenticated boolean 값을 받음
-    const hasAccess = isAccessible(routeKey, authStatus);
-    
+    // AuthProvider의 isAuthenticated 상태를 직접 사용
+    const hasAccess = isAccessible(routeKey, isAuthenticated);
+
     if (hasAccess) {
       // 접근 권한이 있는 경우
       setIsAuthorized(true);
@@ -124,29 +122,32 @@ export function AuthGuard({ children }: AuthGuardProps) {
       // 접근 권한이 없는 경우
       setIsAuthorized(false);
       setIsInitialized(true);
-      
+
       // 로그인 확인 모달 표시 (한 번만)
       if (!modalShownRef.current) {
         modalShownRef.current = true;
         openModal(LOGIN_REQUIRED_MODAL_ID);
       }
     }
-  }, [checkAuthStatus, shouldBypassAuth, getCurrentRouteKey, openModal]);
+  }, [isAuthenticated, shouldBypassAuth, getCurrentRouteKey, openModal]);
 
-  // 컴포넌트 마운트 시 권한 검증
+  // 컴포넌트 마운트 시 권한 검증 (AuthProvider mounted 후에만)
+  // isAuthenticated 변경 시에도 재검증 (AuthProvider의 초기 인증 상태 로드 반영)
   useEffect(() => {
-    checkAuthorization();
-  }, [checkAuthorization]);
+    if (mounted) {
+      checkAuthorization();
+    }
+  }, [mounted, isAuthenticated, checkAuthorization]);
 
   // 경로 변경 시 권한 재검증
   useEffect(() => {
-    if (isInitialized) {
+    if (mounted && isInitialized) {
       modalShownRef.current = false;
       checkAuthorization();
     }
-  }, [pathname, isInitialized, checkAuthorization]);
+  }, [pathname, mounted, isInitialized, checkAuthorization]);
 
-  // 로그인 페이지로 이동
+  // 로그인 페이지로 이동 핸들러 (항상 동일한 훅 호출 순서를 보장하기 위해 조건부 반환문보다 위에서 선언)
   const handleLoginClick = useCallback(() => {
     closeAllModals();
     modalShownRef.current = false;
@@ -154,51 +155,40 @@ export function AuthGuard({ children }: AuthGuardProps) {
     window.location.href = getPath('AUTH_LOGIN');
   }, [closeAllModals]);
 
-  // 로딩 중이거나 권한이 없는 경우 빈 화면 표시
-  if (!isInitialized || !isAuthorized) {
-    return (
-      <>
-        {/* 빈 화면 - 로딩 중이거나 권한이 없는 경우 */}
-        <div 
-          style={{ 
-            width: '100vw', 
-            height: '100vh', 
-            backgroundColor: '#ffffff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          data-testid="auth-guard-loading"
-        >
-          {!isInitialized && (
-            <div data-testid="auth-guard-loading-text">로딩 중...</div>
-          )}
-        </div>
-        
-        {/* 로그인 필요 모달 */}
-        {isModalOpen(LOGIN_REQUIRED_MODAL_ID) && (
-          <ProviderModal
-            id={LOGIN_REQUIRED_MODAL_ID}
-            isOpen={isModalOpen(LOGIN_REQUIRED_MODAL_ID)}
-            onClose={() => {}}
-            data-testid="login-required-modal"
-          >
-            <CommonModal
-              variant="info"
-              actions="single"
-              title="로그인이 필요합니다"
-              description="이 페이지에 접근하려면 로그인이 필요합니다."
-              confirmText="확인"
-              onConfirm={handleLoginClick}
-            />
-          </ProviderModal>
-        )}
-      </>
-    );
+  // 현재 경로가 PUBLIC 접근인지 여부 계산 (PUBLIC이면 가드 대기 없이 바로 렌더)
+  const currentRouteKey = getCurrentRouteKey();
+  const isPublicRoute = currentRouteKey ? URLS[currentRouteKey].access === 'PUBLIC' : true;
+
+  if (isPublicRoute) {
+    return <>{children}</>;
   }
 
-  // 권한이 있는 경우 children 렌더링
-  return <>{children}</>;
+  // children은 항상 렌더링 (레이아웃이 항상 보이도록)
+  // 권한이 없으면 모달을 추가로 표시
+  return (
+    <>
+      {children}
+
+      {/* 로그인 필요 모달 - 권한이 없을 때만 표시 */}
+      {(!isInitialized || !isAuthorized) && isModalOpen(LOGIN_REQUIRED_MODAL_ID) && (
+        <ProviderModal
+          id={LOGIN_REQUIRED_MODAL_ID}
+          isOpen={isModalOpen(LOGIN_REQUIRED_MODAL_ID)}
+          onClose={() => {}}
+          data-testid="login-required-modal"
+        >
+          <CommonModal
+            variant="info"
+            actions="single"
+            title="로그인이 필요합니다"
+            description="이 페이지에 접근하려면 로그인이 필요합니다."
+            confirmText="확인"
+            onConfirm={handleLoginClick}
+          />
+        </ProviderModal>
+      )}
+    </>
+  );
 }
 
 export default AuthGuard;

@@ -27,7 +27,7 @@ function cx(...args: Array<string | false | null | undefined>): string {
 // - variant: 'primary' | 'secondary' | 'tertiary'
 // - size: 'small' | 'medium' | 'large'
 // - 라벨/헬퍼/에러 메시지 지원
-export const Textarea: React.FC<TextareaProps> = ({
+export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({
   variant = 'primary',
   size = 'medium',
   error,
@@ -40,7 +40,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   disabled,
   placeholder,
   ...props
-}) => {
+}, ref) => {
   // 훅은 항상 동일한 순서로 호출되어야 하므로, 무조건 생성 후 선택적으로 사용
   const generatedId = React.useId();
   const textareaId = id ?? generatedId;
@@ -77,6 +77,7 @@ export const Textarea: React.FC<TextareaProps> = ({
       ) : null}
       <div className={styles.field}>
         <textarea
+          ref={ref}
           id={textareaId}
           className={textareaClass}
           aria-invalid={hasError || undefined}
@@ -101,6 +102,8 @@ export const Textarea: React.FC<TextareaProps> = ({
       ) : null}
     </label>
   );
-};
+});
+
+Textarea.displayName = 'Textarea';
 
 export default Textarea;

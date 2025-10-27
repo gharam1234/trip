@@ -8,6 +8,8 @@ import { getPath } from '@/commons/constants/url';
 interface AuthContextType {
   // 로그인 상태
   isAuthenticated: boolean;
+  // Provider 마운트 완료 여부
+  mounted: boolean;
   // 로그인된 사용자 정보
   user: any | null;
   // 로그인 함수
@@ -36,10 +38,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<any | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   // 컴포넌트 마운트 시 로그인 상태 확인
   useEffect(() => {
     checkAuthStatus();
+    setMounted(true);
   }, []);
 
   // 로그인 상태 확인 함수 (useCallback으로 메모이제이션)
@@ -135,6 +139,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // 컨텍스트 값
   const contextValue: AuthContextType = {
     isAuthenticated,
+    mounted,
     user,
     login,
     logout,

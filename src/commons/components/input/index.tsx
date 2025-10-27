@@ -29,7 +29,7 @@ function cx(...args: Array<string | false | null | undefined>): string {
 // - variant: 'primary' | 'secondary' | 'tertiary'
 // - size: 'small' | 'medium' | 'large'
 // - 라벨/헬퍼/에러 메시지 지원
-export const Input: React.FC<InputProps> = ({
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ 
   variant = 'primary',
   size = 'medium',
   leftIcon,
@@ -44,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
   disabled,
   placeholder,
   ...props
-}) => {
+}, ref) => {
   // 훅은 항상 동일한 순서로 호출되어야 하므로, 무조건 생성 후 선택적으로 사용
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
@@ -82,6 +82,7 @@ export const Input: React.FC<InputProps> = ({
       <div className={styles.field}>
         {leftIcon ? <span className={styles.leftIcon}>{leftIcon}</span> : null}
         <input
+          ref={ref}
           id={inputId}
           className={inputClass}
           aria-invalid={hasError || undefined}
@@ -107,7 +108,9 @@ export const Input: React.FC<InputProps> = ({
       ) : null}
     </label>
   );
-};
+});
+
+Input.displayName = 'Input';
 
 export default Input;
 

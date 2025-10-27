@@ -1,0 +1,94 @@
+아래의 조건을 모두 적용하여, 아래의 요구사항을 모두 구현할 것.
+구현 결과를 체크리스트로 반환할 것.
+
+==============================================
+
+조건-커서룰) 아래의 커서룰을 적용하여 작업하고, 이 작업이 끝나면 해당 rules 적용 결과를 체크리스트로 반환할 것.
+            - @01-common.mdc
+            - @04-func.mdc
+
+==============================================
+
+조건-파일경로) 참고할 TSX 파일경로: src/components/boards/index.tsx
+조건-파일경로) 참고할 CSS 파일경로: src/components/boards/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards/hooks/index.delete.hook.ts
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards/tests/index.delete.hook.spec.ts
+조건-파일경로) 구현될 Queries 파일경로: src/components/boards/graphql/queries.ts
+
+조건-파일경로) 참고할 아이콘 파일경로 :/icons/delete.png
+
+==============================================
+
+핵심요구사항) 다음의 기능을 playwright 테스트를 활용하여 TDD 기반으로 구현하고, 테스트에 통과할 때까지 반복할 것.
+
+1) 테스트 제외 라이브러리
+- jest
+- @testing-library/react
+
+2) 테스트 조건
+- timeout은 설정하지 않거나, 500ms 미만으로 설정할 것.
+- 페이지가 완전히 로드된 후 테스트할 것.
+  - 페이지 로드 식별 요구사항: 고정식별자 data-testid 대기 방법
+  - **중요금지사항** 페이지 로드 식별 금지사항: networkidle 대기 방법
+
+3) 테스트 API 조건
+3-1) 데이터
+- 실제 API 데이터를 사용할 것.
+- Mock 데이터를 사용하지 말 것.
+
+3-2) 성공 시나리오
+- deleteBoard mutation 호출 성공 후 UI에서 해당 게시글이 제거되는지 확인
+
+3-3) 실패 시나리오
+- deleteBoard mutation 호출 실패 시 에러 처리
+
+4) 데이터 조건
+    - 저장소: 백엔드 서버(GraphQL API)
+    - 요청방식: deleteBoard mutation
+    - 요청 파라미터 구조:
+
+        mutation deleteBoard($boardId: ID!) {
+          deleteBoard(boardId: $boardId)
+        }
+
+핵심요구사항) 게시글 행에 마우스 호버 시 삭제 아이콘이 표시되도록 구현할 것.
+
+1) 호버 상태 관리
+- 각 게시글 행에 마우스 호버 시 해당 행에만 삭제 아이콘이 표시되도록 할 것.
+- 마우스가 벗어나면 삭제 아이콘이 사라지도록 할 것.
+
+2) 삭제 아이콘 위치
+- 게시글 행의 우측 끝에 삭제 아이콘을 배치할 것.
+- 아이콘은 호버 시에만 표시되고, 기본 상태에서는 숨김 처리할 것.
+
+3) CSS 처리
+- 게시글 행: position: relative 적용
+- 삭제 아이콘: position: absolute로 우측에 배치
+- 호버 시 opacity 또는 visibility를 이용하여 아이콘 표시/숨김 처리
+- 삭제 아이콘에 cursor: pointer 적용
+
+핵심요구사항) 삭제 아이콘 클릭 시 deleteBoard mutation을 호출하여 게시글을 삭제할 것.
+
+1) 삭제 처리
+- Apollo Client useMutation(deleteBoard) 사용
+- 삭제할 게시글의 _id를 boardId 파라미터로 전달
+- 삭제 성공 시 목록을 refetch하여 UI 업데이트
+
+2) 삭제 확인
+- 삭제 아이콘 클릭 시 사용자에게 삭제 확인 모달 또는 confirm 대화상자 표시
+- 사용자가 확인한 경우에만 deleteBoard mutation 호출
+
+3) 에러 처리
+- mutation 호출 실패 시 에러 메시지 표시
+- 삭제 중 로딩 상태 표시 (선택사항)
+
+4) GraphQL Mutation 정의
+- src/components/boards/graphql/mutations.ts 파일에 DELETE_BOARD mutation 정의
+- DeleteBoardResponse 타입 정의
+
+5) 테스트 요구사항
+- 게시글 행에 마우스 호버 시 삭제 아이콘이 표시되는지 확인
+- 삭제 아이콘 클릭 시 확인 대화상자가 표시되는지 확인
+- 삭제 확인 후 deleteBoard mutation이 호출되는지 확인
+- 삭제 성공 후 해당 게시글이 목록에서 제거되는지 확인
+- 삭제 실패 시 에러 메시지가 표시되는지 확인

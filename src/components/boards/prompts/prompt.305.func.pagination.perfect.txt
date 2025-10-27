@@ -1,0 +1,254 @@
+아래의 조건을 모두 적용하여, 아래의 요구사항을 모두 구현할 것.
+구현 결과를 체크리스트로 반환할 것.
+
+==============================================
+
+조건-커서룰) 아래의 커서룰을 적용하여 작업하고, 이 작업이 끝나면 해당 rules 적용 결과를 체크리스트로 반환할 것.
+            - @01-common.mdc
+            - @04-func.mdc
+
+==============================================
+
+조건-파일경로) 참고할 TSX  파일경로: src/components/boards/index.tsx
+조건-파일경로) 참고할 CSS  파일경로: src/components/boards/styles.module.css
+조건-파일경로) 참고할 GraphQL 파일경로: src/components/boards/graphql/queries.ts
+조건-파일경로) 구현될 HOOK 파일경로: src/components/boards/hooks/index.pagination.hook.ts
+조건-파일경로) 구현될 TEST 파일경로: src/components/boards/tests/index.pagination.hook.spec.ts
+
+==============================================
+
+핵심요구사항) 병렬처리 구현을 위한 작업 방식 조건
+            - 다른 채팅에서 개발중인 파일을 수정 및 삭제 하지 말 것.
+            - 테스트 충돌을 방지하기 위해, 빌드테스트, 전체테스트를 하지 말 것.
+
+==============================================
+
+핵심요구사항) GraphQL 쿼리 확장
+            1) src/components/boards/graphql/queries.ts 파일에 다음을 추가할 것:
+                - FETCH_BOARDS 쿼리에 검색 및 필터 파라미터 추가
+                  * search: String (검색어)
+                  * startDate: String (시작 날짜, YYYY-MM-DD 형식)
+                  * endDate: String (종료 날짜, YYYY-MM-DD 형식)
+
+                - FETCH_BOARDS_COUNT 쿼리에 검색 및 필터 파라미터 추가
+                  * search: String (검색어)
+                  * startDate: String (시작 날짜)
+                  * endDate: String (종료 날짜)
+
+                - **중요**: 백엔드 API가 해당 파라미터를 지원하지 않을 경우,
+                  기본 쿼리만 사용하고 클라이언트 사이드 필터링은 향후 과제로 남길 것
+
+==============================================
+
+핵심요구사항) usePagination Hook 구현 상세 스펙
+            1) Hook 파라미터:
+                - keyword: string (검색어)
+                - startDate: string | null (시작 날짜)
+                - endDate: string | null (종료 날짜)
+
+            2) Hook 반환값:
+                - currentPage: number (현재 페이지 번호, 1부터 시작)
+                - totalPages: number (전체 페이지 수)
+                - boards: BoardApiItem[] (현재 페이지의 게시글 목록)
+                - loading: boolean (로딩 상태)
+                - error: string | null (에러 메시지)
+                - handlePageChange: (page: number) => void (페이지 변경 핸들러)
+
+            3) 핵심 로직:
+                - totalPages 계산: Math.ceil(totalCount / 10)
+                - 페이지당 10개 게시글 표시
+                - keyword, startDate, endDate 변경 시 자동으로 페이지를 1로 리셋
+                - FETCH_BOARDS 쿼리를 사용하여 실제 데이터 조회
+                - FETCH_BOARDS_COUNT 쿼리를 사용하여 전체 게시글 수 조회
+                - useEffect를 활용하여 필터 변경 감지
+
+            4) 타입 정의:
+                - BoardApiItem 타입은 queries.ts에서 import
+                - 모든 타입을 명시적으로 선언
+
+==============================================
+
+핵심요구사항) index.tsx 통합
+            1) usePagination Hook 적용:
+                - 기존 useBoardsBinding을 usePagination으로 완전히 교체
+                - keyword, dateRangeText.start, dateRangeText.end를 파라미터로 전달
+                - 반환값(currentPage, totalPages, boards, loading, error, handlePageChange)을 사용
+
+            2) 하드코딩된 값 제거:
+                - const totalPages = 10; 삭제
+                - const [page, setPage] 삭제 (usePagination에서 관리)
+
+            3) Pagination 컴포넌트 수정:
+                - totalPages prop에 usePagination의 totalPages 사용
+                - currentPage prop에 usePagination의 currentPage 사용
+                - onChange prop에 usePagination의 handlePageChange 사용
+                - data-testid="boards-pagination" 추가
+                - 각 페이지 버튼에 data-testid="page-{번호}" 추가
+                  (Pagination 컴포넌트 내부 수정 필요)
+
+            4) 게시글 리스트 렌더링:
+                - boards 배열 map 시 data-testid 유지
+                - 번호 계산은 useIndexing hook 계속 사용
+
+==============================================
+
+핵심요구사항) Playwright 테스트 구현 (TDD 방식)
+            1) **중요금지사항** 테스트 제외 라이브러리
+                - jest
+                - @testing-library/react
+
+            2) 테스트 조건
+                - timeout은 설정하지 않거나, 500ms 미만으로 설정할 것
+                - 모든 페이지의 로드 식별은 data-testid 대기 방식 사용
+                - **중요금지사항** networkidle 대기 방법 사용 금지
+                - 실제 데이터를 사용할 것 (Mock 데이터 사용 금지)
+
+            3) 테스트 파일 구조:
+                describe('게시판 페이지네이션', () => {
+                  // 모든 테스트는 /boards 페이지에서 시작
+                });
+
+            4) 테스트 시나리오 1: 기본 페이지네이션 표시
+                test('한 페이지에 10개의 게시글이 표시된다', async ({ page }) => {
+                  - /boards 접속
+                  - [data-testid="boards-container"] 대기
+                  - [data-testid^="board-row-"] 개수 확인
+                  - 개수가 10개 이하인지 검증 (게시글이 10개 미만일 수도 있음)
+                });
+
+                test('페이지 번호가 10개 단위로 표시된다', async ({ page }) => {
+                  - [data-testid="boards-pagination"] 확인
+                  - 페이지 버튼 개수가 최대 10개인지 검증
+                  - 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 형태로 표시되는지 확인
+                });
+
+            5) 테스트 시나리오 2: 페이지 클릭 동작
+                test('페이지 2 클릭 시 해당 페이지의 게시글이 표시된다', async ({ page }) => {
+                  - /boards 접속
+                  - [data-testid="page-2"] 클릭
+                  - URL 파라미터 또는 화면에 2페이지 컨텐츠가 로드되었는지 확인
+                  - 첫 번째 게시글 번호가 올바른지 검증
+                    (totalCount가 100이면 2페이지 첫 번째는 90)
+                });
+
+                test('페이지 5 클릭 시 해당 페이지의 게시글이 표시된다', async ({ page }) => {
+                  - [data-testid="page-5"] 클릭
+                  - 5페이지 컨텐츠 로드 확인
+                });
+
+            6) 테스트 시나리오 3: 검색 결과 페이지네이션
+                test('검색어 입력 시 페이지 수가 변경된다', async ({ page }) => {
+                  - /boards 접속
+                  - 초기 totalPages 확인
+                  - 검색창에 특정 검색어 입력 (예: "테스트")
+                  - 검색 버튼 클릭
+                  - 페이지네이션의 페이지 수가 변경되었는지 확인
+                  - 검색 결과가 올바르게 표시되는지 확인
+                });
+
+                test('검색 후 페이지가 1로 리셋된다', async ({ page }) => {
+                  - 페이지 3으로 이동
+                  - 검색어 입력 후 검색
+                  - currentPage가 1로 리셋되었는지 확인
+                });
+
+            7) 테스트 시나리오 4: 날짜 필터 결과 페이지네이션
+                test('날짜 범위 선택 시 페이지 수가 변경된다', async ({ page }) => {
+                  - /boards 접속
+                  - DatePicker에서 시작 날짜 선택
+                  - DatePicker에서 종료 날짜 선택
+                  - 검색 버튼 클릭
+                  - 페이지네이션의 페이지 수가 필터 결과에 맞게 변경되었는지 확인
+                });
+
+                test('날짜 필터 후 페이지가 1로 리셋된다', async ({ page }) => {
+                  - 페이지 2로 이동
+                  - 날짜 범위 선택 후 검색
+                  - currentPage가 1로 리셋되었는지 확인
+                });
+
+            8) 테스트 시나리오 5: 복합 필터 페이지네이션
+                test('검색어와 날짜 필터를 함께 적용 시 페이지네이션이 정상 작동한다', async ({ page }) => {
+                  - 검색어 입력
+                  - 날짜 범위 선택
+                  - 검색 버튼 클릭
+                  - 복합 필터 결과에 맞는 페이지 수가 표시되는지 확인
+                  - 페이지 전환이 정상 작동하는지 확인
+                });
+
+==============================================
+
+핵심요구사항) 구현 순서 (TDD 방식)
+            1단계: GraphQL 쿼리 확장
+                - queries.ts 파일에 파라미터 추가
+                - 타입 정의 업데이트
+
+            2단계: Playwright 테스트 작성
+                - index.pagination.hook.spec.ts 파일 생성
+                - 위의 모든 테스트 시나리오 작성
+                - 이 단계에서는 모든 테스트가 실패해야 함
+
+            3단계: usePagination Hook 구현
+                - index.pagination.hook.ts 파일 생성
+                - Hook 로직 구현
+                - Apollo Client useQuery 사용
+
+            4단계: index.tsx 통합
+                - usePagination import 및 적용
+                - useBoardsBinding 제거
+                - Pagination 컴포넌트 연결
+                - data-testid 추가
+
+            5단계: 테스트 실행 및 디버깅
+                - npx playwright test src/components/boards/tests/index.pagination.hook.spec.ts
+                - 테스트 실패 시 원인 파악 및 수정
+                - 모든 테스트가 통과할 때까지 반복
+
+            6단계: 결과 체크리스트 반환
+
+==============================================
+
+핵심요구사항) 주의사항
+            1) 기존 코드와의 충돌 방지:
+                - useIndexing hook은 그대로 유지 (번호 계산용)
+                - useLinkToNewBoard, useBoardRouting, useAuthGuard는 그대로 유지
+                - styles.module.css는 수정하지 않음
+
+            2) 데이터 정합성:
+                - totalCount와 실제 boards 배열 길이 일치 확인
+                - 빈 페이지 처리 (마지막 페이지가 10개 미만인 경우)
+                - 게시글이 0개인 경우 처리
+
+            3) 에러 처리:
+                - GraphQL 에러 발생 시 사용자 친화적 메시지 표시
+                - 네트워크 에러 처리
+                - loading 상태 동안 skeleton UI 또는 로딩 메시지 표시
+
+            4) 성능 최적화:
+                - 불필요한 리렌더링 방지
+                - useEffect 의존성 배열 정확하게 설정
+                - 디바운싱 고려 (검색어 입력 시)
+
+==============================================
+
+최종 체크리스트 항목:
+□ GraphQL 쿼리에 search, startDate, endDate 파라미터 추가됨
+□ FETCH_BOARDS_COUNT 쿼리에 필터 파라미터 추가됨
+□ usePagination Hook이 올바른 인터페이스로 구현됨
+□ totalPages가 Math.ceil(totalCount / 10)로 정확히 계산됨
+□ keyword/날짜 변경 시 페이지가 1로 리셋됨
+□ index.tsx에서 useBoardsBinding이 usePagination으로 교체됨
+□ 하드코딩된 totalPages = 10이 제거됨
+□ Pagination 컴포넌트에 data-testid가 추가됨
+□ 각 페이지 버튼에 data-testid="page-{번호}"가 추가됨
+□ 10개씩 게시글 표시 테스트 통과
+□ 10개 단위 페이지 번호 표시 테스트 통과
+□ 페이지 클릭 시 해당 컨텐츠 표시 테스트 통과
+□ 검색 결과 페이지네이션 테스트 통과
+□ 검색 후 페이지 1로 리셋 테스트 통과
+□ 날짜 필터 결과 페이지네이션 테스트 통과
+□ 날짜 필터 후 페이지 1로 리셋 테스트 통과
+□ 복합 필터 페이지네이션 테스트 통과
+□ 에러 처리가 적절히 구현됨
+□ 로딩 상태가 올바르게 표시됨
+□ 모든 Playwright 테스트가 통과함

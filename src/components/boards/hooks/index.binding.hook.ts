@@ -22,7 +22,8 @@ export function useBoardsBinding() {
   const { data, loading, error } = useQuery<FetchBoardsResponse>(FETCH_BOARDS, {
     variables: {
       page: 1
-    }
+    },
+    fetchPolicy: 'network-only' // 항상 서버에서 최신 데이터 가져오기
   });
 
   // API 데이터를 리스트 표시용으로 변환

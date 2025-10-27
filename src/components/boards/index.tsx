@@ -18,6 +18,8 @@ import { useLinkToNewBoard } from "./hooks/index.link.new.hook";
 import { useBoardsBinding } from "./hooks/index.binding.hook";
 import { useBoardRouting } from "./hooks/index.link.routing.hook";
 import { useAuthGuard } from "@/commons/providers/auth/auth.guard.hook";
+import { useIndexing } from "./hooks/index.indexing.hook";
+import { useDeleteBoard } from "./hooks/index.delete.hook";
 
 export default function Boards(): JSX.Element {
   // 영역 순서 가이드
@@ -35,15 +37,21 @@ export default function Boards(): JSX.Element {
 
   // Hook: 트립토크 등록 페이지로 이동
   const { navigateToNewBoard } = useLinkToNewBoard();
-  
-  // Hook: 로컬스토리지에서 게시글 데이터 바인딩
+
+  // Hook: GraphQL API로 게시글 데이터 조회
   const { boards, loading, error } = useBoardsBinding();
-  
+
   // Hook: 게시글 상세페이지로 이동
   const { navigateToBoardDetail } = useBoardRouting();
-  
+
   // Hook: 권한 검증 및 모달 관리 (모달 렌더링을 위해 필요)
   const { LoginConfirmModal } = useAuthGuard();
+
+  // Hook: 게시글 번호 계산 (totalCount 기반 인덱싱)
+  const { calculateNumber } = useIndexing(page);
+
+  // Hook: 게시글 삭제
+  const { handleDelete } = useDeleteBoard();
 
   // 검색 실행 핸들러
   function handleSearchSubmit(): void {
@@ -131,7 +139,7 @@ export default function Boards(): JSX.Element {
             <div className={styles.colDate} role="columnheader">날짜</div>
           </div>
 
-          {/* 리스트 548px: 로컬스토리지 데이터 바인딩 */}
+          {/* 리스트 548px: API 데이터 바인딩 */}
           <div className={styles.listBody} role="rowgroup">
             {loading ? (
               <div className={styles.listRow} role="row">
@@ -155,17 +163,32 @@ export default function Boards(): JSX.Element {
                 <div className={styles.colDate} role="cell">-</div>
               </div>
             ) : (
-              boards.map((item) => (
-                <div 
-                  key={item.no} 
-                  className={styles.listRow} 
+              boards.map((item, index) => (
+                <div
+                  key={item.no}
+                  className={styles.listRow}
                   role="row"
                   onClick={() => navigateToBoardDetail(item.no)}
+                  data-testid={`board-row-${calculateNumber(index)}`}
                 >
-                  <div className={styles.colNo} role="cell">{item.no}</div>
+                  <div className={styles.colNo} role="cell" data-testid={`board-number-${calculateNumber(index)}`}>{calculateNumber(index)}</div>
                   <div className={styles.colTitle} role="cell">{item.title}</div>
                   <div className={styles.colAuthor} role="cell">{item.author}</div>
                   <div className={styles.colDate} role="cell">{item.date}</div>
+
+                  {/* 삭제 아이콘 (호버 시 표시) */}
+                  <img
+                    src="/icons/delete.png"
+                    alt="삭제"
+                    width={24}
+                    height={24}
+                    className={styles.deleteIcon}
+                    data-testid="delete-icon"
+                    onClick={(e) => {
+                      e.stopPropagation(); // 행 클릭 이벤트 전파 중단
+                      handleDelete(item.no);
+                    }}
+                  />
                 </div>
               ))
             )}

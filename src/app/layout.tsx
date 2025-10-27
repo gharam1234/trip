@@ -6,6 +6,7 @@ import { ModalProvider } from "@/commons/providers/modal/modal.provider";
 import { AuthProvider } from "@/commons/providers/auth/auth.provider";
 import { AuthGuard } from "@/commons/providers/auth/auth.guard";
 import ApolloClientProvider from "@/commons/providers/apollo-client/apollo-client.provider";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,15 +34,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <ApolloClientProvider>
-            <ModalProvider>
-              <AuthGuard>
-                <LayoutWireframe>{children}</LayoutWireframe>
-              </AuthGuard>
-            </ModalProvider>
-          </ApolloClientProvider>
-        </AuthProvider>
+        <AntdRegistry>
+          <AuthProvider>
+            <ApolloClientProvider>
+              <ModalProvider>
+                <AuthGuard>
+                  <LayoutWireframe>{children}</LayoutWireframe>
+                </AuthGuard>
+              </ModalProvider>
+            </ApolloClientProvider>
+          </AuthProvider>
+        </AntdRegistry>
       </body>
     </html>
   );

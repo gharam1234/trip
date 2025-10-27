@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import styles from "./styles.module.css";
 import Image from "next/image";
+import Link from "next/link";
 import { useLinkRouting } from "./hooks/index.link.routing.hook";
 import { useAreaVisibility } from "./hooks/index.area.hook";
 import { useLayoutAuth } from "./hooks/index.auth.hook";
@@ -50,15 +51,17 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
         <div className={styles.navigationInner}>
           {/* 좌측: 로고 + 탭 */}
           <div className={styles.navLeftGroup}>
-            <Image 
-              src="/images/logo.png" 
-              alt="logo" 
-              width={51.52} 
-              height={32} 
-              className={styles.logoLink}
-              data-testid="logo-link"
-              onClick={handleLogoClick}
-            />
+            <Link href="/boards">
+              <Image 
+                src="/images/logo.png" 
+                alt="logo" 
+                width={51.52} 
+                height={32} 
+                className={styles.logoLink}
+                data-testid="logo-link"
+                onClick={handleLogoClick}
+              />
+            </Link>
             <div className={styles.tapGroup}>
               <button className={`${styles.tapItem} ${styles.tapActive}`} type="button">
                 {/* '트립토크' */}

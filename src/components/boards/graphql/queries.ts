@@ -32,3 +32,19 @@ export interface BoardApiItem {
   contents: string;
   createdAt: string;
 }
+
+/**
+ * 게시판 총 개수 조회 Query
+ */
+export const FETCH_BOARD_COUNT = gql`
+  query FetchBoardsCount {
+    fetchBoardsCount
+  }
+`;
+
+/**
+ * FetchBoardsCount Query 응답 타입
+ */
+export interface FetchBoardsCountResponse {
+  fetchBoardsCount: number;
+}
