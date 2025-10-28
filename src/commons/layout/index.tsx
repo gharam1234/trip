@@ -10,6 +10,7 @@ import { useAreaVisibility } from "./hooks/index.area.hook";
 import { useLayoutAuth } from "./hooks/index.auth.hook";
 import { useActiveMenu } from "./hooks/index.active.menu.hook";
 import { Button } from "../components/button";
+import UserMenu from "../../components/user-menu";
 
 type LayoutWireframeProps = {
   children: React.ReactNode;
@@ -107,57 +108,14 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
                     height={24}
                   />
                 </div>
-                
-                {/* 드롭다운 메뉴 */}
-                {isDropdownOpen && (
-                  <div className={styles.dropdownMenu}>
-                    {/* 포인트 섹션 */}
-                    <div className={styles.dropdownPointSection}>
-                      <Image 
-                        src="/icons/point.png" 
-                        alt="포인트 아이콘" 
-                        width={24} 
-                        height={24}
-                      />
-                      <div className={styles.dropdownPointValue}>23,000P</div>
-                    </div>
 
-                    {/* 구분선 */}
-                    <div className={styles.dropdownDivider} />
-
-                    {/* 메뉴 항목들 */}
-                    <div className={styles.dropdownMenuItems}>
-                      <button 
-                        className={styles.dropdownMenuTab}
-                        type="button"
-                      >
-                        <Image 
-                          src="/icons/charge.png" 
-                          alt="포인트 충전 아이콘" 
-                          width={16} 
-                          height={16}
-                        />
-                        <span className={styles.dropdownMenuTabLabel}>포인트 충전</span>
-                      </button>
-                      <button 
-                        className={styles.dropdownMenuTab}
-                        type="button"
-                        onClick={() => {
-                          handleLogoutClick();
-                          setIsDropdownOpen(false);
-                        }}
-                      >
-                        <Image 
-                          src="/icons/logout.png" 
-                          alt="로그아웃 아이콘" 
-                          width={16} 
-                          height={16}
-                        />
-                        <span className={styles.dropdownMenuTabLabel}>로그아웃</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
+                {/* UserMenu 컴포넌트 */}
+                <UserMenu
+                  isOpen={isDropdownOpen}
+                  onClose={() => setIsDropdownOpen(false)}
+                  showProfile={false}
+                  userName={userName}
+                />
               </div>
             ) : (
               // 비로그인 상태: 로그인 버튼
