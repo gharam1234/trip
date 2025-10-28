@@ -87,6 +87,20 @@ export const URLS = {
     showBanner: false,
     showNavigation: false,
   },
+  ACCOMMODATION_BUY: {
+    name: '숙박권구매',
+    pathTemplate: '/accommodation',
+    access: 'PUBLIC',
+    showBanner: true,
+    showNavigation: true,
+  },
+  MY_PAGE: {
+    name: '마이페이지',
+    pathTemplate: '/mypage',
+    access: 'MEMBER_ONLY',
+    showBanner: true,
+    showNavigation: true,
+  },
 } as const satisfies Record<string, RouteConfig>
 
 export type RouteKey = keyof typeof URLS

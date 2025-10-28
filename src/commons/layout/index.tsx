@@ -9,6 +9,7 @@ import { useLinkRouting } from "./hooks/index.link.routing.hook";
 import { useAreaVisibility } from "./hooks/index.area.hook";
 import { useLayoutAuth } from "./hooks/index.auth.hook";
 import { useAuthRouteSync } from "./hooks/use.auth.route.sync.hook";
+import { useActiveMenu } from "./hooks/index.active.menu.hook";
 import { Button } from "../components/button";
 
 type LayoutWireframeProps = {
@@ -16,13 +17,14 @@ type LayoutWireframeProps = {
 };
 
 export default function LayoutWireframe({ children }: LayoutWireframeProps) {
-  const { handleLogoClick } = useLinkRouting();
+  const { handleLogoClick, navigateTo } = useLinkRouting();
   const { showBanner, showNavigation, routeKey } = useAreaVisibility();
   const { isLoggedIn, userName, handleLoginClick, handleLogoutClick, handleDropdownToggle } = useLayoutAuth();
-  
+  const { activeMenuId } = useActiveMenu();
+
   // 라우트 변화에 따른 인증상태 재동기화
   useAuthRouteSync();
-  
+
   // 드롭다운 메뉴 상태 관리
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -63,17 +65,35 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
               />
             </Link>
             <div className={styles.tapGroup}>
-              <button className={`${styles.tapItem} ${styles.tapActive}`} type="button">
-                {/* '트립토크' */}
-                <span className={styles.tapLabelPrimary}>트립토크</span>
+              <button
+                className={`${styles.tapItem} ${activeMenuId === 'trip-talk' ? styles.tapActive : ''}`}
+                type="button"
+                onClick={() => navigateTo('BOARDS_LIST')}
+                data-testid="menu-trip-talk"
+              >
+                <span className={activeMenuId === 'trip-talk' ? styles.tapLabelPrimary : styles.tapLabel}>
+                  트립토크
+                </span>
               </button>
-              <button className={styles.tapItem} type="button">
-                {/* '숙박권 구매' */}
-                <span className={styles.tapLabel}>숙박권 구매</span>
+              <button
+                className={`${styles.tapItem} ${activeMenuId === 'accommodation-buy' ? styles.tapActive : ''}`}
+                type="button"
+                onClick={() => navigateTo('ACCOMMODATION_BUY')}
+                data-testid="menu-accommodation-buy"
+              >
+                <span className={activeMenuId === 'accommodation-buy' ? styles.tapLabelPrimary : styles.tapLabel}>
+                  숙박권 구매
+                </span>
               </button>
-              <button className={styles.tapItem} type="button">
-                {/* '마이 페이지' */}
-                <span className={styles.tapLabel}>마이 페이지</span>
+              <button
+                className={`${styles.tapItem} ${activeMenuId === 'my-page' ? styles.tapActive : ''}`}
+                type="button"
+                onClick={() => navigateTo('MY_PAGE')}
+                data-testid="menu-my-page"
+              >
+                <span className={activeMenuId === 'my-page' ? styles.tapLabelPrimary : styles.tapLabel}>
+                  마이 페이지
+                </span>
               </button>
             </div>
           </div>
