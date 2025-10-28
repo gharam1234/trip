@@ -113,6 +113,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               aria-label={`${p} 페이지`}
               onClick={() => handleChange(p)}
               disabled={disabled}
+              data-testid={`page-${p}`}
             >
               {p}
             </button>

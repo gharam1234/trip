@@ -3,9 +3,27 @@
 > playwright test
 
 
-Running 97 tests using 5 workers
+Running 151 tests using 5 workers
 
-  ✓   4 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:5:7 › 비로그인 유저 인증 테스트 › 비회원으로 /boards에 접속하여 페이지 로드 확인 (2.8s)
+[WebServer]  [31m[1m⨯[22m[39m Failed to start server
+[WebServer] Error: listen EADDRINUSE: address already in use :::3000
+[WebServer] [90m    at Server.setupListenHandle [as _listen2] (node:net:1940:16)[39m
+[WebServer] [90m    at listenInCluster (node:net:1997:12)[39m
+[WebServer] [90m    at Server.listen (node:net:2102:7)[39m
+[WebServer]     at [90m/Users/gharam12/Desktop/trip/[39mnode_modules/[4mnext[24m/dist/server/lib/start-server.js:280:16
+[WebServer]     at new Promise (<anonymous>)
+[WebServer]     at startServer [90m(/Users/gharam12/Desktop/trip/[39mnode_modules/[4mnext[24m/dist/server/lib/start-server.js:191:11[90m)[39m
+[WebServer]     at [90m/Users/gharam12/Desktop/trip/[39mnode_modules/[4mnext[24m/dist/server/lib/start-server.js:310:52
+[WebServer]     at Span.traceAsyncFn [90m(/Users/gharam12/Desktop/trip/[39mnode_modules/[4mnext[24m/dist/trace/trace.js:154:26[90m)[39m
+[WebServer]     at process.<anonymous> [90m(/Users/gharam12/Desktop/trip/[39mnode_modules/[4mnext[24m/dist/server/lib/start-server.js:310:35[90m)[39m
+[WebServer] [90m    at process.emit (node:events:507:28)[39m {
+[WebServer]   code: [32m'EADDRINUSE'[39m,
+[WebServer]   errno: [33m-48[39m,
+[WebServer]   syscall: [32m'listen'[39m,
+[WebServer]   address: [32m'::'[39m,
+[WebServer]   port: [33m3000[39m
+[WebServer] }
+  ✓    5 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:5:7 › 비로그인 유저 인증 테스트 › 비회원으로 /boards에 접속하여 페이지 로드 확인 (1.8s)
 
 경로: /boards
   routeKey: BOARDS_LIST
@@ -13,12 +31,10 @@ Running 97 tests using 5 workers
   showNavigation: true
   banner display: block
   navigation display: flex
-  ✓   5 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:61:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 목록 페이지 - banner와 navigation 모두 표시 (2.9s)
-  ✓   3 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:12:7 › Auth Guard Hook 테스트 › 실제 환경에서 비로그인 사용자 권한 검증 (2.9s)
-  ✓   6 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:16:7 › 비로그인 유저 인증 테스트 › layout의 로그인버튼 노출여부 확인 (847ms)
-  ✓   8 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:29:7 › Auth Guard Hook 테스트 › 테스트 환경에서 로그인 검사 우회 (825ms)
-  ✓   2 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:12:7 › 로그인 폼 테스트 › 로그인 성공 시나리오 (4.6s)
-  ✓   1 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:13:7 › Layout Link Routing Hook › 로고 클릭 시 게시글 목록 페이지로 이동해야 함 (4.8s)
+  ✓    4 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:61:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 목록 페이지 - banner와 navigation 모두 표시 (1.9s)
+  ✘    1 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:12:7 › Auth Guard Hook 테스트 › 실제 환경에서 비로그인 사용자 권한 검증 (2.3s)
+  ✘    2 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:13:7 › Layout Link Routing Hook › 로고 클릭 시 게시글 목록 페이지로 이동해야 함 (2.5s)
+  ✓    6 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:16:7 › 비로그인 유저 인증 테스트 › layout의 로그인버튼 노출여부 확인 (1.0s)
 
 경로: /boards/123
   routeKey: BOARD_DETAIL
@@ -26,11 +42,9 @@ Running 97 tests using 5 workers
   showNavigation: true
   banner display: block
   navigation display: flex
-  ✓   7 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:61:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 상세 페이지 - banner와 navigation 모두 표시 (2.0s)
-  ✓  10 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:67:7 › Auth Guard Hook 테스트 › 테스트 환경에서 비회원 가드 테스트 (1.2s)
-  ✓   9 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:23:7 › 비로그인 유저 인증 테스트 › 로그인버튼 클릭하여 /auth/login 페이지로 이동 (2.0s)
-  ✓  12 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:25:7 › Layout Link Routing Hook › 로고에 cursor: pointer 스타일이 적용되어야 함 (968ms)
-  ✓  11 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:49:7 › 로그인 폼 테스트 › 로그인 실패 시나리오 - 잘못된 이메일 (1.3s)
+  ✓    7 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:61:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 상세 페이지 - banner와 navigation 모두 표시 (1.2s)
+  ✓    8 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:29:7 › Auth Guard Hook 테스트 › 테스트 환경에서 로그인 검사 우회 (518ms)
+  ✓   10 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:25:7 › Layout Link Routing Hook › 로고에 cursor: pointer 스타일이 적용되어야 함 (1.1s)
 
 경로: /boards/new
   routeKey: BOARD_NEW
@@ -38,609 +52,260 @@ Running 97 tests using 5 workers
   showNavigation: false
   banner display: none
   navigation display: none
-  ✓  13 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:61:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 작성 페이지 - banner와 navigation 모두 숨김 (1.1s)
-  ✓  18 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:134:7 › Area Visibility Hook (TDD 기반 테스트) › skip 대상 경로들이 정의되어 있는지 확인 (61ms)
-  ✓  19 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:141:7 › Area Visibility Hook (TDD 기반 테스트) › 동적 세그먼트 경로 매칭 로직이 정확하게 작동하는지 확인 (59ms)
-  ✓  15 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:39:7 › 로그인 유저 인증 테스트 › 비회원으로 /auth/login에 접속하여 페이지 로드 확인 (554ms)
-  ✓  14 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:85:7 › Auth Guard Hook 테스트 › 로그인 확인 모달 - 로그인 버튼 클릭 (1.6s)
-  ✓  17 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:89:7 › 로그인 폼 테스트 › 로그인 실패 시나리오 - 잘못된 비밀번호 (1.2s)
-  ✓  16 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:32:7 › Layout Link Routing Hook › 로고 클릭 후 페이지 로드가 완료되어야 함 (1.4s)
-  ✓  20 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:30:9 › 회원가입 폼 기능 › 폼 검증 › 이메일 형식 오류 - @ 포함 없음 (1.1s)
-  ✓  22 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:108:7 › Auth Guard Hook 테스트 › 로그인 확인 모달 - 취소 버튼 클릭 (924ms)
-  ✓  21 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:46:7 › 로그인 유저 인증 테스트 › 로그인 시도 및 성공 (1.4s)
-  ✓  23 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:129:7 › 로그인 폼 테스트 › 폼 검증 - 이메일 형식 오류 (687ms)
-  ✓  25 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:41:9 › 회원가입 폼 기능 › 폼 검증 › 이메일 필수 입력 (600ms)
-  ✓  24 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:18:7 › 보드 데이터 바인딩 (API) 테스트 › 성공 시나리오: API에서 정상 데이터를 반환하고 리스트에 표시 (745ms)
-  ✓  26 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:134:7 › Auth Guard Hook 테스트 › 모달 중복 표시 방지 (748ms)
-  ✓  31 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:156:7 › Auth Guard Hook 테스트 › 테스트 환경 설정 함수 동작 확인 (64ms)
-  ✓  28 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:141:7 › 로그인 폼 테스트 › 폼 검증 - 비밀번호 빈 값 (638ms)
-  ✓  29 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:53:9 › 회원가입 폼 기능 › 폼 검증 › 이름 필수 입력 (694ms)
-  ✓  30 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:67:7 › 보드 데이터 바인딩 (API) 테스트 › 실패 시나리오: 빈 배열 반환 시 "등록된 게시글이 없습니다" 메시지 표시 (657ms)
-  ✓  32 [chromium] › src/components/boards/tests/index.link.new.hook.spec.ts:5:9 › 트립토크 등록 버튼 클릭 테스트 › 비로그인 유저 시나리오 › 트립토크 등록 버튼 클릭시 로그인요청모달이 노출된다 (667ms)
-  ✓  33 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:49:7 › 게시글 라우팅 기능 › 최신 게시글 (board-002)을 클릭시 상세페이지로 이동해야 함 (821ms)
-  ✓  27 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:62:7 › 로그인 유저 인증 테스트 › 로그인 성공 후 완료 모달 클릭하여 /boards 페이지 로드 확인 (1.6s)
-  ✓  35 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:93:7 › 보드 데이터 바인딩 (API) 테스트 › 제목이 길 경우 "..."으로 잘려서 표시 (654ms)
-  ✓  34 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:65:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 조건 오류 - 8자 미만 (741ms)
-  ✓  39 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:125:7 › 보드 데이터 바인딩 (API) 테스트 › 데이터 바인딩 필드 매핑 확인 (724ms)
-  ✓  40 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:77:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 조건 오류 - 영문 미포함 (725ms)
-  ✓  37 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:73:7 › 게시글 라우팅 기능 › 이전 게시글 (board-001)을 클릭시 해당 상세페이지로 이동해야 함 (905ms)
-  ✘  36 [chromium] › src/components/boards/tests/index.link.new.hook.spec.ts:30:9 › 트립토크 등록 버튼 클릭 테스트 › 로그인 유저 시나리오 › 트립토크 등록 버튼 클릭시 게시글 쓰기 페이지로 이동한다 (1.2s)
-  ✓  41 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:169:7 › 보드 데이터 바인딩 (API) 테스트 › 로딩 상태에서 로딩 메시지 표시 (608ms)
-  ✓  42 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:89:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 조건 오류 - 숫자 미포함 (644ms)
-  ✓  43 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:97:7 › 게시글 라우팅 기능 › 게시글 행에 cursor: pointer 스타일이 적용되어야 함 (588ms)
-  ✓  38 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:81:7 › 로그인 유저 인증 테스트 › layout에서 유저이름, 셀렉트박스버튼 노출여부 확인 (1.8s)
+  ✓   11 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:61:9 › Area Visibility Hook (TDD 기반 테스트) › 게시글 작성 페이지 - banner와 navigation 모두 숨김 (1.4s)
+  ✓   13 [chromium] › src/commons/layout/tests/index.link.routing.hook.spec.ts:32:7 › Layout Link Routing Hook › 로고 클릭 후 페이지 로드가 완료되어야 함 (280ms)
+  ✓   14 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:134:7 › Area Visibility Hook (TDD 기반 테스트) › skip 대상 경로들이 정의되어 있는지 확인 (49ms)
+  ✓   16 [chromium] › src/commons/layout/tests/index.area.hook.spec.ts:141:7 › Area Visibility Hook (TDD 기반 테스트) › 동적 세그먼트 경로 매칭 로직이 정확하게 작동하는지 확인 (51ms)
+
+테스트 보드ID: 68fee6f59bffc00029cce4ab
+  ✘   12 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:67:7 › Auth Guard Hook 테스트 › 테스트 환경에서 비회원 가드 테스트 (1.5s)
+로그인 시도 완료: page.waitForResponse: Timeout 2000ms exceeded while waiting for event "response"
+  ✓    3 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:12:7 › 로그인 폼 테스트 › 로그인 성공 시나리오 (4.8s)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+  ✘   19 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:85:7 › Auth Guard Hook 테스트 › 로그인 확인 모달 - 로그인 버튼 클릭 (671ms)
+댓글 데이터를 로드할 수 없습니다. (유효한 보드 ID 또는 댓글이 없을 수 있음)
+렌더링된 댓글 수: 0
+(테스트 통과) 댓글이 없거나 API 응답이 없습니다.
+  ✓   17 [chromium] › src/components/board-comments/tests/index.binding.hook.spec.ts:32:7 › Board Comments Binding Hook (TDD 기반 테스트) › 성공 시나리오: API 응답 데이터를 기반으로 댓글 목록 바인딩 (1.6s)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+  ✘   21 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:108:7 › Auth Guard Hook 테스트 › 로그인 확인 모달 - 취소 버튼 클릭 (630ms)
+댓글이 없거나 API 로드에 실패했습니다. (테스트 통과)
+  ✓   20 [chromium] › src/components/board-comments/tests/index.binding.hook.spec.ts:99:7 › Board Comments Binding Hook (TDD 기반 테스트) › 성공 시나리오: 댓글 목록이 올바르게 포맷되었는지 확인 (867ms)
+로그인 실패 시나리오 처리 완료: page.waitForResponse: Timeout 2000ms exceeded while waiting for event "response"
+  ✓   18 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:49:7 › 로그인 폼 테스트 › 로그인 실패 시나리오 - 잘못된 이메일 (2.4s)
+
+API 실패 시 렌더링된 댓글 수: 0
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+에러 메시지 표시: 아니요
+  ✓   22 [chromium] › src/components/board-comments/tests/index.binding.hook.spec.ts:148:7 › Board Comments Binding Hook (TDD 기반 테스트) › 실패 시나리오: API 호출 실패 처리 (497ms)
+
+빈 배열 응답 시 렌더링된 댓글 수: 0
+빈 상태 메시지 표시: 아니요
+  ✓   25 [chromium] › src/components/board-comments/tests/index.binding.hook.spec.ts:171:7 › Board Comments Binding Hook (TDD 기반 테스트) › 실패 시나리오: 빈 배열 응답 처리 (530ms)
+  ✘    9 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:23:7 › 비로그인 유저 인증 테스트 › 로그인버튼 클릭하여 /auth/login 페이지로 이동 (5.4s)
+  ✘   24 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:134:7 › Auth Guard Hook 테스트 › 모달 중복 표시 방지 (790ms)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+  ✓   28 [chromium] › src/commons/providers/auth/tests/auth.guard.hook.spec.ts:156:7 › Auth Guard Hook 테스트 › 테스트 환경 설정 함수 동작 확인 (84ms)
+
+테스트 보드ID: 68fee6f59bffc00029cce4ab
+댓글이 없거나 API 로드에 실패했습니다. (테스트 통과)
+  ✓   26 [chromium] › src/components/board-comments/tests/index.binding.hook.spec.ts:208:7 › Board Comments Binding Hook (TDD 기반 테스트) › 날짜 포맷이 정확하게 적용되었는지 확인 (769ms)
+  ✓   27 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:39:7 › 로그인 유저 인증 테스트 › 비회원으로 /auth/login에 접속하여 페이지 로드 확인 (233ms)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+로그인 실패 시나리오 처리 완료: page.waitForResponse: Timeout 2000ms exceeded while waiting for event "response"
+  ✓   23 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:89:7 › 로그인 폼 테스트 › 로그인 실패 시나리오 - 잘못된 비밀번호 (2.3s)
+댓글이 없거나 API 로드에 실패했습니다.
+페이지 로드 실패
+  ✓   30 [chromium] › src/components/board-comments/tests/index.binding.hook.spec.ts:247:7 › Board Comments Binding Hook (TDD 기반 테스트) › 댓글 내용의 3줄 초과 처리 확인 (789ms)
+  ✓   29 [chromium] › src/components/board-comments/tests/index.edit.hook.spec.ts:32:7 › Board Comments Edit/Delete Hook (TDD 기반 테스트) › 성공 시나리오: 댓글 수정 후 목록이 자동으로 업데이트되는지 검증 (907ms)
+
+테스트 보드ID: 68fee6f59bffc00029cce4ab
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+  ✘   15 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:30:9 › 회원가입 폼 기능 › 폼 검증 › 이메일 형식 오류 - @ 포함 없음 (5.6s)
+페이지 로드 실패
+  ✓   34 [chromium] › src/components/board-comments/tests/index.edit.hook.spec.ts:106:7 › Board Comments Edit/Delete Hook (TDD 기반 테스트) › 성공 시나리오: 댓글 삭제 후 목록에서 제거되는지 검증 (778ms)
+페이지 로드 실패
+  ✓   33 [chromium] › src/components/board-comments/tests/index.submit.hook.spec.ts:32:7 › Board Comments Submit Hook (TDD 기반 테스트) › 성공 시나리오: 댓글 작성 후 목록이 자동으로 업데이트되는지 검증 (1.2s)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+페이지 로드 실패
+  ✓   36 [chromium] › src/components/board-comments/tests/index.edit.hook.spec.ts:169:7 › Board Comments Edit/Delete Hook (TDD 기반 테스트) › 수정 모드 전환 테스트: 수정 버튼 클릭 시 폼으로 전환 (825ms)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+댓글 작성 폼을 찾을 수 없습니다.
+  ✓   37 [chromium] › src/components/board-comments/tests/index.submit.hook.spec.ts:111:7 › Board Comments Submit Hook (TDD 기반 테스트) › 입력값 검증 테스트: 내용이 비어있을 때 에러 처리 (803ms)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+페이지 로드 실패
+  ✓   38 [chromium] › src/components/board-comments/tests/index.edit.hook.spec.ts:232:7 › Board Comments Edit/Delete Hook (TDD 기반 테스트) › API 호출 실패 시나리오: 비밀번호 불일치 시 에러 처리 (757ms)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+댓글 작성 폼을 찾을 수 없습니다.
+  ✓   39 [chromium] › src/components/board-comments/tests/index.submit.hook.spec.ts:144:7 › Board Comments Submit Hook (TDD 기반 테스트) › 입력값 검증 테스트: 비밀번호가 4자리 숫자가 아닐 때 에러 처리 (765ms)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+페이지 로드 실패
+  ✓   40 [chromium] › src/components/board-comments/tests/index.edit.hook.spec.ts:301:7 › Board Comments Edit/Delete Hook (TDD 기반 테스트) › 실패 시나리오: API 호출 실패 시 에러 메시지 표시 (759ms)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+  ✓   41 [chromium] › src/components/board-comments/tests/index.submit.hook.spec.ts:181:7 › Board Comments Submit Hook (TDD 기반 테스트) › 성공 시나리오: API 호출 성공 후 폼이 초기화되는지 확인 (1.2s)
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+GraphQL 응답: {
+  "sourcePackage": "next"
+}
+  ✘   31 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:46:7 › 로그인 유저 인증 테스트 › 로그인 시도 및 성공 (5.3s)
+  ✓   43 [chromium] › src/components/board-comments/tests/index.submit.hook.spec.ts:232:7 › Board Comments Submit Hook (TDD 기반 테스트) › API 호출 실패 시나리오: 네트워크 오류 처리 (774ms)
+  ✘   32 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:129:7 › 로그인 폼 테스트 › 폼 검증 - 이메일 형식 오류 (5.2s)
+API 호출 여부: [33mfalse[39m
+API 응답: [1mnull[22m
+  ✓   42 [chromium] › src/components/boards/tests/api-check.spec.ts:3:5 › API 확인: fetchBoards 데이터 조회 (2.1s)
+게시글 수: [33m1[39m
+첫 번째 게시글 HTML: <div class="styles_colNo__E2OGj" role="cell">로딩 중...</div><div class="styles_colTitle__OSEGW" role="cell"></div><div class="styles_colAuthor__Bkelg" role="cell"></div><div class="styles_colDate__D_3dJ" role="cell"></div>
+삭제 아이콘 개수: [33m0[39m
+img 태그 개수: [33m0[39m
+  ✓   44 [chromium] › src/components/boards/tests/debug.spec.ts:3:5 › 디버깅: 페이지 스크린샷 및 HTML 확인 (756ms)
+  ✘   35 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:41:9 › 회원가입 폼 기능 › 폼 검증 › 이메일 필수 입력 (5.2s)
+  ✘   47 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:65:7 › 게시글 삭제 기능 테스트 › 호버 시나리오: 게시글 행에 마우스 호버 시 삭제 아이콘이 표시되는지 확인 (2.3s)
+  ✘   45 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:62:7 › 로그인 유저 인증 테스트 › 로그인 성공 후 완료 모달 클릭하여 /boards 페이지 로드 확인 (5.3s)
+  ✘   50 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:117:7 › 게시글 삭제 기능 테스트 › 삭제 아이콘 위치: 게시글 행의 우측 끝에 배치되는지 확인 (2.3s)
+  ✘   46 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:18:7 › 보드 데이터 바인딩 (API) 테스트 › 성공 시나리오: API에서 정상 데이터를 반환하고 리스트에 표시 (5.2s)
+  ✘   48 [chromium] › src/components/auth-login/tests/index.form.hook.spec.ts:141:7 › 로그인 폼 테스트 › 폼 검증 - 비밀번호 빈 값 (5.2s)
+  ✓   53 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:67:7 › 보드 데이터 바인딩 (API) 테스트 › 실패 시나리오: 빈 배열 반환 시 "등록된 게시글이 없습니다" 메시지 표시 (312ms)
+  ✘   54 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:93:7 › 보드 데이터 바인딩 (API) 테스트 › 제목이 길 경우 "..."으로 잘려서 표시 (159ms)
+  ✘   49 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:53:9 › 회원가입 폼 기능 › 폼 검증 › 이름 필수 입력 (5.3s)
+  ✓   56 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:125:7 › 보드 데이터 바인딩 (API) 테스트 › 데이터 바인딩 필드 매핑 확인 (152ms)
+  ✓   57 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:169:7 › 보드 데이터 바인딩 (API) 테스트 › 로딩 상태에서 로딩 메시지 표시 (134ms)
+  ✓   59 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:182:7 › 보드 데이터 바인딩 (API) 테스트 › API 호출 실패 시 오류 메시지 표시 (191ms)
+  ✓   60 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:203:7 › 보드 데이터 바인딩 (API) 테스트 › 여러 게시글이 정상적으로 표시 (133ms)
+  ✘   61 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:226:7 › 보드 데이터 바인딩 (API) 테스트 › 제목 셀에 CSS 오버플로우 스타일 적용 확인 (135ms)
+  ✘   62 [chromium] › src/components/boards/tests/index.link.new.hook.spec.ts:5:9 › 트립토크 등록 버튼 클릭 테스트 › 비로그인 유저 시나리오 › 트립토크 등록 버튼 클릭시 로그인요청모달이 노출된다 (591ms)
+  ✘   63 [chromium] › src/components/boards/tests/index.link.new.hook.spec.ts:30:9 › 트립토크 등록 버튼 클릭 테스트 › 로그인 유저 시나리오 › 트립토크 등록 버튼 클릭시 게시글 쓰기 페이지로 이동한다 (2.2s)
+  ✘   51 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:81:7 › 로그인 유저 인증 테스트 › layout에서 유저이름, 셀렉트박스버튼 노출여부 확인 (5.5s)
+  ✘   58 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:65:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 조건 오류 - 8자 미만 (5.3s)
+  ✘   65 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:99:7 › 로그인 유저 인증 테스트 › 셀렉트박스를 열어서 로그아웃버튼 클릭하여 /auth/login 페이지 로드 확인 (5.3s)
+  ✘   66 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:77:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 조건 오류 - 영문 미포함 (5.3s)
+  ✘   67 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:122:7 › 로그인 유저 인증 테스트 › 로그아웃 후 /boards에 접속하여 페이지 로드 확인 (5.3s)
+  ✘   68 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:89:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 조건 오류 - 숫자 미포함 (5.3s)
+  ✘   69 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:143:7 › 로그인 유저 인증 테스트 › 로그아웃 후 layout에 로그인버튼 노출여부 확인 (5.3s)
+  ✘   70 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:101:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 확인 불일치 (5.2s)
+  ✘   72 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:115:9 › 회원가입 폼 기능 › 유효한 데이터로 회원가입 성공 시나리오 › 유효한 데이터로 회원가입 성공 (2.2s)
+  ✘   73 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:136:9 › 회원가입 폼 기능 › 이메일 중복으로 회원가입 실패 시나리오 › 이메일 중복으로 회원가입 실패 (741ms)
 
 === 페이지 로드 정보 ===
-Response status: [33m200[39m
+Response status: [33m500[39m
 Page URL: http://localhost:3000/boards/1
 
 === Data TestId 요소 ===
-총 요소 개수: [33m2[39m
-  - DIV [data-testid="auth-guard-loading"] text: "로딩 중......"
-  - DIV [data-testid="auth-guard-loading-text"] text: "로딩 중......"
+총 요소 개수: [33m0[39m
 
 === Body 텍스트 (처음 300자) ===
-로딩 중...(self.__next_f=self.__next_f||[]).push([0]);self.__next_f.push([2,null])self.__next_f.push([1,"1:HL[\"/_next/static/media/4473ecc91f70f139-s.p.woff\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff\"}]\n2:HL[\"/_next/static/media/463dafcda517f24f-s.p.woff\",\"font\",{\"crossOrigin\":\"\",
+{"props":{"pageProps":{"statusCode":500}},"page":"/_error","query":{},"buildId":"development","isFallback":false,"err":{"name":"Error","source":"server","message":"Cannot find module './vendor-chunks/graphql.js'\nRequire stack:\n- /Users/gharam12/Desktop/trip/.next/server/webpack-runtime.js\n- /User
 
 === boards-detail-page 요소 ===
 isVisible: [33mfalse[39m
 count: [33m0[39m
-  ✓  44 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:182:7 › 보드 데이터 바인딩 (API) 테스트 › API 호출 실패 시 오류 메시지 표시 (630ms)
-  ✓  45 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:101:9 › 회원가입 폼 기능 › 폼 검증 › 비밀번호 확인 불일치 (654ms)
-  ✓  49 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:203:7 › 보드 데이터 바인딩 (API) 테스트 › 여러 게시글이 정상적으로 표시 (584ms)
-  ✘  46 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:118:7 › 게시글 라우팅 기능 › 게시글이 없을 때는 빈 상태 메시지가 표시되어야 함 (1.3s)
-  ✓  50 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:115:9 › 회원가입 폼 기능 › 유효한 데이터로 회원가입 성공 시나리오 › 유효한 데이터로 회원가입 성공 (671ms)
-  ✓  51 [chromium] › src/components/boards/tests/index.binding.hook.spec.ts:226:7 › 보드 데이터 바인딩 (API) 테스트 › 제목 셀에 CSS 오버플로우 스타일 적용 확인 (510ms)
-  ✓  48 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:99:7 › 로그인 유저 인증 테스트 › 셀렉트박스를 열어서 로그아웃버튼 클릭하여 /auth/login 페이지 로드 확인 (1.8s)
-  ✓  52 [chromium] › src/components/auth-signup/tests/index.form.hook.spec.ts:136:9 › 회원가입 폼 기능 › 이메일 중복으로 회원가입 실패 시나리오 › 이메일 중복으로 회원가입 실패 (824ms)
-  ✓  54 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:56:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 유효한 boardId로 게시글 데이터가 GraphQL API에서 올바르게 바인딩되어야 함 (485ms)
-  ✓  57 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:98:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 존재하지 않는 boardId로 접근 시 게시글을 찾을 수 없다는 메시지가 표시되어야 함 (478ms)
-  ✓  58 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:120:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › API 호출 실패 시 오류 메시지 또는 로딩 상태가 표시되어야 함 (442ms)
-  ✘  59 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:149:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 이미지 영역이 렌더링되어야 함 (429ms)
-  ✓  55 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:122:7 › 로그인 유저 인증 테스트 › 로그아웃 후 /boards에 접속하여 페이지 로드 확인 (2.0s)
-  ✘  60 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:168:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 비디오 영역이 렌더링되어야 함 (477ms)
-  ✘  62 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:191:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 모든 주요 섹션이 렌더링되어야 함 (456ms)
-  ✓  61 [chromium] › src/commons/layout/tests/index.auth.hook.spec.ts:143:7 › 로그인 유저 인증 테스트 › 로그아웃 후 layout에 로그인버튼 노출여부 확인 (1.9s)
-  ✓  63 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:230:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 페이지가 정상적으로 로드되고 상태를 표시해야 함 (454ms)
-  ✓  65 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:24:7 › 게시판 폼 등록 기능 (Apollo 기반) › 필수 필드 입력 시 등록하기 버튼이 활성화되어야 함 (668ms)
-  ✘  53 [chromium] › src/components/boards-detail/tests/index.link.boards.hook.spec.ts:5:7 › 보드 상세 - 목록으로 버튼 네비게이션 › 버튼 클릭 전후 URL이 요구사항과 일치해야 함 (5.8s)
-  ✓  66 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:36:7 › 게시판 폼 등록 기능 (Apollo 기반) › 필수 필드가 비어있으면 등록하기 버튼이 비활성화되어야 함 (628ms)
-  ✘  56 [chromium] › src/components/boards-detail/tests/index.link.update.hook.spec.ts:35:7 › 게시글 상세 페이지 수정 버튼 라우팅 테스트 › 수정 버튼 클릭 시 게시글 수정 페이지로 이동 (5.9s)
-  ✓  67 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:42:7 › 게시판 폼 등록 기능 (Apollo 기반) › 게시물 등록 성공 시나리오 (실제 API 요청) (1.2s)
-  ✓  70 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:75:7 › 게시판 폼 등록 기능 (Apollo 기반) › 게시물 등록 실패 시나리오 (잘못된 데이터) (831ms)
-  ✓  69 [chromium] › src/components/boards-new/tests/index.update.hook.spec.ts:55:7 › 게시판 수정 기능 - useBoardForm Hook › 수정 페이지로 이동 후 페이지 로드 확인 (1.1s)
-  ✓  72 [chromium] › src/components/boards-new/tests/index.update.hook.spec.ts:71:7 › 게시판 수정 기능 - useBoardForm Hook › 수정 페이지에서 기존 게시물 데이터가 폼에 자동 로드되는지 확인 (477ms)
-  ✓  73 [chromium] › src/components/boards-new/tests/index.update.hook.spec.ts:102:7 › 게시판 수정 기능 - useBoardForm Hook › 수정 페이지의 UI 요소들이 올바르게 표시되는지 확인 (466ms)
-  ✓  71 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:88:7 › 게시판 폼 등록 기능 (Apollo 기반) › 게시물 등록 실패 시나리오 (서버 에러) (1.2s)
-  ✓  74 [chromium] › src/components/boards-new/tests/index.update.hook.spec.ts:125:7 › 게시판 수정 기능 - useBoardForm Hook › 수정 폼 제출 후 로컬스토리지에 업데이트된 데이터가 저장되는지 확인 (469ms)
-  ✘  64 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:30:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼이 렌더링되어야 함 (5.2s)
-  ✓  75 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:119:7 › 게시판 폼 등록 기능 (Apollo 기반) › 폼 유효성 검사 - 작성자 필드 (705ms)
-  ✓  76 [chromium] › src/components/boards-new/tests/index.update.hook.spec.ts:177:7 › 게시판 수정 기능 - useBoardForm Hook › 수정 완료 알림 확인 후 상세페이지로 라우팅되는지 확인 (650ms)
-  ✓  79 [chromium] › src/components/boards-new/tests/index.update.hook.spec.ts:217:7 › 게시판 수정 기능 - useBoardForm Hook › 작성자와 비밀번호가 입력되지 않으면 수정하기 버튼이 비활성화되는지 확인 (627ms)
-  ✓  77 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:137:7 › 게시판 폼 등록 기능 (Apollo 기반) › 폼 유효성 검사 - 비밀번호 필드 (786ms)
-  ✓  80 [chromium] › src/components/boards-new/tests/index.update.hook.spec.ts:248:7 › 게시판 수정 기능 - useBoardForm Hook › 유튜브 URL이 포함된 게시물 수정 후 저장 확인 (552ms)
-  ✓  81 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:153:7 › 게시판 폼 등록 기능 (Apollo 기반) › 폼 유효성 검사 - 제목 필드 (739ms)
-  ✓  83 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:171:7 › 게시판 폼 등록 기능 (Apollo 기반) › 폼 유효성 검사 - 내용 필드 (769ms)
-  ✓  84 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:189:7 › 게시판 폼 등록 기능 (Apollo 기반) › 폼 유효성 검사 - 유튜브 URL 필드 (1.3s)
-로컬스토리지 키들: []
-boards 데이터: [1mnull[22m
-렌더링된 행 개수 (헤더 포함): [33m2[39m
-첫 번째 데이터 행 내용: 로딩 중...
-첫 번째 행 HTML: <div class="styles_colNo__E2OGj" role="cell">로딩 중...</div><div class="styles_colTitle__OSEGW" role="cell"></div><div class="styles_colAuthor__Bkelg" role="cell"></div><div class="styles_colDate__D_3dJ" role="cell"></div>
-  ✓  85 [chromium] › test-check-data.spec.ts:3:5 › 로컬스토리지 데이터 확인 (410ms)
-=== 초기 상태 ===
-버튼 개수: [33m0[39m
-
-=== listRow에 호버 ===
-listRow 호버 후 스타일: [1mnull[22m
-
-=== 삭제 버튼에 직접 호버 ===
-  ✘  78 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:36:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼 클릭 시 모달이 열려야 함 (5.1s)
-  ✘  82 [chromium] › src/components/boards-new/tests/simple.update.test.ts:4:5 › 게시판 수정 기능 기본 테스트 (7.5s)
-=== 초기 상태 ===
-초기 버튼 스타일: [1mnull[22m
-
-=== listRow에 호버 ===
-listRow 호버 후 버튼 스타일: [1mnull[22m
-버튼 visible 상태: [33mfalse[39m
-스크린샷 저장: hover-test.png
-  ✓  88 [chromium] › test-hover-with-data.spec.ts:3:5 › 게시글 있을 때 hover 동작 확인 (1.4s)
-  ✘  87 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:47:7 › 우편번호 및 주소 검색 기능 › 모달 닫기 버튼으로 모달이 닫혀야 함 (5.1s)
-  ✘  89 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:66:7 › 우편번호 및 주소 검색 기능 › 주소 입력 필드가 readOnly 상태여야 함 (5.1s)
-  ✘  47 [chromium] › src/components/boards-detail/tests/index.binding.hook.debug.spec.ts:7:7 › 디버그: 페이지 로드 상세 확인 › 페이지 로드 상태를 상세히 확인 (30.0s)
-  ✘  90 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:80:7 › 우편번호 및 주소 검색 기능 › 우편번호 입력 필드가 disabled 상태여야 함 (5.1s)
-  ✘  68 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:42:7 › 게시판 수정 폼 훅 테스트 › 수정 폼 필드가 올바르게 초기화되는지 확인 (30.0s)
-  ✘  91 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:94:7 › 우편번호 및 주소 검색 기능 › 상세주소 입력 필드가 활성화되어 있어야 함 (5.1s)
-  ✘  93 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:102:7 › 우편번호 및 주소 검색 기능 › 모달에서 DaumPostcodeEmbed가 렌더링되어야 함 (5.1s)
-  ✘  86 [chromium] › test-hover-debug.spec.ts:3:5 › 디버그: 삭제 버튼 호버 동작 확인 (30.0s)
-  ✘  92 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:61:7 › 게시판 수정 폼 훅 테스트 › 필수 필드 입력 시 수정하기 버튼이 활성화되는지 확인 (30.0s)
-  ✘  94 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:89:7 › 게시판 수정 폼 훅 테스트 › 수정 완료 후 성공 모달이 표시되는지 확인 (30.0s)
-  ✘  95 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:115:7 › 게시판 수정 폼 훅 테스트 › 수정 완료 모달 확인 후 상세페이지로 이동하는지 확인 (30.0s)
-  ✘  96 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:143:7 › 게시판 수정 폼 훅 테스트 › 수정된 데이터가 로컬스토리지에 올바르게 저장되는지 확인 (30.0s)
-  ✘  97 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:180:7 › 게시판 수정 폼 훅 테스트 › 유효성 검사 오류 메시지가 올바르게 표시되는지 확인 (30.0s)
-
-
-  1) [chromium] › src/components/boards/tests/index.link.new.hook.spec.ts:30:9 › 트립토크 등록 버튼 클릭 테스트 › 로그인 유저 시나리오 › 트립토크 등록 버튼 클릭시 게시글 쓰기 페이지로 이동한다 
-
-    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveURL[2m([22m[32mexpected[39m[2m)[22m failed
-
-    Expected: [32m"http://localhost:3000/boards[7m/new[27m"[39m
-    Received: [31m"http://localhost:3000/boards"[39m
-    Timeout:  400ms
-
-    Call log:
-    [2m  - Expect "toHaveURL" with timeout 400ms[22m
-    [2m    4 × unexpected value "http://localhost:3000/boards"[22m
-
-
-      45 |       
-      46 |       // URL이 /boards/new로 변경되었는지 확인 (timeout 500ms 미만 설정)
-    > 47 |       await expect(page).toHaveURL('/boards/new', { timeout: 400 });
-         |                          ^
-      48 |     });
-      49 |   });
-      50 | });
-        at /Users/gharam12/Desktop/trip/src/components/boards/tests/index.link.new.hook.spec.ts:47:26
-
-    Error Context: test-results/src-components-boards-test-87e6e--등록-버튼-클릭시-게시글-쓰기-페이지로-이동한다-chromium/error-context.md
-
-  2) [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:118:7 › 게시글 라우팅 기능 › 게시글이 없을 때는 빈 상태 메시지가 표시되어야 함 
-
-    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
-
-    Expected: <= [32m1[39m
-    Received:    [31m11[39m
-
-      140 |       const rows = page.locator('[role="row"]');
-      141 |       const rowCount = await rows.count();
-    > 142 |       expect(rowCount).toBeLessThanOrEqual(1); // 헤더만 있거나 아무것도 없음
-          |                        ^
-      143 |     }
-      144 |   });
-      145 | });
-        at /Users/gharam12/Desktop/trip/src/components/boards/tests/index.link.routing.hook.spec.ts:142:24
-
-    Error Context: test-results/src-components-boards-test-7e924-시글이-없을-때는-빈-상태-메시지가-표시되어야-함-chromium/error-context.md
-
-  3) [chromium] › src/components/boards-detail/tests/index.binding.hook.debug.spec.ts:7:7 › 디버그: 페이지 로드 상세 확인 › 페이지 로드 상태를 상세히 확인 
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: locator.textContent: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-detail-page"]')[22m
-
-
-      40 |     console.log("count:", await boardDetailPage.count());
-      41 |
-    > 42 |     const content = await boardDetailPage.textContent();
-         |                                           ^
-      43 |     console.log("content:", content?.substring(0, 200));
-      44 |
-      45 |     expect(true).toBe(true);
-        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.debug.spec.ts:42:43
-
-    Error Context: test-results/src-components-boards-deta-51eb8--로드-상세-확인-페이지-로드-상태를-상세히-확인-chromium/error-context.md
-
-  4) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:149:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 이미지 영역이 렌더링되어야 함 
-
-    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
-
-    Expected: [32mtrue[39m
-    Received: [31mfalse[39m
-
-      157 |     const heroImage = boardDetailContainer.locator('[class*="heroImage"]');
-      158 |     const isVisible = await heroImage.isVisible().catch(() => false);
-    > 159 |     expect(isVisible).toBe(true);
-          |                       ^
-      160 |   });
-      161 |
-      162 |   /**
-        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:159:23
-
-    Error Context: test-results/src-components-boards-deta-71238-시글-상세-페이지의-이미지-영역이-렌더링되어야-함-chromium/error-context.md
-
-  5) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:168:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 비디오 영역이 렌더링되어야 함 
-
-    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
-
-    Expected: [32mtrue[39m
-    Received: [31mfalse[39m
-
-      176 |     const videoThumb = boardDetailContainer.locator('[class*="videoThumb"]');
-      177 |     const isVisible = await videoThumb.isVisible().catch(() => false);
-    > 178 |     expect(isVisible).toBe(true);
-          |                       ^
-      179 |   });
-      180 |
-      181 |   /**
-        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:178:23
-
-    Error Context: test-results/src-components-boards-deta-31cc9-시글-상세-페이지의-비디오-영역이-렌더링되어야-함-chromium/error-context.md
-
-  6) [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:191:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 모든 주요 섹션이 렌더링되어야 함 
-
-    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
-
-    Expected: [32mtrue[39m
-    Received: [31mfalse[39m
-
-      209 |     const heroImage = boardDetailContainer.locator('[class*="heroImage"]');
-      210 |     const imageVisible = await heroImage.isVisible().catch(() => false);
-    > 211 |     expect(imageVisible).toBe(true);
-          |                          ^
-      212 |
-      213 |     // 4. 내용 영역 확인
-      214 |     const contentParagraphs = boardDetailContainer.locator('[class*="contentParagraph"]');
-        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.binding.hook.spec.ts:211:26
-
-    Error Context: test-results/src-components-boards-deta-4b7ae--GraphQL-모든-주요-섹션이-렌더링되어야-함-chromium/error-context.md
-
-  7) [chromium] › src/components/boards-detail/tests/index.link.boards.hook.spec.ts:5:7 › 보드 상세 - 목록으로 버튼 네비게이션 › 버튼 클릭 전후 URL이 요구사항과 일치해야 함 
-
-    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
-
-    Locator: locator('[data-testid="list-button"]')
-    Expected: visible
-    Timeout: 5000ms
-    Error: element(s) not found
-
-    Call log:
-    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
-    [2m  - waiting for locator('[data-testid="list-button"]')[22m
-
-
-      45 |     // 4) 목록으로 버튼 클릭 - data-testid로 버튼 식별
-      46 |     const listButton = page.locator('[data-testid="list-button"]');
-    > 47 |     await expect(listButton).toBeVisible();
-         |                              ^
-      48 |
-      49 |     // 버튼 클릭
-      50 |     await listButton.click();
-        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.link.boards.hook.spec.ts:47:30
-
-    Error Context: test-results/src-components-boards-deta-eebf5--버튼-클릭-전후-URL이-요구사항과-일치해야-함-chromium/error-context.md
-
-  8) [chromium] › src/components/boards-detail/tests/index.link.update.hook.spec.ts:35:7 › 게시글 상세 페이지 수정 버튼 라우팅 테스트 › 수정 버튼 클릭 시 게시글 수정 페이지로 이동 
-
-    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
-
-    Locator: locator('[data-testid="edit-button"]')
-    Expected: visible
-    Timeout: 5000ms
-    Error: element(s) not found
-
-    Call log:
-    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
-    [2m  - waiting for locator('[data-testid="edit-button"]')[22m
-
-
-      45 |     // 수정하기 버튼 클릭 (data-testid 사용)
-      46 |     const editButton = page.locator('[data-testid="edit-button"]');
-    > 47 |     await expect(editButton).toBeVisible();
-         |                              ^
-      48 |     await editButton.click();
-      49 |
-      50 |     // 페이지 네비게이션 대기
-        at /Users/gharam12/Desktop/trip/src/components/boards-detail/tests/index.link.update.hook.spec.ts:47:30
-
-    Error Context: test-results/src-components-boards-deta-f299e-트-수정-버튼-클릭-시-게시글-수정-페이지로-이동-chromium/error-context.md
-
-  9) [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:30:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼이 렌더링되어야 함 
-
-    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-write-page"]') to be visible[22m
-
-
-      25 |
-      26 |     // 페이지 요소가 로드될 때까지 대기
-    > 27 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
-         |                ^
-      28 |   });
-      29 |
-      30 |   test("우편번호 검색 버튼이 렌더링되어야 함", async ({ page }) => {
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.address.hook.spec.ts:27:16
-
-    Error Context: test-results/src-components-boards-new--4f24b--검색-기능-우편번호-검색-버튼이-렌더링되어야-함-chromium/error-context.md
-
-  10) [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:36:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼 클릭 시 모달이 열려야 함 
-
-    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-write-page"]') to be visible[22m
-
-
-      25 |
-      26 |     // 페이지 요소가 로드될 때까지 대기
-    > 27 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
-         |                ^
-      28 |   });
-      29 |
-      30 |   test("우편번호 검색 버튼이 렌더링되어야 함", async ({ page }) => {
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.address.hook.spec.ts:27:16
-
-    Error Context: test-results/src-components-boards-new--e6ec4-능-우편번호-검색-버튼-클릭-시-모달이-열려야-함-chromium/error-context.md
-
-  11) [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:47:7 › 우편번호 및 주소 검색 기능 › 모달 닫기 버튼으로 모달이 닫혀야 함 
-
-    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-write-page"]') to be visible[22m
-
-
-      25 |
-      26 |     // 페이지 요소가 로드될 때까지 대기
-    > 27 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
-         |                ^
-      28 |   });
-      29 |
-      30 |   test("우편번호 검색 버튼이 렌더링되어야 함", async ({ page }) => {
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.address.hook.spec.ts:27:16
-
-    Error Context: test-results/src-components-boards-new--fb517--검색-기능-모달-닫기-버튼으로-모달이-닫혀야-함-chromium/error-context.md
-
-  12) [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:66:7 › 우편번호 및 주소 검색 기능 › 주소 입력 필드가 readOnly 상태여야 함 
-
-    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-write-page"]') to be visible[22m
-
-
-      25 |
-      26 |     // 페이지 요소가 로드될 때까지 대기
-    > 27 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
-         |                ^
-      28 |   });
-      29 |
-      30 |   test("우편번호 검색 버튼이 렌더링되어야 함", async ({ page }) => {
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.address.hook.spec.ts:27:16
-
-    Error Context: test-results/src-components-boards-new--04d19-능-주소-입력-필드가-readOnly-상태여야-함-chromium/error-context.md
-
-  13) [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:80:7 › 우편번호 및 주소 검색 기능 › 우편번호 입력 필드가 disabled 상태여야 함 
-
-    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-write-page"]') to be visible[22m
-
-
-      25 |
-      26 |     // 페이지 요소가 로드될 때까지 대기
-    > 27 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
-         |                ^
-      28 |   });
-      29 |
-      30 |   test("우편번호 검색 버튼이 렌더링되어야 함", async ({ page }) => {
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.address.hook.spec.ts:27:16
-
-    Error Context: test-results/src-components-boards-new--0ce95-우편번호-입력-필드가-disabled-상태여야-함-chromium/error-context.md
-
-  14) [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:94:7 › 우편번호 및 주소 검색 기능 › 상세주소 입력 필드가 활성화되어 있어야 함 
-
-    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-write-page"]') to be visible[22m
-
-
-      25 |
-      26 |     // 페이지 요소가 로드될 때까지 대기
-    > 27 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
-         |                ^
-      28 |   });
-      29 |
-      30 |   test("우편번호 검색 버튼이 렌더링되어야 함", async ({ page }) => {
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.address.hook.spec.ts:27:16
-
-    Error Context: test-results/src-components-boards-new--67d18--기능-상세주소-입력-필드가-활성화되어-있어야-함-chromium/error-context.md
-
-  15) [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:102:7 › 우편번호 및 주소 검색 기능 › 모달에서 DaumPostcodeEmbed가 렌더링되어야 함 
-
-    TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="boards-write-page"]') to be visible[22m
-
-
-      25 |
-      26 |     // 페이지 요소가 로드될 때까지 대기
-    > 27 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 5000 });
-         |                ^
-      28 |   });
-      29 |
-      30 |   test("우편번호 검색 버튼이 렌더링되어야 함", async ({ page }) => {
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.address.hook.spec.ts:27:16
-
-    Error Context: test-results/src-components-boards-new--5ad71-DaumPostcodeEmbed가-렌더링되어야-함-chromium/error-context.md
-
-  16) [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:42:7 › 게시판 수정 폼 훅 테스트 › 수정 폼 필드가 올바르게 초기화되는지 확인 
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: page.click: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="edit-button"]')[22m
-
-
-      46 |     
-      47 |     // 수정 버튼 클릭
-    > 48 |     await page.click('[data-testid="edit-button"]');
-         |                ^
-      49 |     
-      50 |     // 수정 페이지로 이동 확인
-      51 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 500 });
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.update.form.hook.spec.ts:48:16
-
-    Error Context: test-results/src-components-boards-new--c90cc-테스트-수정-폼-필드가-올바르게-초기화되는지-확인-chromium/error-context.md
-
-  17) [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:61:7 › 게시판 수정 폼 훅 테스트 › 필수 필드 입력 시 수정하기 버튼이 활성화되는지 확인 
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: page.click: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="edit-button"]')[22m
-
-
-      65 |     
-      66 |     // 수정 버튼 클릭
-    > 67 |     await page.click('[data-testid="edit-button"]');
-         |                ^
-      68 |     
-      69 |     // 수정 페이지로 이동 확인
-      70 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 500 });
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.update.form.hook.spec.ts:67:16
-
-    Error Context: test-results/src-components-boards-new--a48ce--필드-입력-시-수정하기-버튼이-활성화되는지-확인-chromium/error-context.md
-
-  18) [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:89:7 › 게시판 수정 폼 훅 테스트 › 수정 완료 후 성공 모달이 표시되는지 확인 
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: page.click: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="edit-button"]')[22m
-
-
-      93 |     
-      94 |     // 수정 버튼 클릭
-    > 95 |     await page.click('[data-testid="edit-button"]');
-         |                ^
-      96 |     
-      97 |     // 수정 페이지로 이동 확인
-      98 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 500 });
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.update.form.hook.spec.ts:95:16
-
-    Error Context: test-results/src-components-boards-new--d3813-테스트-수정-완료-후-성공-모달이-표시되는지-확인-chromium/error-context.md
-
-  19) [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:115:7 › 게시판 수정 폼 훅 테스트 › 수정 완료 모달 확인 후 상세페이지로 이동하는지 확인 
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: page.click: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="edit-button"]')[22m
-
-
-      119 |     
-      120 |     // 수정 버튼 클릭
-    > 121 |     await page.click('[data-testid="edit-button"]');
-          |                ^
-      122 |     
-      123 |     // 수정 페이지로 이동 확인
-      124 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 500 });
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.update.form.hook.spec.ts:121:16
-
-    Error Context: test-results/src-components-boards-new--6a8c0--완료-모달-확인-후-상세페이지로-이동하는지-확인-chromium/error-context.md
-
-  20) [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:143:7 › 게시판 수정 폼 훅 테스트 › 수정된 데이터가 로컬스토리지에 올바르게 저장되는지 확인 
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: page.click: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="edit-button"]')[22m
-
-
-      147 |     
-      148 |     // 수정 버튼 클릭
-    > 149 |     await page.click('[data-testid="edit-button"]');
-          |                ^
-      150 |     
-      151 |     // 수정 페이지로 이동 확인
-      152 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 500 });
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.update.form.hook.spec.ts:149:16
-
-    Error Context: test-results/src-components-boards-new--6148b--데이터가-로컬스토리지에-올바르게-저장되는지-확인-chromium/error-context.md
-
-  21) [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:180:7 › 게시판 수정 폼 훅 테스트 › 유효성 검사 오류 메시지가 올바르게 표시되는지 확인 
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: page.click: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[data-testid="edit-button"]')[22m
-
-
-      184 |
-      185 |     // 수정 버튼 클릭
-    > 186 |     await page.click('[data-testid="edit-button"]');
-          |                ^
-      187 |
-      188 |     // 수정 페이지로 이동 확인
-      189 |     await page.waitForSelector('[data-testid="boards-write-page"]', { timeout: 500 });
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/index.update.form.hook.spec.ts:186:16
-
-    Error Context: test-results/src-components-boards-new--05de7-효성-검사-오류-메시지가-올바르게-표시되는지-확인-chromium/error-context.md
-
-  22) [chromium] › src/components/boards-new/tests/simple.update.test.ts:4:5 › 게시판 수정 기능 기본 테스트 ────
-
-    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveValue[2m([22m[32mexpected[39m[2m)[22m failed
-
-    Locator:  locator('[data-testid="board-writer-input"]')
-    Expected: [32m"테스트작성자"[39m
-    Received: [31m""[39m
-    Timeout:  5000ms
-
-    Call log:
-    [2m  - Expect "toHaveValue" with timeout 5000ms[22m
-    [2m  - waiting for locator('[data-testid="board-writer-input"]')[22m
-    [2m    9 × locator resolved to <input value="" id=":rb:" name="writer" maxlength="20" class="styles_input__lU8fz" placeholder="작성자를 입력해 주세요." data-testid="board-writer-input"/>[22m
-    [2m      - unexpected value ""[22m
-
-
-      42 |   
-      43 |   // 폼 필드들이 기존 데이터로 초기화되었는지 확인
-    > 44 |   await expect(page.locator('[data-testid="board-writer-input"]')).toHaveValue('테스트작성자');
-         |                                                                    ^
-      45 |   await expect(page.locator('[data-testid="board-password-input"]')).toHaveValue('1234');
-      46 |   await expect(page.locator('[data-testid="board-title-input"]')).toHaveValue('테스트 제목');
-      47 |   await expect(page.locator('[data-testid="board-content-input"]')).toHaveValue('테스트 내용');
-        at /Users/gharam12/Desktop/trip/src/components/boards-new/tests/simple.update.test.ts:44:68
-
-    Error Context: test-results/src-components-boards-new--86764-ple.update-게시판-수정-기능-기본-테스트-chromium/error-context.md
-
-  23) [chromium] › test-hover-debug.spec.ts:3:5 › 디버그: 삭제 버튼 호버 동작 확인 ──────────────────────────────
-
-    [31mTest timeout of 30000ms exceeded.[39m
-
-    Error: locator.hover: Test timeout of 30000ms exceeded.
-    Call log:
-    [2m  - waiting for locator('[role="row"]').nth(1).locator('[data-testid="delete-button"]')[22m
-
-
-      58 |   // 삭제 버튼에 직접 호버
-      59 |   console.log('\n=== 삭제 버튼에 직접 호버 ===');
-    > 60 |   await deleteButton.hover({ force: true });
-         |                      ^
-      61 |   await page.waitForTimeout(300);
-      62 |
-      63 |   const afterButtonHover = await firstRow.evaluate((row) => {
-        at /Users/gharam12/Desktop/trip/test-hover-debug.spec.ts:60:22
-
-    Error Context: test-results/test-hover-debug-디버그-삭제-버튼-호버-동작-확인-chromium/error-context.md
-
-  23 failed
-    [chromium] › src/components/boards/tests/index.link.new.hook.spec.ts:30:9 › 트립토크 등록 버튼 클릭 테스트 › 로그인 유저 시나리오 › 트립토크 등록 버튼 클릭시 게시글 쓰기 페이지로 이동한다 
-    [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:118:7 › 게시글 라우팅 기능 › 게시글이 없을 때는 빈 상태 메시지가 표시되어야 함 
-    [chromium] › src/components/boards-detail/tests/index.binding.hook.debug.spec.ts:7:7 › 디버그: 페이지 로드 상세 확인 › 페이지 로드 상태를 상세히 확인 
-    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:149:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 이미지 영역이 렌더링되어야 함 
-    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:168:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 비디오 영역이 렌더링되어야 함 
-    [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:191:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 모든 주요 섹션이 렌더링되어야 함 
-    [chromium] › src/components/boards-detail/tests/index.link.boards.hook.spec.ts:5:7 › 보드 상세 - 목록으로 버튼 네비게이션 › 버튼 클릭 전후 URL이 요구사항과 일치해야 함 
-    [chromium] › src/components/boards-detail/tests/index.link.update.hook.spec.ts:35:7 › 게시글 상세 페이지 수정 버튼 라우팅 테스트 › 수정 버튼 클릭 시 게시글 수정 페이지로 이동 
-    [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:30:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼이 렌더링되어야 함 
-    [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:36:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼 클릭 시 모달이 열려야 함 
-    [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:47:7 › 우편번호 및 주소 검색 기능 › 모달 닫기 버튼으로 모달이 닫혀야 함 
-    [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:66:7 › 우편번호 및 주소 검색 기능 › 주소 입력 필드가 readOnly 상태여야 함 
-    [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:80:7 › 우편번호 및 주소 검색 기능 › 우편번호 입력 필드가 disabled 상태여야 함 
-    [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:94:7 › 우편번호 및 주소 검색 기능 › 상세주소 입력 필드가 활성화되어 있어야 함 
-    [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:102:7 › 우편번호 및 주소 검색 기능 › 모달에서 DaumPostcodeEmbed가 렌더링되어야 함 
-    [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:42:7 › 게시판 수정 폼 훅 테스트 › 수정 폼 필드가 올바르게 초기화되는지 확인 
-    [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:61:7 › 게시판 수정 폼 훅 테스트 › 필수 필드 입력 시 수정하기 버튼이 활성화되는지 확인 
-    [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:89:7 › 게시판 수정 폼 훅 테스트 › 수정 완료 후 성공 모달이 표시되는지 확인 
-    [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:115:7 › 게시판 수정 폼 훅 테스트 › 수정 완료 모달 확인 후 상세페이지로 이동하는지 확인 
-    [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:143:7 › 게시판 수정 폼 훅 테스트 › 수정된 데이터가 로컬스토리지에 올바르게 저장되는지 확인 
-    [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:180:7 › 게시판 수정 폼 훅 테스트 › 유효성 검사 오류 메시지가 올바르게 표시되는지 확인 
-    [chromium] › src/components/boards-new/tests/simple.update.test.ts:4:5 › 게시판 수정 기능 기본 테스트 ──────
-    [chromium] › test-hover-debug.spec.ts:3:5 › 디버그: 삭제 버튼 호버 동작 확인 ────────────────────────────────
-  74 passed (3.4m)
+  ✘   52 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:161:7 › 게시글 삭제 기능 테스트 › 삭제 아이콘 클릭: 확인 대화상자가 표시되는지 확인 (30.0s)
+  ✘   55 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:29:7 › 게시글 인덱싱 (번호매기기) 테스트 › 성공 시나리오: 게시글 번호가 totalCount를 기준으로 역순으로 인덱싱됨 (30.1s)
+  ✘   64 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:49:7 › 게시글 라우팅 기능 › 최신 게시글 (board-002)을 클릭시 상세페이지로 이동해야 함 (30.0s)
+  ✘   71 [chromium] › src/components/boards/tests/index.search.hook.spec.ts:22:7 › SearchBar 검색 기능 › 검색어 입력 후 검색 버튼 클릭 시 API 호출 확인 (30.0s)
+  ✘   74 [chromium] › src/components/boards-detail/tests/index.binding.hook.debug.spec.ts:7:7 › 디버그: 페이지 로드 상세 확인 › 페이지 로드 상태를 상세히 확인 (30.0s)
+  ✘   75 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:194:7 › 게시글 삭제 기능 테스트 › 삭제 취소: 확인 대화상자에서 취소 시 게시글이 삭제되지 않는지 확인 (30.0s)
+  ✘   76 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:58:7 › 게시글 인덱싱 (번호매기기) 테스트 › 첫 번째 페이지: 첫 번째 게시글 번호가 totalCount와 같음 (30.0s)
+  ✘   77 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:73:7 › 게시글 라우팅 기능 › 이전 게시글 (board-001)을 클릭시 해당 상세페이지로 이동해야 함 (30.0s)
+  ✘   78 [chromium] › src/components/boards/tests/index.search.hook.spec.ts:63:7 › SearchBar 검색 기능 › DatePicker에서 날짜 범위 선택 후 검색 시 API 파라미터 확인 (30.0s)
+  ✓   83 [chromium] › src/components/boards/tests/index.search.hook.spec.ts:103:7 › SearchBar 검색 기능 › 검색 결과가 올바르게 필터링되어 렌더링되는지 확인 (499ms)
+  ✘   84 [chromium] › src/components/boards/tests/index.search.hook.spec.ts:140:7 › SearchBar 검색 기능 › 검색 결과가 없을 때 '검색 결과가 없습니다.' 메시지 표시 확인 (490ms)
+  ✓   85 [chromium] › src/components/boards/tests/index.search.hook.spec.ts:181:7 › SearchBar 검색 기능 › 검색 버튼 클릭 시 페이지가 1로 리셋되는지 확인 (534ms)
+  ✓   86 [chromium] › src/components/boards-detail/tests/index.link.boards.hook.spec.ts:5:7 › 보드 상세 - 목록으로 버튼 네비게이션 › 버튼 클릭 전후 URL이 요구사항과 일치해야 함 (2.5s)
+  ✘   79 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:56:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 유효한 boardId로 게시글 데이터가 GraphQL API에서 올바르게 바인딩되어야 함 (30.0s)
+  ✓   87 [chromium] › src/components/boards-detail/tests/index.link.update.hook.spec.ts:42:7 › 게시글 상세 페이지 수정 버튼 라우팅 테스트 › 수정 버튼 클릭 시 게시글 수정 페이지로 이동 (2.4s)
+  ✘   80 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:230:7 › 게시글 삭제 기능 테스트 › 삭제 성공 시나리오: deleteBoard mutation 호출 후 게시글이 목록에서 제거되는지 확인 (30.0s)
+  ✘   81 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:86:7 › 게시글 인덱싱 (번호매기기) 테스트 › 게시글 번호가 연속적으로 감소함 (30.0s)
+  ✓   90 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:273:7 › 게시글 삭제 기능 테스트 › 삭제 실패 시나리오: deleteBoard mutation 호출 실패 시 에러 메시지 표시 (1.7s)
+  ✘   92 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:296:7 › 게시글 삭제 기능 테스트 › CSS 처리: 게시글 행에 position: relative가 적용되는지 확인 (1.7s)
+  ✘   82 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:97:7 › 게시글 라우팅 기능 › 게시글 행에 cursor: pointer 스타일이 적용되어야 함 (30.0s)
+  ✘   93 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:318:7 › 게시글 삭제 기능 테스트 › CSS 처리: 삭제 아이콘에 cursor: pointer가 적용되는지 확인 (2.3s)
+  ✘   94 [chromium] › src/components/boards/tests/index.link.routing.hook.spec.ts:118:7 › 게시글 라우팅 기능 › 게시글이 없을 때는 빈 상태 메시지가 표시되어야 함 (673ms)
+  ✓   96 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:23:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼이 렌더링되어야 함 (751ms)
+  ✘   89 [chromium] › src/components/boards-detail/tests/index.tooltip.hook.spec.ts:48:7 › 게시글 상세 툴팁 기능 › iconLocation 요소에 마우스 호버 시 주소 정보 툴팁이 표시되어야 함 (8.4s)
+  ✘   95 [chromium] › src/components/boards/tests/index.delete.hook.spec.ts:347:7 › 게시글 삭제 기능 테스트 › 여러 게시글: 각 게시글마다 개별 삭제 아이콘이 표시되는지 확인 (2.4s)
+  ✘   97 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:29:7 › 우편번호 및 주소 검색 기능 › 우편번호 검색 버튼 클릭 시 모달이 열려야 함 (5.7s)
+  ✘   98 [chromium] › src/components/boards-detail/tests/index.tooltip.hook.spec.ts:89:7 › 게시글 상세 툴팁 기능 › 주소 정보가 없을 경우 기본 메시지가 표시되어야 함 (8.4s)
+  ✘  100 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:41:7 › 우편번호 및 주소 검색 기능 › 모달 닫기 버튼으로 모달이 닫혀야 함 (5.8s)
+  ✓  102 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:61:7 › 우편번호 및 주소 검색 기능 › 주소 입력 필드가 readOnly 상태여야 함 (764ms)
+  ✓  103 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:75:7 › 우편번호 및 주소 검색 기능 › 우편번호 입력 필드가 disabled 상태여야 함 (838ms)
+  ✓  104 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:89:7 › 우편번호 및 주소 검색 기능 › 상세주소 입력 필드가 활성화되어 있어야 함 (731ms)
+  ✘  101 [chromium] › src/components/boards-detail/tests/index.tooltip.hook.spec.ts:136:7 › 게시글 상세 툴팁 기능 › 스크롤 후에도 툴팁이 올바른 위치에 표시되어야 함 (8.4s)
+  ✘   88 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:98:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 존재하지 않는 boardId로 접근 시 게시글을 찾을 수 없다는 메시지가 표시되어야 함 (30.0s)
+  ✘  105 [chromium] › src/components/boards-new/tests/index.address.hook.spec.ts:97:7 › 우편번호 및 주소 검색 기능 › 모달에서 DaumPostcodeEmbed가 렌더링되어야 함 (5.8s)
+  ✘   91 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:112:7 › 게시글 인덱싱 (번호매기기) 테스트 › data-testid로 특정 게시글 번호 요소 찾기 (30.0s)
+  ✘  106 [chromium] › src/components/boards-detail/tests/index.tooltip.hook.spec.ts:176:7 › 게시글 상세 툴팁 기능 › 마우스를 떠나면 툴팁이 사라져야 함 (8.4s)
+  ✘   99 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:24:7 › 게시판 폼 등록 기능 (Apollo 기반) › 필수 필드 입력 시 등록하기 버튼이 활성화되어야 함 (30.0s)
+  ✘  107 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:120:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › API 호출 실패 시 오류 메시지 또는 로딩 상태가 표시되어야 함 (30.0s)
+  ✘  108 [chromium] › src/components/boards-new/tests/index.image.hook.spec.ts:33:7 › boards-new - 이미지 업로드 기능 › 파일 선택 시 imageUrls 상태가 업데이트되는지 확인 (30.0s)
+  ✘  109 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:134:7 › 게시글 인덱싱 (번호매기기) 테스트 › 10개씩 게시글 표시 (1페이지) (30.0s)
+  ✘  110 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:32:7 › 게시판 폼 수정 기능 (Apollo 기반) › 1. /boards/[BoardId] 접속 후 페이지 로드 확인 (30.0s)
+  ✘  111 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:36:7 › 게시판 폼 등록 기능 (Apollo 기반) › 필수 필드가 비어있으면 등록하기 버튼이 비활성화되어야 함 (30.0s)
+  ✘  112 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:149:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 이미지 영역이 렌더링되어야 함 (30.0s)
+  ✘  113 [chromium] › src/components/boards-new/tests/index.image.hook.spec.ts:61:7 › boards-new - 이미지 업로드 기능 › 삭제 버튼 클릭 시 해당 이미지가 제거되는지 확인 (30.0s)
+  ✘  114 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:143:7 › 게시글 인덱싱 (번호매기기) 테스트 › 게시글 번호가 _id가 아닌 index 기반으로 계산됨 (30.0s)
+  ✘  115 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:41:7 › 게시판 폼 수정 기능 (Apollo 기반) › 2. writer, password, title, contents 인풋 입력 시 수정하기 버튼 활성화 (30.0s)
+  ✘  116 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:42:7 › 게시판 폼 등록 기능 (Apollo 기반) › 게시물 등록 성공 시나리오 (실제 API 요청) (30.0s)
+  ✘  117 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:177:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 게시글 상세 페이지의 비디오 영역이 렌더링되어야 함 (30.0s)
+  ✘  118 [chromium] › src/components/boards-new/tests/index.image.hook.spec.ts:90:7 › boards-new - 이미지 업로드 기능 › 클릭 시 input 트리거가 정상적으로 호출되는지 확인 (30.0s)
+  ✘  119 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:169:7 › 게시글 인덱싱 (번호매기기) 테스트 › 번호가 양수이고 0보다 큼 (30.0s)
+  ✘  120 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:54:7 › 게시판 폼 수정 기능 (Apollo 기반) › 3. 수정 중 입력값 변경 후 수정하기 버튼 클릭 (30.0s)
+  ✘  121 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:75:7 › 게시판 폼 등록 기능 (Apollo 기반) › 게시물 등록 실패 시나리오 (잘못된 데이터) (30.0s)
+  ✘  122 [chromium] › src/components/boards-detail/tests/index.binding.hook.spec.ts:209:7 › 게시글 상세 데이터 바인딩 기능 (Apollo Client GraphQL) › 모든 주요 섹션이 렌더링되어야 함 (30.0s)
+  ✘  123 [chromium] › src/components/boards-new/tests/index.image.hook.spec.ts:109:7 › boards-new - 이미지 업로드 기능 › 여러 이미지를 업로드하고 개별 삭제가 가능한지 확인 (30.0s)
+  ✘  124 [chromium] › src/components/boards/tests/index.indexing.hook.spec.ts:188:7 › 게시글 인덱싱 (번호매기기) 테스트 › 게시글이 없는 경우 번호 계산 안 함 (30.0s)
+  ✘  125 [chromium] › src/components/boards-new/tests/index.update.form.hook.spec.ts:87:7 › 게시판 폼 수정 기능 (Apollo 기반) › 4. 수정 완료 시 Modal 컴포넌트와 Modal Provider를 이용해 수정완료 모달 노출 (30.0s)
+  ✘  126 [chromium] › src/components/boards-new/tests/index.form.hook.spec.ts:88:7 › 게시판 폼 등록 기능 (Apollo 기반) › 게시물 등록 실패 시나리오 (서버 에러) (30.0s)

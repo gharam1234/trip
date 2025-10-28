@@ -65,36 +65,19 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
               />
             </Link>
             <div className={styles.tapGroup}>
-              <button
-                className={`${styles.tapItem} ${activeMenuId === 'trip-talk' ? styles.tapActive : ''}`}
-                type="button"
-                onClick={() => navigateTo('BOARDS_LIST')}
-                data-testid="menu-trip-talk"
-              >
-                <span className={activeMenuId === 'trip-talk' ? styles.tapLabelPrimary : styles.tapLabel}>
-                  트립토크
-                </span>
-              </button>
-              <button
-                className={`${styles.tapItem} ${activeMenuId === 'accommodation-buy' ? styles.tapActive : ''}`}
-                type="button"
-                onClick={() => navigateTo('ACCOMMODATION_BUY')}
-                data-testid="menu-accommodation-buy"
-              >
-                <span className={activeMenuId === 'accommodation-buy' ? styles.tapLabelPrimary : styles.tapLabel}>
-                  숙박권 구매
-                </span>
-              </button>
-              <button
-                className={`${styles.tapItem} ${activeMenuId === 'my-page' ? styles.tapActive : ''}`}
-                type="button"
-                onClick={() => navigateTo('MY_PAGE')}
-                data-testid="menu-my-page"
-              >
-                <span className={activeMenuId === 'my-page' ? styles.tapLabelPrimary : styles.tapLabel}>
-                  마이 페이지
-                </span>
-              </button>
+              {menuItems.map((menu) => (
+                <button
+                  key={menu.id}
+                  className={`${styles.tapItem} ${activeMenuId === menu.id ? styles.tapActive : ''}`}
+                  type="button"
+                  onClick={() => navigateTo(menu.routeKey)}
+                  data-testid={`menu-${menu.id}`}
+                >
+                  <span className={activeMenuId === menu.id ? styles.tapLabelPrimary : styles.tapLabel}>
+                    {menu.label}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
 

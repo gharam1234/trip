@@ -22,6 +22,12 @@ export interface RouteConfig {
   readonly showBanner: boolean
   // 네비게이션 노출 여부
   readonly showNavigation: boolean
+  // 네비게이션 메뉴 설정 (선택사항)
+  readonly navigationMenu?: {
+    readonly menuId: string
+    readonly label: string
+    readonly order: number
+  }
 }
 
 // 동적 세그먼트 치환 유틸
@@ -65,6 +71,11 @@ export const URLS = {
     access: 'PUBLIC',
     showBanner: true,
     showNavigation: true,
+    navigationMenu: {
+      menuId: 'trip-talk',
+      label: '트립토크',
+      order: 1,
+    },
   },
   BOARD_DETAIL: {
     name: '게시글상세',
@@ -93,6 +104,11 @@ export const URLS = {
     access: 'PUBLIC',
     showBanner: true,
     showNavigation: true,
+    navigationMenu: {
+      menuId: 'accommodation-buy',
+      label: '숙박권 구매',
+      order: 2,
+    },
   },
   MY_PAGE: {
     name: '마이페이지',
@@ -100,6 +116,11 @@ export const URLS = {
     access: 'MEMBER_ONLY',
     showBanner: true,
     showNavigation: true,
+    navigationMenu: {
+      menuId: 'my-page',
+      label: '마이 페이지',
+      order: 3,
+    },
   },
 } as const satisfies Record<string, RouteConfig>
 
@@ -134,6 +155,46 @@ export function isAccessible(key: RouteKey, isAuthenticated: boolean): boolean {
 // 라우트 메타 정보 조회 유틸 (필요 시 소비 측에서 배너/네비/접근권한을 한 번에 사용)
 export function getRouteMeta(key: RouteKey): RouteConfig {
   return URLS[key]
+}
+
+/**
+ * 네비게이션 메뉴 아이템 타입
+ */
+export interface NavigationMenuItem {
+  id: string
+  label: string
+  pathPattern: RegExp
+  routeKey: RouteKey
+  order: number
+}
+
+/**
+ * URL 설정에서 네비게이션 메뉴 아이템을 동적으로 생성
+ * - url.ts의 URLS 객체에 navigationMenu가 정의된 라우트만 메뉴 아이템으로 포함
+ * - order 기준으로 정렬됨
+ */
+export function getNavigationMenuItems(): NavigationMenuItem[] {
+  return (Object.entries(URLS) as Array<[RouteKey, RouteConfig]>)
+    .filter(([, config]) => config.navigationMenu)
+    .map(([key, config]) => {
+      const menu = config.navigationMenu!
+      // pathTemplate에서 정규표현식 패턴 생성
+      // 예: '/boards' -> /^\/boards($|\/)/
+      // 예: '/accommodation' -> /^\/accommodation/
+      const basePath = config.pathTemplate.split('[')[0] // 동적 세그먼트 제거
+      const pathPattern = basePath.includes('/boards')
+        ? /^\/boards($|\/)/
+        : new RegExp(`^${basePath.replace(/\/$/, '')}($|/)`)
+
+      return {
+        id: menu.menuId,
+        label: menu.label,
+        pathPattern,
+        routeKey: key,
+        order: menu.order,
+      }
+    })
+    .sort((a, b) => a.order - b.order)
 }
 
 

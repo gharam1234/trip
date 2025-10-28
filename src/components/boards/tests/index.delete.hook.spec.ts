@@ -51,10 +51,10 @@ test.describe('게시글 삭제 기능 테스트', () => {
     // 게시글 데이터가 실제로 렌더링될 때까지 대기 (최대 10초)
     // "등록된 게시글이 없습니다" 메시지가 아닌 실제 데이터 행을 기다림
     await page.waitForFunction(() => {
-      const rows = document.querySelectorAll('[class*="listRow"]');
+      const rows = document.querySelectorAll('[data-testid^="board-row-"]');
       if (rows.length === 0) return false;
       const firstRow = rows[0];
-      const titleCell = firstRow.querySelector('[class*="colTitle"]');
+      const titleCell = firstRow.querySelector('[role="cell"]');
       return titleCell && !titleCell.textContent?.includes('등록된 게시글이 없습니다');
     }, { timeout: 10000 });
 
@@ -68,7 +68,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     await expect(boardsContainer).toBeVisible({ timeout: 500 });
 
     // 첫 번째 게시글 행 찾기
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const rowCount = await listRows.count();
 
     // 최소 1개 이상의 게시글이 있어야 테스트 가능
@@ -120,7 +120,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     await expect(boardsContainer).toBeVisible({ timeout: 500 });
 
     // 첫 번째 게시글 행 찾기
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const rowCount = await listRows.count();
 
     expect(rowCount).toBeGreaterThan(0);
@@ -171,7 +171,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     });
 
     // 첫 번째 게시글 행 찾기
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const rowCount = await listRows.count();
 
     expect(rowCount).toBeGreaterThan(0);
@@ -202,7 +202,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     });
 
     // 초기 게시글 수 확인
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const initialRowCount = await listRows.count();
 
     expect(initialRowCount).toBeGreaterThan(0);
@@ -242,7 +242,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     });
 
     // 첫 번째 게시글 정보 저장
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const initialRowCount = await listRows.count();
 
     expect(initialRowCount).toBeGreaterThan(0);
@@ -251,7 +251,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
       const firstRow = listRows.first();
 
       // 삭제할 게시글의 번호 (ID) 저장
-      const noCell = firstRow.locator('[class*="colNo"]');
+      const noCell = firstRow.locator('[data-testid^="board-number-"]');
       const boardNumberToDelete = await noCell.textContent();
 
       // 마우스 호버하여 삭제 아이콘 표시
@@ -265,7 +265,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
       await page.waitForTimeout(1000);
 
       // 삭제된 게시글의 번호가 목록에 더 이상 없는지 확인 (listBody 내부의 번호만 확인)
-      const allNumbers = await page.locator('[class*="listBody"] [class*="colNo"]').allTextContents();
+      const allNumbers = await page.locator('[class*="listBody"] [data-testid^="board-number-"]').allTextContents();
       expect(allNumbers).not.toContain(boardNumberToDelete);
     }
   });
@@ -299,7 +299,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     await expect(boardsContainer).toBeVisible({ timeout: 500 });
 
     // 첫 번째 게시글 행 찾기
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const rowCount = await listRows.count();
 
     expect(rowCount).toBeGreaterThan(0);
@@ -321,7 +321,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     await expect(boardsContainer).toBeVisible({ timeout: 500 });
 
     // 첫 번째 게시글 행 찾기
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const rowCount = await listRows.count();
 
     expect(rowCount).toBeGreaterThan(0);
@@ -350,7 +350,7 @@ test.describe('게시글 삭제 기능 테스트', () => {
     await expect(boardsContainer).toBeVisible({ timeout: 500 });
 
     // 모든 게시글 행 찾기
-    const listRows = page.locator('[class*="listRow"]');
+    const listRows = page.locator('[data-testid^="board-row-"]');
     const rowCount = await listRows.count();
 
     expect(rowCount).toBeGreaterThan(0);

@@ -61,64 +61,64 @@
               - columnheader "작성자" [ref=e78]
               - columnheader "날짜" [ref=e79]
             - rowgroup [ref=e80]:
-              - row "108 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e81] [cursor=pointer]:
-                - cell "108" [ref=e82]
-                - cell "Test Board for Delete" [ref=e83]
-                - cell "Test Writer" [ref=e84]
+              - row "104 테스트 제목 테스트작성자 2025.10.28 삭제" [ref=e81] [cursor=pointer]:
+                - cell "104" [ref=e82]
+                - cell "테스트 제목" [ref=e83]
+                - cell "테스트작성자" [ref=e84]
                 - cell "2025.10.28" [ref=e85]
                 - img "삭제" [ref=e86]
-              - row "107 테스트 제목 테스트작성자 2025.10.28 삭제" [ref=e87] [cursor=pointer]:
-                - cell "107" [ref=e88]
-                - cell "테스트 제목" [ref=e89]
-                - cell "테스트작성자" [ref=e90]
+              - row "103 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e87] [cursor=pointer]:
+                - cell "103" [ref=e88]
+                - cell "Test Board for Delete" [ref=e89]
+                - cell "Test Writer" [ref=e90]
                 - cell "2025.10.28" [ref=e91]
                 - img "삭제" [ref=e92]
-              - row "106 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e93] [cursor=pointer]:
-                - cell "106" [ref=e94]
+              - row "102 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e93] [cursor=pointer]:
+                - cell "102" [ref=e94]
                 - cell "Test Board for Delete" [ref=e95]
                 - cell "Test Writer" [ref=e96]
                 - cell "2025.10.28" [ref=e97]
                 - img "삭제" [ref=e98]
-              - row "105 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e99] [cursor=pointer]:
-                - cell "105" [ref=e100]
+              - row "101 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e99] [cursor=pointer]:
+                - cell "101" [ref=e100]
                 - cell "Test Board for Delete" [ref=e101]
                 - cell "Test Writer" [ref=e102]
                 - cell "2025.10.28" [ref=e103]
                 - img "삭제" [ref=e104]
-              - row "104 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e105] [cursor=pointer]:
-                - cell "104" [ref=e106]
+              - row "100 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e105] [cursor=pointer]:
+                - cell "100" [ref=e106]
                 - cell "Test Board for Delete" [ref=e107]
                 - cell "Test Writer" [ref=e108]
                 - cell "2025.10.28" [ref=e109]
                 - img "삭제" [ref=e110]
-              - row "103 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e111] [cursor=pointer]:
-                - cell "103" [ref=e112]
+              - row "99 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e111] [cursor=pointer]:
+                - cell "99" [ref=e112]
                 - cell "Test Board for Delete" [ref=e113]
                 - cell "Test Writer" [ref=e114]
                 - cell "2025.10.28" [ref=e115]
                 - img "삭제" [ref=e116]
-              - row "102 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e117] [cursor=pointer]:
-                - cell "102" [ref=e118]
-                - cell "Test Board for Delete" [ref=e119]
-                - cell "Test Writer" [ref=e120]
+              - row "98 철수4철수4 철수4 2025.10.28 삭제" [ref=e117] [cursor=pointer]:
+                - cell "98" [ref=e118]
+                - cell "철수4철수4" [ref=e119]
+                - cell "철수4" [ref=e120]
                 - cell "2025.10.28" [ref=e121]
                 - img "삭제" [ref=e122]
-              - row "101 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e123] [cursor=pointer]:
-                - cell "101" [ref=e124]
-                - cell "Test Board for Delete" [ref=e125]
-                - cell "Test Writer" [ref=e126]
+              - row "97 철수3 철수3 2025.10.28 삭제" [ref=e123] [cursor=pointer]:
+                - cell "97" [ref=e124]
+                - cell "철수3" [ref=e125]
+                - cell "철수3" [ref=e126]
                 - cell "2025.10.28" [ref=e127]
                 - img "삭제" [ref=e128]
-              - row "100 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e129] [cursor=pointer]:
-                - cell "100" [ref=e130]
-                - cell "Test Board for Delete" [ref=e131]
-                - cell "Test Writer" [ref=e132]
+              - row "96 철수철수철수 철수1 2025.10.28 삭제" [ref=e129] [cursor=pointer]:
+                - cell "96" [ref=e130]
+                - cell "철수철수철수" [ref=e131]
+                - cell "철수1" [ref=e132]
                 - cell "2025.10.28" [ref=e133]
                 - img "삭제" [ref=e134]
-              - row "99 Test Board for Delete Test Writer 2025.10.28 삭제" [ref=e135] [cursor=pointer]:
-                - cell "99" [ref=e136]
-                - cell "Test Board for Delete" [ref=e137]
-                - cell "Test Writer" [ref=e138]
+              - row "95 철수철수철수 철수 2025.10.28 삭제" [ref=e135] [cursor=pointer]:
+                - cell "95" [ref=e136]
+                - cell "철수철수철수" [ref=e137]
+                - cell "철수" [ref=e138]
                 - cell "2025.10.28" [ref=e139]
                 - img "삭제" [ref=e140]
         - generic "boards-pagination" [ref=e141]:

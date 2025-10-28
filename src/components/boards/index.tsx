@@ -15,7 +15,7 @@ import { DatePicker } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useLinkToNewBoard } from "./hooks/index.link.new.hook";
-import { useBoardsBinding } from "./hooks/index.binding.hook";
+import { usePagination } from "./hooks/index.pagination.hook";
 import { useBoardRouting } from "./hooks/index.link.routing.hook";
 import { useAuthGuard } from "@/commons/providers/auth/auth.guard.hook";
 import { useIndexing } from "./hooks/index.indexing.hook";
@@ -25,10 +25,8 @@ export default function Boards(): JSX.Element {
   // 영역 순서 가이드
   // {gap40} -> title36 -> {gap24} -> search48 -> {gap24} -> main696 -> {gap8} -> pagination56 -> {gap56}
 
-  // 상태: 검색어, 페이지
+  // 상태: 검색어
   const [keyword, setKeyword] = React.useState<string>("");
-  const [page, setPage] = React.useState<number>(1);
-  const totalPages = 10; // 데모용, 실제 연동 시 데이터 기반으로 설정
 
   // 상태: 날짜 범위
   const [dateRange, setDateRange] = React.useState<[Dayjs | null, Dayjs | null] | null>(null);
@@ -41,13 +39,12 @@ export default function Boards(): JSX.Element {
   // Hook: 트립토크 등록 페이지로 이동
   const { navigateToNewBoard } = useLinkToNewBoard();
 
-  // Hook: GraphQL API로 게시글 데이터 조회 (검색 기능 통합)
-  // useBoardsBinding을 사용하여 검색 파라미터 전달
-  const { boards, loading, error } = useBoardsBinding(
-    isSearching ? keyword : null,
+  // Hook: GraphQL API로 게시글 데이터 조회 및 페이지네이션 관리
+  // usePagination을 사용하여 검색 파라미터 전달
+  const { currentPage, totalPages, boards, loading, error, handlePageChange } = usePagination(
+    isSearching ? keyword : "",
     isSearching ? dateRangeText.start : null,
-    isSearching ? dateRangeText.end : null,
-    page
+    isSearching ? dateRangeText.end : null
   );
 
   // Hook: 게시글 상세페이지로 이동
@@ -57,7 +54,7 @@ export default function Boards(): JSX.Element {
   const { LoginConfirmModal } = useAuthGuard();
 
   // Hook: 게시글 번호 계산 (totalCount 기반 인덱싱)
-  const { calculateNumber } = useIndexing(page);
+  const { calculateNumber } = useIndexing(currentPage);
 
   // Hook: 게시글 삭제
   const { handleDelete } = useDeleteBoard();
@@ -66,8 +63,7 @@ export default function Boards(): JSX.Element {
   function handleSearchSubmit(): void {
     // 검색 실행 상태 설정
     setIsSearching(true);
-    // 검색 실행 시 페이지를 1로 리셋
-    setPage(1);
+    // usePagination Hook이 자동으로 페이지를 1로 리셋함
   }
 
   return (
@@ -211,15 +207,15 @@ export default function Boards(): JSX.Element {
       <div className={styles.gap8} role="presentation" />
 
       {/* 페이지네이션 56px */}
-      <div className={styles.pagination} aria-label="boards-pagination">
+      <div className={styles.pagination} aria-label="boards-pagination" data-testid="boards-pagination">
         <div className={styles.paginationInner}>
           {/* 피그마 스펙: 가운데 정렬, 전체 폭 1184, 높이 32, 간격 8 */}
           <Pagination
             variant="primary"
             size="medium"
             totalPages={totalPages}
-            currentPage={page}
-            onChange={(p) => setPage(p)}
+            currentPage={currentPage}
+            onChange={(p) => handlePageChange(p)}
           />
         </div>
       </div>

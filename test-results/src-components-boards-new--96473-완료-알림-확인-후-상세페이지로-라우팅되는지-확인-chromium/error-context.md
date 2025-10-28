@@ -1,37 +1,55 @@
 # Page snapshot
 
 ```yaml
-- generic [active]:
-  - alert [ref=e1]
-  - dialog "Server Error" [ref=e4]:
-    - generic [ref=e5]:
-      - generic [ref=e6]:
-        - navigation [ref=e8]:
-          - button "previous" [disabled] [ref=e9]:
-            - img "previous" [ref=e10]
-          - button "next" [disabled] [ref=e12]:
-            - img "next" [ref=e13]
-          - generic [ref=e15]: 1 of 1 error
-          - generic [ref=e16]:
-            - text: Next.js (14.2.33) is outdated
-            - link "(learn more)" [ref=e18] [cursor=pointer]:
-              - /url: https://nextjs.org/docs/messages/version-staleness
-        - heading "Server Error" [level=1] [ref=e19]
-        - paragraph [ref=e20]: "Error: Cannot find module './vendor-chunks/@apollo.js' Require stack: - /Users/gharam12/Desktop/trip/.next/server/webpack-runtime.js - /Users/gharam12/Desktop/trip/.next/server/app/boards/[BoardId]/edit/page.js - /Users/gharam12/Desktop/trip/node_modules/next/dist/server/require.js - /Users/gharam12/Desktop/trip/node_modules/next/dist/server/load-components.js - /Users/gharam12/Desktop/trip/node_modules/next/dist/build/utils.js - /Users/gharam12/Desktop/trip/node_modules/next/dist/server/dev/static-paths-worker.js - /Users/gharam12/Desktop/trip/node_modules/next/dist/compiled/jest-worker/processChild.js"
-        - generic [ref=e21]: This error happened while generating the page. Any console logs will be displayed in the terminal window.
-      - generic [ref=e22]:
-        - heading "Call Stack" [level=2] [ref=e23]
-        - group [ref=e24]:
-          - generic "Next.js" [ref=e25] [cursor=pointer]:
-            - img [ref=e26]
-            - img [ref=e28]
-            - text: Next.js
-        - generic [ref=e33]:
-          - heading "TracingChannel.traceSync" [level=3] [ref=e34]
-          - generic [ref=e36]: node:diagnostics_channel (322:14)
-        - group [ref=e37]:
-          - generic "Next.js" [ref=e38] [cursor=pointer]:
-            - img [ref=e39]
-            - img [ref=e41]
-            - text: Next.js
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - text: ← → • • •
+    - main [ref=e4]:
+      - main [ref=e5]:
+        - generic [ref=e6]:
+          - heading "게시물 수정" [level=1] [ref=e9]
+          - generic [ref=e12]:
+            - heading "작성자*" [level=2] [ref=e13]
+            - textbox [ref=e16]:
+              - /placeholder: 작성자를 입력해 주세요.
+          - generic [ref=e18]:
+            - heading "비밀번호*" [level=2] [ref=e19]
+            - textbox [ref=e22]:
+              - /placeholder: 비밀번호를 입력해 주세요.
+          - generic [ref=e24]:
+            - heading "제목*" [level=2] [ref=e25]
+            - textbox [active] [ref=e28]:
+              - /placeholder: 제목을 입력해 주세요.
+              - text: 최종 수정 제목
+          - generic [ref=e32]:
+            - heading "내용*" [level=2] [ref=e33]
+            - textbox [ref=e36]:
+              - /placeholder: 내용을 입력해 주세요.
+          - generic [ref=e39]:
+            - heading "주소" [level=2] [ref=e40]
+            - generic [ref=e41]:
+              - textbox [disabled] [ref=e44]:
+                - /placeholder: "01234"
+              - button "우편번호 검색" [pressed] [ref=e45] [cursor=pointer]:
+                - generic [ref=e46]: 우편번호 검색
+            - textbox [ref=e50]:
+              - /placeholder: 주소를 입력해 주세요,
+            - textbox [ref=e54]:
+              - /placeholder: 상세주소
+          - generic [ref=e58]:
+            - heading "유튜브 링크" [level=2] [ref=e59]
+            - textbox [ref=e62]:
+              - /placeholder: 링크를 입력해 주세요.
+          - generic [ref=e66]:
+            - heading "사진 첨부" [level=2] [ref=e67]
+            - generic [ref=e68]:
+              - img "사진업로드" [ref=e71] [cursor=pointer]
+              - img "사진업로드" [ref=e74] [cursor=pointer]
+              - img "사진업로드" [ref=e77] [cursor=pointer]
+          - generic [ref=e80]:
+            - button "취소" [pressed] [ref=e81] [cursor=pointer]:
+              - generic [ref=e82]: 취소
+            - button "수정하기" [disabled] [pressed] [ref=e83] [cursor=pointer]:
+              - generic [ref=e84]: 수정하기
+  - alert [ref=e85]
 ```

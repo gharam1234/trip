@@ -49,10 +49,21 @@ export interface BoardApiItem {
 
 /**
  * 게시판 총 개수 조회 Query
+ * - search: 제목 검색어
+ * - startDate: 시작 날짜 (DateTime)
+ * - endDate: 종료 날짜 (DateTime)
  */
 export const FETCH_BOARD_COUNT = gql`
-  query FetchBoardsCount {
-    fetchBoardsCount
+  query FetchBoardsCount(
+    $search: String
+    $startDate: DateTime
+    $endDate: DateTime
+  ) {
+    fetchBoardsCount(
+      search: $search
+      startDate: $startDate
+      endDate: $endDate
+    )
   }
 `;
 
