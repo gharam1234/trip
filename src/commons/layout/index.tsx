@@ -111,14 +111,50 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
                 {/* 드롭다운 메뉴 */}
                 {isDropdownOpen && (
                   <div className={styles.dropdownMenu}>
-                    <div 
-                      className={styles.dropdownMenuItem}
-                      onClick={() => {
-                        handleLogoutClick();
-                        setIsDropdownOpen(false);
-                      }}
-                    >
-                      로그아웃
+                    {/* 포인트 섹션 */}
+                    <div className={styles.dropdownPointSection}>
+                      <Image 
+                        src="/icons/point.png" 
+                        alt="포인트 아이콘" 
+                        width={24} 
+                        height={24}
+                      />
+                      <div className={styles.dropdownPointValue}>23,000P</div>
+                    </div>
+
+                    {/* 구분선 */}
+                    <div className={styles.dropdownDivider} />
+
+                    {/* 메뉴 항목들 */}
+                    <div className={styles.dropdownMenuItems}>
+                      <button 
+                        className={styles.dropdownMenuTab}
+                        type="button"
+                      >
+                        <Image 
+                          src="/icons/charge.png" 
+                          alt="포인트 충전 아이콘" 
+                          width={16} 
+                          height={16}
+                        />
+                        <span className={styles.dropdownMenuTabLabel}>포인트 충전</span>
+                      </button>
+                      <button 
+                        className={styles.dropdownMenuTab}
+                        type="button"
+                        onClick={() => {
+                          handleLogoutClick();
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        <Image 
+                          src="/icons/logout.png" 
+                          alt="로그아웃 아이콘" 
+                          width={16} 
+                          height={16}
+                        />
+                        <span className={styles.dropdownMenuTabLabel}>로그아웃</span>
+                      </button>
                     </div>
                   </div>
                 )}

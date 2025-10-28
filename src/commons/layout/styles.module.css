@@ -91,6 +91,7 @@
   align-items: center;
   gap: 8px;
   height: 40px;
+  position: relative;
 }
 
 .profileImage {
@@ -135,31 +136,80 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  min-width: 120px;
+  width: 240px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.dropdownMenuItem {
-  padding: 12px 16px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--color-border-subtle);
+/* 포인트 섹션 */
+.dropdownPointSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.dropdownPointLabel {
+  font-size: var(--typo-desktop-body02_m-fontSize);
+  line-height: var(--typo-desktop-body02_m-lineHeight);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.dropdownPointValue {
   font-size: var(--typo-desktop-body01-fontSize);
   line-height: var(--typo-desktop-body01-lineHeight);
+  font-weight: 500;
   color: var(--color-text-primary);
+}
+
+/* 구분선 */
+.dropdownDivider {
+  height: 1px;
+  background-color: var(--color-border-default);
+  flex-shrink: 0;
+}
+
+/* 메뉴 항목 컨테이너 */
+.dropdownMenuItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+/* 메뉴 탭 버튼 */
+.dropdownMenuTab {
+  height: 40px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
   transition: background-color 0.2s ease;
 }
 
-.dropdownMenuItem:hover {
+.dropdownMenuTab:hover {
   background-color: var(--color-surface-subtle);
 }
 
-.dropdownMenuItem:last-child {
+.dropdownMenuTab:last-child {
   border-bottom: none;
 }
 
-/* 프로필 영역을 relative로 설정하여 드롭다운 위치 기준점 설정 */
-.profileArea {
-  position: relative;
+/* 메뉴 탭 라벨 */
+.dropdownMenuTabLabel {
+  font-size: var(--typo-desktop-body01-fontSize);
+  line-height: var(--typo-desktop-body01-lineHeight);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  flex: 1;
 }
 
 .banner {

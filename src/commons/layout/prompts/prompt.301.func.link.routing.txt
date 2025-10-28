@@ -37,6 +37,3 @@
 
             3) navigation 영역
                 - 로고: url.ts에 정의된 게시글보드판 => /boards
-                
-
-

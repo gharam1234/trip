@@ -12,7 +12,6 @@ import { SearchBar } from "@/commons/components/searchbar";
 import { Button } from "@/commons/components/button";
 import { Pagination } from "@/commons/components/pagination";
 import { DatePicker } from "antd";
-import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useLinkToNewBoard } from "./hooks/index.link.new.hook";
 import { usePagination } from "./hooks/index.pagination.hook";
@@ -20,6 +19,7 @@ import { useBoardRouting } from "./hooks/index.link.routing.hook";
 import { useAuthGuard } from "@/commons/providers/auth/auth.guard.hook";
 import { useIndexing } from "./hooks/index.indexing.hook";
 import { useDeleteBoard } from "./hooks/index.delete.hook";
+import { useDatepickerFiltering } from "./hooks/datepicker.filtering.hook";
 
 export default function Boards(): JSX.Element {
   // 영역 순서 가이드
@@ -28,19 +28,13 @@ export default function Boards(): JSX.Element {
   // 상태: 검색어
   const [keyword, setKeyword] = React.useState<string>("");
 
-  // 상태: 날짜 범위
-  const [dateRange, setDateRange] = React.useState<[Dayjs | null, Dayjs | null] | null>(null);
-  // 상태: 포맷된 날짜 문자열 (API 파라미터 연동)
-  const [dateRangeText, setDateRangeText] = React.useState<{ start: string | null; end: string | null }>({ start: null, end: null });
-
-  // 상태: 검색 실행 여부 (검색 버튼 클릭 시 true)
-  const [isSearching, setIsSearching] = React.useState<boolean>(false);
+  // Hook: DatePicker 필터링 (날짜 범위 선택 및 자동 검색)
+  const { dateRangeText, isSearching, setIsSearching, handleDateRangeChange } =
+    useDatepickerFiltering();
 
   // Hook: 트립토크 등록 페이지로 이동
   const { navigateToNewBoard } = useLinkToNewBoard();
 
-  // Hook: GraphQL API로 게시글 데이터 조회 및 페이지네이션 관리
-  // usePagination을 사용하여 검색 파라미터 전달
   const { currentPage, totalPages, boards, loading, error, handlePageChange } = usePagination(
     isSearching ? keyword : "",
     isSearching ? dateRangeText.start : null,
@@ -87,16 +81,7 @@ export default function Boards(): JSX.Element {
             <DatePicker.RangePicker
               allowClear
               placeholder={["YYYY.MM.DD", "YYYY.MM.DD"]}
-              onChange={(values) => {
-                setDateRange(values);
-                if (values && values[0] && values[1]) {
-                  const startText = dayjs(values[0]).format('YYYY-MM-DD');
-                  const endText = dayjs(values[1]).format('YYYY-MM-DD');
-                  setDateRangeText({ start: startText, end: endText });
-                } else {
-                  setDateRangeText({ start: null, end: null });
-                }
-              }}
+              onChange={handleDateRangeChange}
               className={styles.wDatepicker}
               style={{ width: "100%" }}
             />
