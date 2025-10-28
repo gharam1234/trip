@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useLinkRouting } from "./hooks/index.link.routing.hook";
 import { useAreaVisibility } from "./hooks/index.area.hook";
 import { useLayoutAuth } from "./hooks/index.auth.hook";
-import { useAuthRouteSync } from "./hooks/use.auth.route.sync.hook";
 import { useActiveMenu } from "./hooks/index.active.menu.hook";
 import { Button } from "../components/button";
 
@@ -20,10 +19,7 @@ export default function LayoutWireframe({ children }: LayoutWireframeProps) {
   const { handleLogoClick, navigateTo } = useLinkRouting();
   const { showBanner, showNavigation, routeKey } = useAreaVisibility();
   const { isLoggedIn, userName, handleLoginClick, handleLogoutClick, handleDropdownToggle } = useLayoutAuth();
-  const { activeMenuId } = useActiveMenu();
-
-  // 라우트 변화에 따른 인증상태 재동기화
-  useAuthRouteSync();
+  const { activeMenuId, menuItems } = useActiveMenu();
 
   // 드롭다운 메뉴 상태 관리
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
