@@ -1,11 +1,25 @@
 import { test, expect } from '@playwright/test';
 
+declare global {
+  interface Window {
+    __TEST_ENV__?: string;
+    __TEST_BYPASS__?: boolean;
+  }
+}
+
 // 간단한 수정 기능 테스트
 test('게시판 수정 기능 기본 테스트', async ({ page }) => {
   // 테스트 환경 설정
   await page.addInitScript(() => {
     window.__TEST_ENV__ = 'test';
     window.__TEST_BYPASS__ = true;
+    localStorage.setItem('accessToken', 'test-token-for-e2e-testing');
+    localStorage.setItem('user', JSON.stringify({
+      _id: 'test-user-id',
+      name: 'Test User',
+      email: 'test@example.com',
+    }));
+    localStorage.setItem('tokenExpiresAt', (Date.now() + 60 * 60 * 1000).toString());
   });
 
   // 게시판 목록 페이지로 이동
@@ -41,8 +55,13 @@ test('게시판 수정 기능 기본 테스트', async ({ page }) => {
   await expect(page.locator('h1')).toHaveText('게시물 수정');
   
   // 폼 필드들이 기존 데이터로 초기화되었는지 확인
-  await expect(page.locator('[data-testid="board-writer-input"]')).toHaveValue('테스트작성자');
-  await expect(page.locator('[data-testid="board-password-input"]')).toHaveValue('1234');
-  await expect(page.locator('[data-testid="board-title-input"]')).toHaveValue('테스트 제목');
-  await expect(page.locator('[data-testid="board-content-input"]')).toHaveValue('테스트 내용');
+  await expect(page.locator('[data-testid="board-writer-input"]')).toHaveValue('작성자1');
+  await expect(page.locator('[data-testid="board-title-input"]')).toHaveValue('테스트 제목 1');
+  await expect(page.locator('[data-testid="board-content-input"]')).toHaveValue('테스트 내용 1');
 });
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 17:51:21
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

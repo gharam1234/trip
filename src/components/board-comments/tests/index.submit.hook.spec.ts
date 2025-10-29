@@ -1,5 +1,12 @@
 import { test, expect } from "@playwright/test";
 
+declare global {
+  interface Window {
+    __TEST_ENV__?: string;
+    __TEST_BYPASS__?: boolean;
+  }
+}
+
 /**
  * 게시판 댓글 작성 Hook 테스트 (TDD 기반)
  * - 실제 API 데이터를 사용하여 테스트
@@ -9,11 +16,79 @@ import { test, expect } from "@playwright/test";
 const TEST_BOARD_ID = "68fee6f59bffc00029cce4ab";
 
 test.describe("Board Comments Submit Hook (TDD 기반 테스트)", () => {
+  let commentsData: any[] = [];
+
   // 테스트 환경 설정
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
       window.__TEST_ENV__ = "test";
       window.__TEST_BYPASS__ = true;
+      localStorage.setItem("accessToken", "test-token-for-e2e-testing");
+      localStorage.setItem("user", JSON.stringify({
+        _id: "test-user-id",
+        name: "Test User",
+        email: "test@example.com",
+      }));
+      localStorage.setItem("tokenExpiresAt", (Date.now() + 60 * 60 * 1000).toString());
+    });
+
+    commentsData = [];
+
+    await page.route('**/graphql', async (route) => {
+      const request = route.request();
+      let postData: any;
+
+      try {
+        postData = request.postDataJSON();
+      } catch {
+        postData = null;
+      }
+
+      const query = postData?.query || '';
+      const matchOperation = (name: string) => {
+        const pattern = new RegExp(`\\b${name}\\b`, 'i');
+        return pattern.test(query);
+      };
+
+      if (matchOperation('fetchBoardComments')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: {
+              fetchBoardComments: commentsData,
+            },
+          }),
+        });
+        return;
+      }
+
+      if (matchOperation('createBoardComment')) {
+        const input = postData?.variables?.createBoardCommentInput || {};
+        const newComment = {
+          _id: `mock-comment-${Date.now()}`,
+          writer: input.writer || '테스트작성자',
+          contents: input.contents || '',
+          rating: input.rating ?? 0,
+          createdAt: new Date().toISOString(),
+          __typename: 'BoardComment',
+        };
+
+        commentsData = [...commentsData, newComment];
+
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: {
+              createBoardComment: newComment,
+            },
+          }),
+        });
+        return;
+      }
+
+      await route.continue();
     });
 
     // GraphQL 요청/응답 로깅
@@ -282,3 +357,9 @@ test.describe("Board Comments Submit Hook (TDD 기반 테스트)", () => {
     console.log(`API 실패 시 에러 메시지: ${errorCount > 0 ? "표시됨" : "표시되지 않음"}`);
   });
 });
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 17:51:21
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

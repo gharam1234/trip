@@ -1,5 +1,12 @@
 import { test, expect } from "@playwright/test";
 
+declare global {
+  interface Window {
+    __TEST_ENV__?: string;
+    __TEST_BYPASS__?: boolean;
+  }
+}
+
 /**
  * 게시글 상세 툴팁 기능 테스트 - Playwright 기반 E2E 테스트
  *
@@ -19,12 +26,14 @@ test.describe("게시글 상세 툴팁 기능", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
       window.__TEST_ENV__ = 'test';
+      window.__TEST_BYPASS__ = true;
       localStorage.setItem('accessToken', 'test-token-for-e2e-testing');
       localStorage.setItem('user', JSON.stringify({
         _id: 'test-user-id',
         name: 'Test User',
         email: 'test@example.com'
       }));
+      localStorage.setItem('tokenExpiresAt', (Date.now() + 60 * 60 * 1000).toString());
     });
 
   });
@@ -209,4 +218,9 @@ test.describe("게시글 상세 툴팁 기능", () => {
     }
   });
 });
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 17:51:21
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
 

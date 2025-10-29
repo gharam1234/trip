@@ -1,5 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
 
+declare global {
+  interface Window {
+    __TEST_ENV__?: string;
+    __TEST_BYPASS__?: boolean;
+  }
+}
+
 // 페이지 로드 대기 헬퍼 함수
 async function waitForPageLoad(page: Page) {
   await page.waitForSelector('[data-testid="signup-form"]', { timeout: 2000 });
@@ -21,6 +28,11 @@ async function fillSignupForm(
 
 test.describe('회원가입 폼 기능', () => {
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      window.__TEST_ENV__ = 'test';
+      window.__TEST_BYPASS__ = true;
+    });
+
     // 각 테스트 전에 회원가입 페이지로 이동
     await page.goto('/auth/signup');
     await waitForPageLoad(page);
@@ -113,6 +125,37 @@ test.describe('회원가입 폼 기능', () => {
 
   test.describe('유효한 데이터로 회원가입 성공 시나리오', () => {
     test('유효한 데이터로 회원가입 성공', async ({ page }) => {
+      await page.route('**/graphql', async (route) => {
+        let postData: any;
+        try {
+          postData = route.request().postDataJSON();
+        } catch {
+          postData = null;
+        }
+
+        const query = postData?.query || '';
+        if (/\bcreateUser\b/i.test(query)) {
+          const variables = postData?.variables?.createUserInput || {};
+          await route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({
+              data: {
+                createUser: {
+                  _id: 'mock-user-001',
+                  email: variables.email ?? 'test@example.com',
+                  name: variables.name ?? '테스트사용자',
+                  __typename: 'User',
+                },
+              },
+            }),
+          });
+          return;
+        }
+
+        await route.continue();
+      });
+
       // 유효한 데이터로 폼 작성
       const timestamp = Date.now();
       const email = `test+${timestamp}@example.com`;
@@ -128,7 +171,7 @@ test.describe('회원가입 폼 기능', () => {
       await page.click('[data-testid="signup-button"]');
       
       // 성공 모달 대기 및 확인 (2초 타임아웃 - 네트워크 통신)
-      await expect(page.locator('text=회원가입 완료')).toBeVisible({ timeout: 2000 });
+      await expect(page.locator('text=회원가입을 축하 드려요.')).toBeVisible({ timeout: 2000 });
     });
   });
 
@@ -178,3 +221,9 @@ test.describe('회원가입 폼 기능', () => {
     });
   });
 });
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 17:51:21
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

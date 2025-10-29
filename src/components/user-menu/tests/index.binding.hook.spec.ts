@@ -7,6 +7,10 @@ import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000';
 
+test.afterEach(async ({ page }) => {
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
+});
+
 test.describe('useUserMenuBinding Hook - 실제 API 데이터 바인딩', () => {
   /**
    * 1) 성공 시나리오: API 응답 데이터를 기반으로 바인딩
@@ -227,4 +231,3 @@ test.describe('useUserMenuBinding Hook - 실제 API 데이터 바인딩', () => 
 // 시각: 2025-10-29 16:25:35
 // 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 // 학습 키워드: 개념 식별 불가(자동 추정 실패)
-

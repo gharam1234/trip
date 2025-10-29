@@ -9,7 +9,13 @@
         "pass_json_stdin": true
       }
     ]
-  }
+  },
+  "env": {
+        "ANTHROPIC_AUTH_TOKEN": "your_zai_api_key",
+        "ANTHROPIC_BASE_URL": "https://api.z.ai/api/anthropic",
+        "API_TIMEOUT_MS": "3000000"
+    }
+
 }
 
 // === 변경 주석 (자동 생성) ===
