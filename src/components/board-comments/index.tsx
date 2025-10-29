@@ -259,27 +259,13 @@ function CommentEditForm({
 }
 
 function IconEdit() {
-  return (
-    <div className={styles.icon}>
-      <svg className={styles.iconSvg} fill="none" preserveAspectRatio="none" viewBox="0 0 20 20">
-        <g>
-          <path d={svgPaths.p25c1d00} fill="var(--color-text-secondary)" />
-        </g>
-      </svg>
-    </div>
-  );
+  // 퍼블릭 폴더 아이콘 사용
+  return <span className={styles.iconEdit} aria-hidden />;
 }
 
 function IconClose() {
-  return (
-    <div className={styles.icon}>
-      <svg className={styles.iconSvg} fill="none" preserveAspectRatio="none" viewBox="0 0 20 20">
-        <g>
-          <path d={svgPaths.pf6bf000} fill="var(--color-text-secondary)" />
-        </g>
-      </svg>
-    </div>
-  );
+  // 퍼블릭 폴더 아이콘 사용
+  return <span className={styles.iconClose} aria-hidden />;
 }
 
 export { CommentSubmitForm };
@@ -402,3 +388,8 @@ export default function CommentItem({ id, author, rating, content, date, onEdit,
     </div>
   );
 }
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 21:57:37
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

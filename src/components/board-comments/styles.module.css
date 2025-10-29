@@ -1,5 +1,5 @@
 /* 댓글 컴포넌트 스타일 */
-.commentContainer {
+.editFormContainer {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -108,6 +108,26 @@
     padding: 0;
   }
   
+.iconEdit,
+.iconClose {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  display: inline-block;
+}
+
+.iconEdit {
+  background-image: url('/icons/edit.png');
+}
+
+.iconClose {
+  background-image: url('/icons/close.png');
+}
+
   .icon {
     position: relative;
     flex-shrink: 0;
@@ -435,3 +455,11 @@
     width: 100%;
   }
 }
+
+/*
+=== 변경 주석 (자동 생성) ===
+시각: 2025-10-29 21:57:37
+변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+학습 키워드: 개념 식별 불가(자동 추정 실패)
+*/
+
