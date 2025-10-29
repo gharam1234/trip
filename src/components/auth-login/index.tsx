@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { Input } from '@/commons/components/input';
 import { Button } from '@/commons/components/button';
 import { Modal, useModal } from '@/commons/providers/modal/modal.provider';
+import { Modal as ModalComponent } from '@/commons/components/modal';
 import { useLoginForm } from './hooks/index.form.hook';
 
 // 스타일
@@ -110,19 +111,16 @@ export default function AuthLogin() {
         id="login-success-modal"
         isOpen={isModalOpen('login-success-modal')}
         onClose={handleModalConfirm}
-        variant="info"
-        actions="single"
+        data-testid="login-success-modal"
       >
-        <div data-testid="login-success-modal">
-          <h3>로그인 완료</h3>
-          <p>로그인이 성공적으로 완료되었습니다.</p>
-          <button
-            data-testid="modal-confirm-button"
-            onClick={handleModalConfirm}
-          >
-            완료
-          </button>
-        </div>
+        <ModalComponent
+          variant="info"
+          actions="single"
+          title="로그인 완료"
+          description="로그인이 성공적으로 완료되었습니다."
+          confirmText="완료"
+          onConfirm={handleModalConfirm}
+        />
       </Modal>
 
       {/* 로그인실패모달 */}
@@ -130,20 +128,23 @@ export default function AuthLogin() {
         id="login-fail-modal"
         isOpen={isModalOpen('login-fail-modal')}
         onClose={handleModalConfirm}
-        variant="danger"
-        actions="single"
+        data-testid="login-fail-modal"
       >
-        <div data-testid="login-fail-modal">
-          <h3>로그인 실패</h3>
-          <p>이메일 또는 비밀번호가 올바르지 않습니다.</p>
-          <button
-            data-testid="modal-confirm-button"
-            onClick={handleModalConfirm}
-          >
-            확인
-          </button>
-        </div>
+        <ModalComponent
+          variant="danger"
+          actions="single"
+          title="로그인 실패"
+          description="이메일 또는 비밀번호가 올바르지 않습니다."
+          confirmText="확인"
+          onConfirm={handleModalConfirm}
+        />
       </Modal>
     </div>
   );
 }
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

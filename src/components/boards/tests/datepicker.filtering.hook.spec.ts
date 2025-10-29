@@ -38,9 +38,10 @@ test.describe("DatePicker 필터링 기능", () => {
     const startDateInput = datepickerInputs.first();
 
     // 테스트용 날짜 설정
-    const startDate = dayjs().subtract(30, 'days').format('YYYY.MM.DD');
-    const endDate = dayjs().format('YYYY.MM.DD');
-    const expectedEndDate = dayjs().format('YYYY-MM-DD[T23:59:59]'); // 백엔드에 전송될 endDate (시간 정보 추가)
+    const startDate = dayjs().subtract(30, 'days');
+    const endDate = dayjs();
+    const expectedStartDate = startDate.startOf('day').format('YYYY-MM-DDTHH:mm:ssZ');
+    const expectedEndDate = endDate.endOf('day').format('YYYY-MM-DDTHH:mm:ssZ');
 
     // GraphQL 요청 인터셉트를 위한 준비 (액션 전에 대기 시작)
     const requestPromise = page.waitForRequest(
@@ -54,11 +55,11 @@ test.describe("DatePicker 필터링 기능", () => {
     );
 
     // 시작 날짜 입력
-    await startDateInput.fill(startDate);
+    await startDateInput.fill(startDate.format('YYYY.MM.DD'));
 
     // 종료 날짜 입력
     const endDateInput = datepickerInputs.nth(1);
-    await endDateInput.fill(endDate);
+    await endDateInput.fill(endDate.format('YYYY.MM.DD'));
 
     // 검색 버튼 클릭
     const searchButton = page.locator("button:has-text('검색')");
@@ -75,10 +76,7 @@ test.describe("DatePicker 필터링 기능", () => {
       // 변수에서 startDate, endDate 확인
       const variables = requestBody.variables;
       expect(variables).toBeDefined();
-      expect(variables.startDate).toBeDefined();
-      expect(variables.endDate).toBeDefined();
-
-      // endDate가 +1일로 조정되었는지 확인 (백엔드 exclusive 필터링 때문)
+      expect(variables.startDate).toBe(expectedStartDate);
       expect(variables.endDate).toBe(expectedEndDate);
     } catch (error) {
       // 요청이 없으면 게시글이 필터링되었는지만 확인
@@ -232,7 +230,7 @@ test.describe("DatePicker 필터링 기능", () => {
     }
   });
 
-  test("API 호출 시 올바른 날짜 형식(YYYY-MM-DD)으로 파라미터가 전달되는지 확인", async ({
+  test("API 호출 시 올바른 날짜 형식(ISO8601+타임존)으로 파라미터가 전달되는지 확인", async ({
     page,
   }) => {
     // 페이지 로드 완료 확인
@@ -275,8 +273,8 @@ test.describe("DatePicker 필터링 기능", () => {
       const requestBody = request.postDataJSON();
       const variables = requestBody.variables;
 
-      // 날짜 형식 검증 (YYYY-MM-DD)
-      const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+      // 날짜 형식 검증 (ISO8601 + 타임존)
+      const dateFormatRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/;
 
       if (variables.startDate) {
         expect(variables.startDate).toMatch(dateFormatRegex);
@@ -335,3 +333,9 @@ test.describe("DatePicker 필터링 기능", () => {
     expect(rowCount).toBeGreaterThanOrEqual(1);
   });
 });
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

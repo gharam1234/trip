@@ -183,9 +183,10 @@ export default function AuthSignup() {
         <ModalComponent
           variant="info"
           actions="single"
-          title="회원가입 완료"
-          description="회원가입이 완료되었습니다. 로그인 페이지로 이동합니다."
-          confirmText="확인"
+          title="회원가입을 축하 드려요."
+          description=""
+          confirmText="로그인 하기"
+          logo="/images/logo.png"
           onConfirm={handleSuccessConfirm}
         />
       </Modal>
@@ -208,3 +209,9 @@ export default function AuthSignup() {
     </>
   );
 }
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

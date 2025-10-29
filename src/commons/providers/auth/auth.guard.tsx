@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from './auth.provider';
 import { useModal } from '../modal/modal.provider';
 import { Modal as CommonModal } from '@/commons/components/modal';
@@ -28,6 +28,7 @@ interface AuthGuardProps {
 // AuthGuard 컴포넌트
 export function AuthGuard({ children }: AuthGuardProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { isAuthenticated, mounted, checkAuthStatus } = useAuth();
   const { openModal, closeAllModals, isModalOpen } = useModal();
   
@@ -151,9 +152,15 @@ export function AuthGuard({ children }: AuthGuardProps) {
   const handleLoginClick = useCallback(() => {
     closeAllModals();
     modalShownRef.current = false;
-    // Next.js router를 사용하여 페이지 이동
-    window.location.href = getPath('AUTH_LOGIN');
-  }, [closeAllModals]);
+    // Next.js router를 통해 로그인 페이지로 이동 (fallback은 location.href)
+    try {
+      router.push(getPath('AUTH_LOGIN'));
+    } catch (error) {
+      if (typeof window !== 'undefined') {
+        window.location.href = getPath('AUTH_LOGIN');
+      }
+    }
+  }, [closeAllModals, router]);
 
   // 현재 경로가 PUBLIC 접근인지 여부 계산 (PUBLIC이면 가드 대기 없이 바로 렌더)
   const currentRouteKey = getCurrentRouteKey();
@@ -192,3 +199,9 @@ export function AuthGuard({ children }: AuthGuardProps) {
 }
 
 export default AuthGuard;
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

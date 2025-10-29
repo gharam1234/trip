@@ -3,6 +3,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/client/react';
 import { FETCH_BOARDS, FetchBoardsResponse, BoardApiItem } from '../graphql/queries';
+import { formatBoardDate } from '@/commons/utils/date';
 
 // 리스트 표시용 데이터 타입
 export interface BoardListItem {
@@ -51,7 +52,7 @@ export function useBoardsBinding(
       no: board._id,
       title: truncateText(board.title, 50),
       author: board.writer,
-      date: formatDate(board.createdAt)
+      date: formatBoardDate(board.createdAt)
     }));
   }, [data]);
 
@@ -73,24 +74,8 @@ function truncateText(text: string, maxLength: number): string {
   return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 }
 
-/**
- * 날짜 문자열을 YYYY.MM.DD 형식으로 포맷팅
- * @param dateString - ISO 날짜 문자열 또는 기타 날짜 형식
- * @returns 포맷팅된 날짜 문자열
- */
-function formatDate(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return dateString; // 파싱 실패 시 원본 반환
-    }
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}.${month}.${day}`;
-  } catch {
-    return dateString; // 오류 시 원본 반환
-  }
-}

@@ -9,6 +9,7 @@ import { useBoardDetailBinding } from "./hooks/index.binding.hook";
 import { useBoardEditLink } from "./hooks/index.link.update.hook";
 import { useBoardListLink } from "./hooks/index.link.boards.hook";
 import { useTooltip } from "./hooks/index.tooltip.hook";
+import { formatBoardDate } from "@/commons/utils/date";
 
 /**
  * 보드 상세 와이어프레임 컴포넌트
@@ -53,34 +54,32 @@ export default function BoardsDetailWireframe(): JSX.Element {
   }, [navigateToList]);
 
   // 로딩 상태 처리
-  if (loading) {
-    return (
-      <div className={styles.container} data-testid="boards-detail-page">
-        <div>로딩 중...</div>
-      </div>
-    );
-  }
-
-  // 에러 상태 처리
-  if (error) {
-    return (
-      <div className={styles.container} data-testid="boards-detail-page">
-        <div>오류가 발생했습니다: {error}</div>
-      </div>
-    );
-  }
-
-  // 데이터가 없을 때 처리
-  if (!boardData) {
-    return (
-      <div className={styles.container} data-testid="boards-detail-page">
-        <div>게시글을 찾을 수 없습니다.</div>
-      </div>
-    );
-  }
-
-  return (
+  const renderContent = (content: React.ReactNode) => (
     <div className={styles.container} data-testid="boards-detail-page">
+      <div data-testid="board-detail-page" className={styles.detailContentWrapper}>
+        {content}
+      </div>
+    </div>
+  );
+
+  if (loading) {
+    return renderContent(<div>로딩 중...</div>);
+  }
+
+  if (error) {
+    return renderContent(<div>오류가 발생했습니다: {error}</div>);
+  }
+
+  const formattedCreatedAt = boardData?.createdAt
+    ? formatBoardDate(boardData.createdAt)
+    : "";
+
+  if (!boardData) {
+    return renderContent(<div>게시글을 찾을 수 없습니다.</div>);
+  }
+
+  return renderContent(
+    <>
       {/* 제목 영역: 실제 데이터 바인딩 */}
       <section className={styles.detailTitle}>
         <h1 className={styles.titleText}>{boardData.title}</h1>
@@ -97,7 +96,7 @@ export default function BoardsDetailWireframe(): JSX.Element {
             <span className={styles.profileName}>{boardData.writer}</span>
           </div>
           <div className={styles.writerMeta}>
-            <span className={styles.writerDate}>{boardData.createdAt}</span>
+            <span className={styles.writerDate}>{formattedCreatedAt}</span>
           </div>
         </div>
         <div className={styles.writerDivider} />
@@ -202,7 +201,19 @@ export default function BoardsDetailWireframe(): JSX.Element {
         >
           목록으로
         </Button>
-        <Button variant="secondary" size="small" onClick={handleEditClick} data-testid="edit-button">수정하기</Button>
+        <div
+          className={styles.detailFooterButtonWrapper}
+          data-testid="board-edit-button"
+          onClick={handleEditClick}
+        >
+          <Button
+            variant="secondary"
+            size="small"
+            data-testid="edit-button"
+          >
+            수정하기
+          </Button>
+        </div>
       </section>
 
       {/* gap 24 */}
@@ -273,8 +284,12 @@ export default function BoardsDetailWireframe(): JSX.Element {
 
       {/* gap 40 */}
       <div className={styles.gap40} />
-    </div>
+    </>
   );
 }
 
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
 

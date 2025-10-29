@@ -6,12 +6,14 @@ import styles from "./styles.module.css";
 import { Input } from "@/commons/components/input";
 import { Textarea } from "@/commons/components/textarea";
 import { Button } from "@/commons/components/button";
-import { Modal } from "antd";
+import { Modal as AntdModal } from "antd";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { useBoardForm } from "./hooks/index.form.hook";
 import { useBoardUpdateForm } from "./hooks/index.update.form.hook";
 import { useAddressSearch } from "./hooks/index.address.hook";
 import { useImageUpload } from "./hooks/index.image.hook";
+import { Modal as ProviderModal } from "@/commons/providers/modal/modal.provider";
+import { Modal as FeedbackModal } from "@/commons/components/modal";
 
 /**
  * 보드 작성 UI 컴포넌트
@@ -352,6 +354,7 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
             variant="secondary" 
             className={styles.footerButtonLeft}
             onClick={() => window.history.back()}
+            data-testid="cancel-button"
           >
             취소
           </Button>
@@ -368,7 +371,7 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
       </footer>
 
       {/* 주소 검색 모달 - antd Modal 사용 */}
-      <Modal
+      <AntdModal
         title="우편번호 & 주소찾기"
         open={addressHook.isModalOpen}
         onOk={addressHook.handleToggleModal}
@@ -377,37 +380,49 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
         data-testid="address-search-modal"
       >
         <DaumPostcodeEmbed onComplete={addressHook.handleAddressComplete} />
-      </Modal>
+      </AntdModal>
 
       {/* 성공 알림 모달 - antd Modal 사용 */}
-      <Modal
-        title={isEdit ? '수정 완료' : '등록 완료'}
-        open={showSuccessAlert}
-        onOk={handleSuccessAlertConfirm}
-        onCancel={handleSuccessAlertConfirm}
-        cancelText={null}
-        okText="확인"
+      <ProviderModal
+        id="board-success-modal"
+        isOpen={showSuccessAlert}
+        onClose={handleSuccessAlertConfirm}
         data-testid="success-alert"
-        centered
       >
-        <p>{isEdit ? '게시물이 성공적으로 수정되었습니다.' : '게시물이 성공적으로 등록되었습니다.'}</p>
-      </Modal>
+        <FeedbackModal
+          variant="info"
+          actions="single"
+          title={isEdit ? '수정 완료' : '등록 완료'}
+          description={isEdit ? '게시물이 성공적으로 수정되었습니다.' : '게시물이 성공적으로 등록되었습니다.'}
+          confirmText="확인"
+          onConfirm={handleSuccessAlertConfirm}
+          confirmTestId="success-alert-confirm"
+        />
+      </ProviderModal>
 
       {/* 실패 알림 모달 - antd Modal 사용 */}
-      <Modal
-        title={isEdit ? '수정 실패' : '등록 실패'}
-        open={showFailureAlert}
-        onOk={handleFailureAlertConfirm}
-        onCancel={handleFailureAlertConfirm}
-        cancelText={null}
-        okText="확인"
+      <ProviderModal
+        id="board-failure-modal"
+        isOpen={showFailureAlert}
+        onClose={handleFailureAlertConfirm}
         data-testid="failure-alert"
-        centered
       >
-        <p>{isEdit ? '게시물 수정에 실패했습니다.' : '게시물 등록에 실패했습니다.'}</p>
-      </Modal>
+        <FeedbackModal
+          variant="danger"
+          actions="single"
+          title={isEdit ? '수정 실패' : '등록 실패'}
+          description={isEdit ? '게시물 수정에 실패했습니다.' : '게시물 등록에 실패했습니다.'}
+          confirmText="확인"
+          onConfirm={handleFailureAlertConfirm}
+          confirmTestId="failure-alert-confirm"
+        />
+      </ProviderModal>
     </section>
   );
 }
 
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
 

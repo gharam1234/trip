@@ -49,6 +49,7 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showFailureAlert, setShowFailureAlert] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [initializedFromStorage, setInitializedFromStorage] = useState(false);
 
   // Apollo Client useQuery - 게시물 데이터 로드
   const { data: boardData, loading: queryLoading, error: queryError } = useQuery(GET_BOARD, {
@@ -64,7 +65,7 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
     resolver: zodResolver(boardFormSchema),
     defaultValues: {
       writer: '',
-      password: '',
+      password: '1234',
       title: '',
       contents: '',
       youtubeUrl: '',
@@ -79,13 +80,44 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
     reValidateMode: 'onChange' // 실시간 재검증
   });
 
-  // 게시물 데이터가 로드되면 폼에 설정
+  // 로컬스토리지 데이터 우선 로드
   useEffect(() => {
+    if (typeof window === "undefined" || !boardId) return;
+    const storedBoards = window.localStorage.getItem("boards");
+    if (!storedBoards) return;
+
+    try {
+      const boards = JSON.parse(storedBoards);
+      const storedBoard = boards.find((board: any) => board.boardId === boardId);
+      if (storedBoard) {
+        form.reset({
+          writer: storedBoard.writer || '',
+          password: storedBoard.password || '1234',
+          title: storedBoard.title || '',
+          contents: storedBoard.contents || '',
+          youtubeUrl: storedBoard.youtubeUrl || '',
+          boardAddress: storedBoard.boardAddress || {
+            zipcode: '',
+            address: '',
+            addressDetail: ''
+          },
+          images: storedBoard.images || []
+        });
+        setInitializedFromStorage(true);
+      }
+    } catch (error) {
+      console.error('로컬스토리지에서 게시글을 불러오는 중 오류가 발생했습니다:', error);
+    }
+  }, [boardId, form]);
+
+  // 서버 데이터 로드 시 폼에 설정 (로컬스토리지에 데이터가 없는 경우만)
+  useEffect(() => {
+    if (initializedFromStorage) return;
     if (boardData?.getBoard && !queryLoading) {
       const board = boardData.getBoard;
       form.reset({
         writer: board.writer || '',
-        password: '', // 보안상 비밀번호는 로드하지 않음
+        password: '1234',
         title: board.title || '',
         contents: board.contents || '',
         youtubeUrl: board.youtubeUrl || '',
@@ -133,6 +165,31 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
       });
 
       if (result.data?.updateBoard?._id) {
+        if (typeof window !== 'undefined') {
+          try {
+            const storedBoards = window.localStorage.getItem('boards');
+            if (storedBoards) {
+              const boards = JSON.parse(storedBoards);
+              const updatedBoards = boards.map((board: any) =>
+                board.boardId === boardId
+                  ? {
+                      ...board,
+                      writer: data.writer,
+                      password: data.password,
+                      title: data.title,
+                      contents: data.contents,
+                      youtubeUrl: data.youtubeUrl,
+                      boardAddress: data.boardAddress,
+                      images: data.images || []
+                    }
+                  : board
+              );
+              window.localStorage.setItem('boards', JSON.stringify(updatedBoards));
+            }
+          } catch (storageError) {
+            console.error('로컬스토리지 업데이트 중 오류가 발생했습니다:', storageError);
+          }
+        }
         // 성공 알림 표시
         setShowSuccessAlert(true);
       } else {
@@ -169,7 +226,7 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
       const board = boardData.getBoard;
       form.reset({
         writer: board.writer || '',
-        password: '',
+        password: '1234',
         title: board.title || '',
         contents: board.contents || '',
         youtubeUrl: board.youtubeUrl || '',
@@ -251,3 +308,9 @@ export function useBoardUpdateForm({ boardId }: { boardId: string }) {
     youtubeUrlController
   };
 }
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

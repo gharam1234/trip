@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 // React Hook Form 관련
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 // Apollo Client 관련
-import { useMutation } from '@apollo/client/react';
+import { useMutation, useApolloClient } from '@apollo/client/react';
 import { gql } from '@apollo/client';
 
 // Next.js 관련
@@ -17,6 +19,7 @@ import { useRouter } from 'next/navigation';
 // 내부 컴포넌트/유틸
 import { useModal } from '@/commons/providers/modal/modal.provider';
 import { getPath } from '@/commons/constants/url';
+import { useAuth } from '@/commons/providers/auth/auth.provider';
 
 /**
  * GraphQL 뮤테이션 정의
@@ -33,7 +36,11 @@ const FETCH_USER_LOGGED_IN = gql`
   query FetchUserLoggedIn {
     fetchUserLoggedIn {
       _id
+      email
       name
+      userPoint {
+        amount
+      }
     }
   }
 `;
@@ -55,6 +62,41 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export function useLoginForm() {
   const router = useRouter();
   const { openModal, closeAllModals } = useModal();
+  const { login } = useAuth();
+  const client = useApolloClient();
+  const [pendingAccessToken, setPendingAccessToken] = useState<string | null>(null);
+  const [pendingUser, setPendingUser] = useState<any | null>(null);
+  const [pendingExpiresIn, setPendingExpiresIn] = useState<number | null>(null);
+
+  const deriveExpiresIn = (accessToken: string): number => {
+    if (!accessToken) return 3600;
+
+    try {
+      const [, payload] = accessToken.split('.');
+      if (!payload) return 3600;
+
+      const normalized = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, '=');
+
+      if (typeof window === 'undefined' || typeof window.atob !== 'function') {
+        return 3600;
+      }
+
+      const decoded = window.atob(padded);
+      const parsed = JSON.parse(decoded);
+
+      if (typeof parsed?.exp !== 'number') return 3600;
+
+      const expiresAtMs = parsed.exp * 1000;
+      const remainingMs = expiresAtMs - Date.now();
+      const remainingSeconds = Math.max(Math.floor(remainingMs / 1000), 0);
+
+      return remainingSeconds;
+    } catch (error) {
+      console.warn('토큰 만료 시간 파싱 실패:', error);
+      return 3600;
+    }
+  };
   
   // 폼 설정
   const form = useForm<LoginFormData>({
@@ -73,46 +115,33 @@ export function useLoginForm() {
       console.log('로그인 성공 - 응답 데이터:', data);
       try {
         // accessToken을 로컬스토리지에 저장
-        localStorage.setItem('accessToken', data.loginUser.accessToken);
-        console.log('accessToken 저장 완료:', data.loginUser.accessToken);
-        
-        // 사용자 정보 조회를 위한 Apollo Client 설정
-        const { ApolloClient, InMemoryCache } = await import('@apollo/client');
-        const { createHttpLink } = await import('@apollo/client/link/http');
-        
-        // 새로운 Apollo Client 인스턴스 생성 (인증 헤더 포함)
-        const httpLink = createHttpLink({
-          uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "https://main-practice.codebootcamp.co.kr/graphql",
-          headers: {
-            Authorization: `Bearer ${data.loginUser.accessToken}`,
-          },
-        });
-        
-        const client = new ApolloClient({
-          link: httpLink,
-          cache: new InMemoryCache(),
-        });
-        
-        // fetchUserLoggedIn 쿼리 실행
-        const userResult = await client.query({
-          query: FETCH_USER_LOGGED_IN,
-        });
-        
-        // 사용자 정보를 로컬스토리지에 저장
-        const userData = {
-          _id: userResult.data.fetchUserLoggedIn._id,
-          name: userResult.data.fetchUserLoggedIn.name,
-        };
-        localStorage.setItem('user', JSON.stringify(userData));
-        console.log('사용자 정보 저장 완료:', userData);
-        
-        // 로그인완료모달 표시
+        const accessToken = data.loginUser.accessToken;
+        const expiresIn = deriveExpiresIn(accessToken);
+        localStorage.setItem('accessToken', accessToken);
+        console.log('accessToken 저장 완료:', accessToken);
+        setPendingAccessToken(accessToken);
+        setPendingExpiresIn(expiresIn);
         openModal('login-success-modal');
-        
+
+        try {
+          const response = await client.query({
+            query: FETCH_USER_LOGGED_IN,
+            fetchPolicy: 'network-only',
+          });
+          const fetchedUser = response.data?.fetchUserLoggedIn ?? null;
+          setPendingUser(fetchedUser);
+        } catch (fetchError) {
+          console.error('로그인 후 사용자 정보 조회 실패:', fetchError);
+          setPendingUser(null);
+        }
+
       } catch (error) {
-        console.error('사용자 정보 조회 실패:', error);
-        // 사용자 정보 조회 실패 시에도 로그인은 성공으로 처리
-        openModal('login-success-modal');
+        console.error('로그인 처리 오류:', error);
+        // 로그인 실패 시 실패 모달 표시
+        setPendingAccessToken(null);
+        setPendingUser(null);
+        setPendingExpiresIn(null);
+        openModal('login-fail-modal');
       }
     },
     onError: (error: any) => {
@@ -121,6 +150,9 @@ export function useLoginForm() {
       console.error('에러 네트워크:', error.networkError);
       console.error('에러 그래프QL:', error.graphQLErrors);
       // 로그인실패모달 표시
+      setPendingAccessToken(null);
+      setPendingUser(null);
+      setPendingExpiresIn(null);
       openModal('login-fail-modal');
     },
   });
@@ -155,13 +187,25 @@ export function useLoginForm() {
    * 모달 확인 버튼 클릭 처리
    */
   const handleModalConfirm = () => {
+    const successConfirmed = !!pendingAccessToken;
     closeAllModals();
     
-    // 현재 열린 모달이 로그인완료모달인지 확인
-    const isSuccessModal = document.querySelector('[data-testid="login-success-modal"]');
-    if (isSuccessModal) {
-      // 게시글 목록 페이지로 이동
-      router.push(getPath('BOARDS_LIST'));
+    if (successConfirmed && pendingAccessToken) {
+      const userInfo =
+        pendingUser ??
+        {
+          email: form.getValues('email'),
+          name: form.getValues('email'),
+        };
+
+      const expiresIn = pendingExpiresIn ?? 3600;
+      login(userInfo, pendingAccessToken, expiresIn);
+      setPendingAccessToken(null);
+      setPendingUser(null);
+      setPendingExpiresIn(null);
+    } else {
+      // 실패 모달의 경우 로그인 페이지 유지
+      router.push(getPath('AUTH_LOGIN'));
     }
   };
 
@@ -172,3 +216,9 @@ export function useLoginForm() {
     loginLoading,
   };
 }
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

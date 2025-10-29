@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@apollo/client/react";
 import { getPath } from "@/commons/constants/url";
-import { BoardAddressInput, BoardFormData } from "@/commons/constants/enum";
-import { CREATE_BOARD, CreateBoardInput } from "../graphql/mutations";
+import { BoardFormData } from "@/commons/constants/enum";
+import { CREATE_BOARD, CreateBoardInput, CreateBoardResponse } from "../graphql/mutations";
 
 // Zod 스키마 정의
 const boardFormSchema = z.object({
@@ -42,7 +42,7 @@ const boardFormSchema = z.object({
 });
 
 // 게시판 폼 훅
-export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; boardId?: string } = {}) {
+export function useBoardForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -51,7 +51,7 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
   const [createdBoardId, setCreatedBoardId] = useState<string | null>(null);
 
   // Apollo Client useMutation
-  const [createBoard, { loading: mutationLoading, error: mutationError }] = useMutation(CREATE_BOARD);
+  const [createBoard] = useMutation<CreateBoardResponse>(CREATE_BOARD);
 
   // React Hook Form 설정
   const form = useForm<BoardFormData>({
@@ -211,3 +211,9 @@ export function useBoardForm({ isEdit = false, boardId }: { isEdit?: boolean; bo
     youtubeUrlController
   };
 }
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

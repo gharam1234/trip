@@ -20,6 +20,7 @@ import { useAuthGuard } from "@/commons/providers/auth/auth.guard.hook";
 import { useIndexing } from "./hooks/index.indexing.hook";
 import { useDeleteBoard } from "./hooks/index.delete.hook";
 import { useDatepickerFiltering } from "./hooks/datepicker.filtering.hook";
+import { linkTo } from "@/commons/constants/url";
 
 export default function Boards(): JSX.Element {
   // 영역 순서 가이드
@@ -155,34 +156,48 @@ export default function Boards(): JSX.Element {
                 <div className={styles.colDate} role="cell">-</div>
               </div>
             ) : (
-              boards.map((item, index) => (
-                <div
-                  key={item.no}
-                  className={styles.listRow}
-                  role="row"
-                  onClick={() => navigateToBoardDetail(item.no)}
-                  data-testid={`board-row-${calculateNumber(index)}`}
-                >
-                  <div className={styles.colNo} role="cell" data-testid={`board-number-${calculateNumber(index)}`}>{calculateNumber(index)}</div>
-                  <div className={styles.colTitle} role="cell">{item.title}</div>
-                  <div className={styles.colAuthor} role="cell">{item.author}</div>
-                  <div className={styles.colDate} role="cell">{item.date}</div>
+              <div data-testid="boards-list">
+                {boards.map((item, index) => {
+                  const boardNumber = calculateNumber(index);
+                  const href = linkTo('BOARD_DETAIL', { BoardId: item.no });
 
-                  {/* 삭제 아이콘 (호버 시 표시) */}
-                  <img
-                    src="/icons/delete.png"
-                    alt="삭제"
-                    width={24}
-                    height={24}
-                    className={styles.deleteIcon}
-                    data-testid="delete-icon"
-                    onClick={(e) => {
-                      e.stopPropagation(); // 행 클릭 이벤트 전파 중단
-                      handleDelete(item.no);
-                    }}
-                  />
-                </div>
-              ))
+                  return (
+                    <a
+                      key={item.no}
+                      className={styles.listRow}
+                      role="row"
+                      href={href}
+                      data-testid={`board-row-${boardNumber}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateToBoardDetail(item.no);
+                      }}
+                    >
+                      <div className={styles.colNo} role="cell" data-testid={`board-number-${boardNumber}`}>
+                        {boardNumber}
+                      </div>
+                      <div className={styles.colTitle} role="cell">{item.title}</div>
+                      <div className={styles.colAuthor} role="cell">{item.author}</div>
+                      <div className={styles.colDate} role="cell">{item.date}</div>
+
+                      {/* 삭제 아이콘 (호버 시 표시) */}
+                      <img
+                        src="/icons/delete.png"
+                        alt="삭제"
+                        width={24}
+                        height={24}
+                        className={styles.deleteIcon}
+                        data-testid="delete-icon"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDelete(item.no);
+                        }}
+                      />
+                    </a>
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>
@@ -214,4 +229,9 @@ export default function Boards(): JSX.Element {
   );
 }
 
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
 

@@ -22,6 +22,22 @@
   gap: 16px;
 }
 
+/* 로고 컨테이너 */
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+/* 로고 이미지 */
+.logo {
+  width: 77px;
+  height: 48px;
+  object-fit: contain;
+}
+
 /* 타이틀 스타일 */
 .title {
   /* 피그마 기준: Pretendard Variable, 중앙 정렬 */
@@ -96,6 +112,8 @@
 /* 확인 버튼 스타일 */
 .confirmButton {
   /* single 액션: 120px 너비, dual 액션: 160px 너비 */
+  /* 기본 스타일은 Button 컴포넌트에서 상속 */
+  display: inline-block;
 }
 
 /* single 액션 확인 버튼 */
@@ -110,7 +128,8 @@
 
 /* variant: info 스타일 (기본) */
 .variantInfo {
-  /* info variant는 기본 스타일과 동일 */
+  /* info variant는 기본 스타일과 동일 - 추가 스타일 없음 */
+  color: inherit;
 }
 
 /* variant: danger 스타일 */
@@ -194,3 +213,11 @@
     width: 120px;
   }
 }
+
+/*
+=== 변경 주석 (자동 생성) ===
+시각: 2025-10-29 16:25:35
+변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+학습 키워드: 개념 식별 불가(자동 추정 실패)
+*/
+

@@ -9,10 +9,10 @@
 
 ==============================================
 
-조건-파일경로) 참고할 TSX 파일경로: src/components/user-menu/UserProfileDropdown/index.tsx
-조건-파일경로) 참고할 CSS 파일경로: src/components/user-menu/UserProfileDropdown/styles.module.css
-조건-파일경로) 구현될 HOOK 파일경로: src/components/user-menu/UserProfileDropdown/hooks/index.binding.hook.ts
-조건-파일경로) 구현될 TEST 파일경로: src/components/user-menu/UserProfileDropdown/tests/index.binding.hook.spec.ts
+조건-파일경로) 참고할 TSX 파일경로: src/components/user-menu/index.tsx
+조건-파일경로) 참고할 CSS 파일경로: src/components/user-menu/styles.module.css
+조건-파일경로) 구현될 HOOK 파일경로: src/components/user-menu/hooks/index.binding.hook.ts
+조건-파일경로) 구현될 TEST 파일경로: src/components/user-menu/tests/index.binding.hook.spec.ts
 
 ==============================================
 
@@ -68,3 +68,8 @@
 4) 테스트
 - 실제 API 데이터를 테스트
 - Playwright 테스트에서 API 호출 후 렌더링된 사용자 정보를 검증
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+

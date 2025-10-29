@@ -6,7 +6,7 @@ import type { Dayjs } from "dayjs";
  * DatePicker 필터링 기능 Hook
  * - 날짜 범위 선택 상태 관리
  * - 날짜 변경 시 자동 검색 실행
- * - GraphQL API에 YYYY-MM-DD 형식의 날짜 파라미터 전달
+ * - GraphQL API에 ISO8601(+타임존) 형식으로 날짜 파라미터 전달
  */
 
 interface DateRangeState {
@@ -36,17 +36,14 @@ export function useDatepickerFiltering(): UseDatepickerFilteringReturn {
   const handleDateRangeChange = React.useCallback(
     (values: [Dayjs | null, Dayjs | null] | null) => {
       if (values && values[0] && values[1]) {
-        const startText = dayjs(values[0]).format("YYYY-MM-DD");
-        // endDate에 시간 정보 추가: 23:59:59
-        // 예: 사용자가 2025-10-27 ~ 2025-10-27 선택 → API로 2025-10-27 ~ 2025-10-27T23:59:59 전송
-        // 백엔드: createdAt >= startDate AND createdAt <= endDate
-        // 결과: 2025-10-27의 모든 데이터 포함 (시간까지 포함된 범위)
-        const endText = dayjs(values[1]).format("YYYY-MM-DD[T23:59:59]");
+        const startText = dayjs(values[0]).startOf("day").format("YYYY-MM-DDTHH:mm:ssZ");
+        const endText = dayjs(values[1]).endOf("day").format("YYYY-MM-DDTHH:mm:ssZ");
         setDateRangeText({ start: startText, end: endText });
         // 날짜 범위가 설정되면 자동으로 검색 상태 활성화
         setIsSearching(true);
       } else {
         setDateRangeText({ start: null, end: null });
+        setIsSearching(false);
       }
     },
     []
@@ -65,3 +62,9 @@ export function useDatepickerFiltering(): UseDatepickerFilteringReturn {
     resetDateRange,
   };
 }
+
+// === 변경 주석 (자동 생성) ===
+// 시각: 2025-10-29 16:25:35
+// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
+// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+
