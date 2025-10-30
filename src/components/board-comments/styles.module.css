@@ -553,6 +553,7 @@
   flex-direction: column;
   gap: 20px;
   min-width: 360px;
+  padding: 24px;
 }
 
 .modalTitle {
