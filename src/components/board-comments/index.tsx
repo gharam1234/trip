@@ -416,9 +416,15 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
       {isEditing ? (
         <form className={styles.editForm} onSubmit={handleEditSubmit} data-testid="comment-edit-form">
-          {/* 수정 이유: Figma 285:32565 디자인 반영 - 별점 표시 영역 추가 */}
+          {/* 수정 이유: Figma 285:32565 디자인 반영 + 별점 변경 기능 추가
+              - RatingDisplay(읽기 전용)에서 RatingSelector(변경 가능)로 변경
+              - 사용자가 별점을 클릭하면 editRating 상태 업데이트 */}
           <div className={styles.editRatingDisplay}>
-            <RatingDisplay value={editRating} size="medium" />
+            <RatingSelector
+              value={editRating}
+              onChange={setEditRating}
+              disabled={isSubmitting}
+            />
           </div>
 
           {/* 수정 이유: Figma 285:32565 디자인 반영 - 작성자/비밀번호를 2열 레이아웃으로 변경 */}

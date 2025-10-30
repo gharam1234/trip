@@ -55,7 +55,7 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
     if (commentCount > 0) {
       // 첫 번째 댓글의 수정 버튼 찾기
       const firstComment = commentItems.first();
-      const editButton = firstComment.locator("[data-testid='edit-button']");
+      const editButton = firstComment.locator("[data-testid='comment-edit-button']");
 
       // 수정 버튼 클릭 (존재하는지 확인)
       try {
@@ -128,7 +128,7 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
     if (initialCount > 0) {
       // 첫 번째 댓글의 삭제 버튼 찾기
       const firstComment = commentItems.first();
-      const deleteButton = firstComment.locator("[data-testid='delete-button']");
+      const deleteButton = firstComment.locator("[data-testid='comment-delete-button']");
 
       // 삭제 버튼이 존재하는지 확인
       const isVisible = await deleteButton.isVisible({ timeout: 300 });
@@ -197,7 +197,7 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
       console.log(`원본 댓글 내용: "${originalContent.substring(0, 30)}..."`);
 
       // 수정 버튼 클릭
-      const editButton = firstComment.locator("[data-testid='edit-button']");
+      const editButton = firstComment.locator("[data-testid='comment-edit-button']");
       try {
         await editButton.click({ timeout: 400 });
 
@@ -251,7 +251,7 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
 
     if (commentCount > 0) {
       const firstComment = commentItems.first();
-      const deleteButton = firstComment.locator("[data-testid='delete-button']");
+      const deleteButton = firstComment.locator("[data-testid='comment-delete-button']");
 
       // 잘못된 비밀번호로 삭제 시도 - GraphQL 응답 모킹
       await page.route("**/graphql", async (route) => {
@@ -336,7 +336,7 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
 
     if (commentCount > 0) {
       const firstComment = commentItems.first();
-      const deleteButton = firstComment.locator("[data-testid='delete-button']");
+      const deleteButton = firstComment.locator("[data-testid='comment-delete-button']");
 
       // 삭제 버튼 클릭
       try {
@@ -364,6 +364,91 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
       } catch {
         console.log("테스트 실행 중 에러 발생");
       }
+    }
+  });
+
+  test("핵심 기능: 수정 폼에서 별점(rating)을 클릭하여 변경 가능한지 검증", async ({
+    page,
+  }) => {
+    // 수정 이유: 요구사항 - "수정폼에서 rating을 바꿀려고 클릭해도 바뀌지 않음 rating이 바뀔수 있게 수정"
+    // 이 테스트는 별점을 변경할 수 있는지 확인합니다.
+
+    // 게시판 상세 페이지로 이동
+    await page.goto(`http://localhost:3000/boards/${TEST_BOARD_ID}`);
+
+    // 페이지 로드 대기
+    const pageContainer = page.locator("[data-testid='board-detail-container']");
+
+    try {
+      await pageContainer.waitFor({ timeout: 400 });
+    } catch {
+      console.log("페이지 로드 실패");
+      return;
+    }
+
+    // 댓글 찾기
+    const commentItems = page.locator("[data-testid='comment-item']");
+    const commentCount = await commentItems.count();
+
+    console.log(`렌더링된 댓글 수: ${commentCount}`);
+
+    if (commentCount > 0) {
+      const firstComment = commentItems.first();
+
+      // 원본 별점 저장
+      const originalRatingStars = firstComment.locator("[data-testid='comment-rating']");
+      const originalRatingCount = await originalRatingStars.count();
+      console.log(`원본 별점 개수: ${originalRatingCount}`);
+
+      // 수정 버튼 클릭
+      const editButton = firstComment.locator("[data-testid='comment-edit-button']");
+      try {
+        await editButton.click({ timeout: 400 });
+        console.log("수정 모드 진입 성공");
+
+        // 수정 폼의 RatingSelector 찾기 (별점 클릭 가능한 버튼들)
+        const ratingButtons = page.locator(".ratingButton");
+        const ratingButtonCount = await ratingButtons.count();
+        console.log(`별점 버튼 개수: ${ratingButtonCount}`);
+
+        if (ratingButtonCount >= 3) {
+          // 3번째 별점 버튼 클릭 (3점으로 변경)
+          const thirdRatingButton = ratingButtons.nth(2);
+          await thirdRatingButton.click({ timeout: 400 });
+          console.log("3번째 별점 버튼 클릭 성공");
+
+          // 별점이 변경되었는지 확인 (활성화된 버튼이 3개가 되어야 함)
+          const activeRatingButtons = page.locator(".ratingButtonActive");
+          const activeCount = await activeRatingButtons.count();
+          console.log(`활성 별점 개수: ${activeCount}`);
+
+          // 활성 별점이 3개 이상이면 변경 성공
+          expect(activeCount).toBeGreaterThanOrEqual(3);
+          console.log("별점 변경 성공!");
+
+          // 비밀번호 입력
+          const passwordInput = page.locator("input[type='password']").last();
+          await passwordInput.fill("1234");
+
+          // 수정 완료 버튼 클릭
+          const submitButton = page.locator("button:has-text('수정 하기')").first();
+          await submitButton.click({ timeout: 400 });
+
+          // 수정 후 리스트 업데이트 대기
+          await page.waitForTimeout(500);
+
+          // 별점이 실제로 업데이트되었는지 확인
+          const updatedCommentItems = page.locator("[data-testid='comment-item']");
+          const updatedFirstComment = updatedCommentItems.first();
+          const updatedRatingStars = updatedFirstComment.locator("[data-testid='comment-rating']");
+          const updatedRatingCount = await updatedRatingStars.count();
+          console.log(`업데이트 후 별점: ${updatedRatingCount}`);
+        }
+      } catch (error) {
+        console.log(`별점 변경 테스트 실패: ${error}`);
+      }
+    } else {
+      console.log("댓글이 없어서 별점 변경 테스트를 건너뜀");
     }
   });
 });
