@@ -67,15 +67,23 @@ export const useBoardCommentSubmit = (
     }
 
     try {
+      const variablesInput: CreateBoardCommentInput = {
+        contents: input.contents,
+        rating: input.rating,
+      };
+
+      if (input.writer && input.writer.trim().length > 0) {
+        variablesInput.writer = input.writer;
+      }
+
+      if (input.password && input.password.trim().length > 0) {
+        variablesInput.password = input.password;
+      }
+
       await createMutation({
         variables: {
           boardId,
-          createBoardCommentInput: {
-            writer: input.writer,
-            password: input.password,
-            contents: input.contents,
-            rating: input.rating,
-          },
+          createBoardCommentInput: variablesInput,
         },
         refetchQueries: [
           {

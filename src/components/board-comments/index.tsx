@@ -223,7 +223,7 @@ export function CommentSubmitForm({
             size="medium"
             className={styles.fullWidth}
             type="password"
-            placeholder="댓글 수정/삭제 비밀번호 (선택)"
+            placeholder="비밀번호를 입력해주세요 (4자이상)"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
             maxLength={20}

@@ -1,8 +1,10 @@
 /*
-  보드 상세 와이어프레임 스타일
+  보드 상세 페이지 스타일 (Figma 디자인 적용)
   - 고정 폭 1280px
   - 각 섹션은 요구된 높이값을 정확히 반영
-  - 배치 확인을 위해 중립 톤 배경색과 경계선 사용
+  - CSS Module 기반의 모듈식 스타일링
+  - Flexbox를 활용한 반응형 레이아웃
+  - 전역 색상 및 타이포그래피 토큰 사용
 */
 
 .container {
@@ -28,19 +30,6 @@
   color: var(--color-text-primary);
 }
 
-/* 댓글 영역 스타일 */
-.reTitle,
-.reRating,
-.reInput,
-.reFooter,
-.reList {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background: var(--color-surface-default);
-  border: none;
-  color: var(--color-text-primary);
-}
 
 /* 높이 스펙 적용 */
 .detailTitle { height: 72px; }
@@ -50,28 +39,24 @@
 .detailVideo { height: 508px; }
 .detailIcon { height: 48px; }
 .detailFooter { height: 40px; }
-.reTitle { height: 24px; }
-.reRating { height: 24px; }
-.reInput { height: 144px; }
-.reFooter { height: 48px; }
-.reList { height: 72px; }
 
 /* 간격 스펙 적용 */
-.gap16 { height: 16px; }
 .gap24 { height: 24px; }
 .gap40 { height: 40px; }
 
-/* 제목 텍스트: 피그마 웹헤드라인03 준용 */
+/* 제목 텍스트: 피그마 웹헤드라인03 기반 (28px, Bold 700)
+   토큰 선택: --typo-desktop-webHeadline03 (fontWeight 600 → 700으로 조정) */
 .titleText {
   margin: 0;
   padding: 0 24px;
   font-family: var(--font-family-ko);
   font-size: var(--typo-desktop-webHeadline03-fontSize);
   line-height: var(--typo-desktop-webHeadline03-lineHeight);
-  font-weight: var(--typo-desktop-webHeadline03-fontWeight);
+  font-weight: 700;
   color: var(--color-text-primary);
   align-self: center;
   width: 100%;
+  word-wrap: break-word;
 }
 
 /* 작성자 영역 상세 레이아웃 */
@@ -98,21 +83,25 @@
   border-radius: 9999px;
   background: var(--color-gray-3);
 }
+/* 수정 이유: Figma 디자인에서 프로필 이름은 14px, Light(300) 폰트
+   토큰 선택: --typo-desktop-light02 (정확 일치) */
 .profileName {
-  font-size: var(--typo-desktop-body01_regular-fontSize);
-  line-height: var(--typo-desktop-body01_regular-lineHeight);
-  font-weight: var(--typo-desktop-body01_regular-fontWeight);
-  color: var(--color-text-primary);
+  font-size: var(--typo-desktop-light02-fontSize);
+  line-height: var(--typo-desktop-light02-lineHeight);
+  font-weight: var(--typo-desktop-light02-fontWeight);
+  color: var(--color-text-tertiary);
 }
 .writerMeta {
   display: flex;
   align-items: center;
 }
+/* 수정 이유: Figma 디자인에서 날짜는 14px, Regular(400), 회색 계열 색상
+   토큰 선택: --typo-desktop-body02_s (정확 일치) + --color-text-placeholder (색상 유사) */
 .writerDate {
   font-size: var(--typo-desktop-body02_s-fontSize);
   line-height: var(--typo-desktop-body02_s-lineHeight);
   font-weight: var(--typo-desktop-body02_s-fontWeight);
-  color: var(--color-text-quaternary);
+  color: var(--color-text-placeholder);
 }
 .writerDivider {
   width: 100%;
@@ -148,11 +137,13 @@
 .iconLink { background-image: url('/icons/link.png'); }
 .iconLocation { background-image: url('/icons/location.png'); }
 
-/* 이미지 영역 */
+/* 이미지 영역: Figma 디자인 적용 (1280 × 531px) */
 .detailImages {
   justify-content: center;
   padding: 16px;
+  align-items: center;
 }
+/* 수정 이유: Figma 디자인에서 이미지는 고정 사이즈 (822px × 499px 콘텐츠 영역) */
 .heroImage {
   width: 100%;
   max-width: 822px;
@@ -163,34 +154,41 @@
   background-position: center;
 }
 
-/* 내용 영역 */
+/* 내용 영역: 본문 텍스트 */
 .detailContent {
   align-items: flex-start;
   padding: 24px;
-  background: var(--color-surface-subtle);
-  border-radius: 8px;
+  background: var(--color-surface-default);
+  border-radius: 0;
+  flex-direction: column;
+  gap: 16px;
 }
+/* 수정 이유: Figma 디자인에서 본문은 16px, Regular(400), 줄높이 24px
+   토큰 선택: --typo-desktop-body01_regular (lineHeight 22px → 24px로 조정) */
 .contentParagraph {
   margin: 0;
-  margin-bottom: 16px;
   font-size: var(--typo-desktop-body01_regular-fontSize);
-  line-height: var(--typo-desktop-body01_regular-lineHeight);
+  line-height: 24px;
   font-weight: var(--typo-desktop-body01_regular-fontWeight);
   color: var(--color-text-primary);
+  font-family: var(--font-family-ko);
 }
 .contentParagraph:last-child {
   margin-bottom: 0;
 }
 
-/* 비디오 영역 */
+/* 비디오 영역: Figma 디자인 적용 */
 .detailVideo {
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 24px 0;
+  background: var(--color-surface-soft);
+  flex-direction: column;
+  gap: 10px;
 }
+/* 수정 이유: Figma 디자인에서 비디오 썸네일은 822px × 464px, 배경 #f2f2f2 */
 .videoThumb {
-  width: 100%;
-  max-width: 822px;
+  width: 822px;
   height: 464px;
   background: var(--color-surface-soft);
   border-radius: 8px;
@@ -227,28 +225,35 @@
   margin-left: 3px;
 }
 
-/* 리액션 영역 */
+/* 리액션 영역: Figma 디자인 적용 */
 .detailIcon {
   justify-content: center;
-  gap: 32px;
-  padding: 16px;
+  gap: 24px;
+  padding: 0;
+  flex-direction: row;
 }
+/* 수정 이유: Figma 디자인에서 좋아요/싫어요는 아이콘(위) + 숫자(아래) 수직 배치 */
 .reactionBad,
 .reactionGood {
-  height: 48px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  background: transparent;
   cursor: pointer;
 }
-.reactionBad:hover {
-  background-color: var(--color-surface-subtle);
+/* 수정 이유: goodReaction에서 숫자가 먼저 오므로 순서 변경 (order로 아이콘을 먼저 표시) */
+.reactionGood > .reactionCountDanger {
+  order: 1;
 }
+.reactionGood > .iconGood {
+  order: -1;
+}
+.reactionBad:hover,
 .reactionGood:hover {
-  background-color: var(--color-surface-subtle);
+  background-color: transparent;
 }
 .iconBad {
   width: 24px;
@@ -259,7 +264,7 @@
   background-position: center;
   background-size: 24px 24px;
 }
-.iconGood{
+.iconGood {
   width: 24px;
   height: 24px;
   background-color: transparent;
@@ -268,12 +273,16 @@
   background-position: center;
   background-size: 24px 24px;
 }
+/* 수정 이유: Figma 디자인에서 싫어요는 14px, Regular, 회색 계열 색상
+   토큰 선택: --typo-desktop-body02_s (정확 일치) + --color-text-tertiary */
 .reactionCountMuted {
   font-size: var(--typo-desktop-body02_s-fontSize);
   line-height: var(--typo-desktop-body02_s-lineHeight);
   font-weight: var(--typo-desktop-body02_s-fontWeight);
   color: var(--color-text-tertiary);
 }
+/* 수정 이유: Figma 디자인에서 좋아요는 14px, Regular, #f66a6a 색상
+   토큰 선택: --typo-desktop-body02_s (정확 일치) + --color-danger */
 .reactionCountDanger {
   font-size: var(--typo-desktop-body02_s-fontSize);
   line-height: var(--typo-desktop-body02_s-lineHeight);
@@ -285,111 +294,27 @@
   display: contents;
 }
 
-/* 상세 푸터 버튼 정렬 */
+/* 상세 푸터 버튼 정렬: Figma 디자인 적용 */
 .detailFooter {
   justify-content: center;
   gap: 24px;
-  padding: 0 16px;
+  padding: 0;
+  flex-direction: row;
 }
 
-/* 수정 버튼 커서 스타일 */
+/* 수정 이유: Figma 디자인에서 버튼은 14px, SemiBold(600), 흰색 배경, 검은색 테두리
+   토큰 선택: --typo-desktop-subtitle01 (lineHeight 22px → 20px로 조정) */
 .detailFooter button {
   cursor: pointer;
+  font-size: var(--typo-desktop-subtitle01-fontSize);
+  line-height: 20px;
+  font-weight: var(--typo-desktop-subtitle01-fontWeight);
 }
 
 .detailFooterButtonWrapper {
   display: inline-flex;
 }
 
-/* 댓글 타이틀 영역 */
-.reTitle {
-  padding: 0 16px;
-}
-.reTitleText {
-  margin: 0;
-  font-size: var(--typo-desktop-title01-fontSize);
-  line-height: var(--typo-desktop-title01-lineHeight);
-  font-weight: var(--typo-desktop-title01-fontWeight);
-  color: var(--color-text-primary);
-}
-
-/* 평점 영역 */
-.reRating {
-  gap: 4px;
-  padding: 0 16px;
-}
-.ratingItem,
-.ratingItemActive {
-  width: 32px;
-  height: 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  color: var(--color-text-quaternary);
-  cursor: pointer;
-  font-size: 20px;
-  line-height: 1;
-  transition: all 0.2s ease;
-}
-.ratingItem:hover {
-  color: var(--color-warning);
-  transform: scale(1.1);
-}
-.ratingItemActive {
-  color: var(--color-warning);
-}
-/* 키보드 포커스 가시화: 글로벌 아웃라인 토큰 사용 */
-.ratingItem:focus-visible,
-.ratingItemActive:focus-visible {
-  outline: 2px solid var(--color-outline);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-/* 댓글 입력 영역 */
-.reInput {
-  padding: 0 16px;
-  width: 100%;
-}
-.reTextareaRoot {
-  width: 100%;
-  height: 144px;
-}
-.reTextareaEl {
-  width: 100%;
-  height: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--color-border-default);
-  border-radius: 8px;
-  font-size: var(--typo-desktop-body01_regular-fontSize);
-  line-height: var(--typo-desktop-body01_regular-lineHeight);
-  font-family: var(--font-family-ko);
-  resize: none;
-  transition: border-color 0.2s ease;
-}
-.reTextareaEl:focus {
-  outline: none;
-  border-color: var(--color-action-primary);
-}
-
-/* 댓글 푸터 영역 */
-.reFooter {
-  justify-content: flex-end;
-  padding: 0 16px;
-}
-
-/* 댓글 목록 영역 */
-.reList {
-  padding: 0 16px;
-}
-.reListText {
-  margin: 0;
-  font-size: var(--typo-desktop-title02-fontSize);
-  line-height: var(--typo-desktop-title02-lineHeight);
-  font-weight: var(--typo-desktop-title02-fontWeight);
-  color: var(--color-text-primary);
-}
 
 /* 툴팁 스타일 */
 .tooltip {
@@ -416,9 +341,13 @@
 
 
 /*
-=== 변경 주석 (자동 생성) ===
-시각: 2025-10-29 16:25:35
-변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
-학습 키워드: 개념 식별 불가(자동 추정 실패)
+=== 변경 주석 ===
+시각: 2025-10-30 UI 구현 작업
+변경 이유: Figma 디자인을 반영하여 보드 상세 페이지 스타일 완성
+작업 내용:
+  - 타이포그래피: 각 섹션별 정확한 폰트 크기, 굵기, 줄높이 적용
+  - 색상: 전역 CSS 변수 토큰 활용 (하드코딩 제거)
+  - 레이아웃: Flexbox 기반 반응형 구성
+  - 커서 룰: @01-common.mdc, @02-wireframe.mdc, @03-ui.mdc 준수
 */
 

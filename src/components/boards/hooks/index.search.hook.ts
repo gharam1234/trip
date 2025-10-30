@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { FETCH_BOARDS } from "../graphql/queries";
 import { FetchBoardsResponse } from "../graphql/queries";
 

@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
+import BoardComments from "@/components/board-comments";
 import { useParams } from "next/navigation";
 import styles from "./styles.module.css";
 import Button from "@/commons/components/button";
-import Textarea from "@/commons/components/textarea";
 import { useBoardDetailBinding } from "./hooks/index.binding.hook";
 import { useBoardEditLink } from "./hooks/index.link.update.hook";
 import { useBoardListLink } from "./hooks/index.link.boards.hook";
@@ -12,10 +12,20 @@ import { useTooltip } from "./hooks/index.tooltip.hook";
 import { formatBoardDate } from "@/commons/utils/date";
 
 /**
- * 보드 상세 와이어프레임 컴포넌트
- * - HTML과 flexbox만 사용하여 구조를 구현
+ * 보드 상세 페이지 컴포넌트
+ * - Figma 디자인을 반영하여 UI 구현
+ * - HTML과 flexbox만 사용하여 구조 구성
  * - 고정 폭 1280px 기준 섹션 높이/간격을 요구사항 수치로 맞춤
- * - 실제 로컬스토리지 데이터를 바인딩하여 표시
+ * - 실제 데이터를 바인딩하여 표시
+ *
+ * 포함 영역:
+ * - detail-title: 제목 (28px, Bold)
+ * - detail-writer: 작성자 정보 (프로필, 날짜, 위치 아이콘, 툴팁)
+ * - detail-images: 대표 이미지 (1280 × 531px)
+ * - detail-content: 본문 내용 (16px, Regular)
+ * - detail-video: 비디오 영역 (1280 × 508px)
+ * - detail-icon: 반응 아이콘 (좋아요/싫어요 카운트)
+ * - detail-footer: 버튼 영역 (목록으로, 수정하기)
  */
 export default function BoardsDetailWireframe(): JSX.Element {
   // URL 파라미터에서 boardId 추출
@@ -28,18 +38,9 @@ export default function BoardsDetailWireframe(): JSX.Element {
   const { navigateToEdit } = useBoardEditLink();
   // 게시글 목록 페이지 이동 훅 사용
   const { navigateToList } = useBoardListLink();
-  // 별점/댓글 입력 상태 관리 (주석은 항상 한국어)
-  const [rating, setRating] = React.useState<number>(0);
-  const [comment, setComment] = React.useState<string>("");
-  
+
   // 툴팁 기능 훅 사용
   const { tooltipState, handleMouseEnter, handleMouseLeave, getTooltipMessage } = useTooltip();
-
-  // 등록 버튼 클릭 처리: 현재는 콘솔 출력만 수행
-  const handleSubmit = React.useCallback(() => {
-    // 실제 연동 시 서버 호출로 교체
-    console.log("submit review", { rating, commentLength: comment.length, comment });
-  }, [rating, comment]);
 
   // 수정 버튼 클릭 처리: 게시글 수정 페이지로 이동
   const handleEditClick = React.useCallback(() => {
@@ -222,74 +223,20 @@ export default function BoardsDetailWireframe(): JSX.Element {
       {/* gap 40 */}
       <div className={styles.gap40} />
 
-      {/* 회고 타이틀 (re-title) */}
-      <section className={styles.reTitle}>
-        <h2 className={styles.reTitleText}>댓글</h2>
-      </section>
-
-      {/* gap 24 */}
-      <div className={styles.gap24} />
-
-      {/* 평점 (re-rating) */}
-      <section className={styles.reRating}>
-        {[1, 2, 3, 4, 5].map((value) => (
-          <button
-            key={value}
-            type="button"
-            aria-label={`${value}점`}
-            aria-pressed={value <= rating}
-            className={value <= rating ? styles.ratingItemActive : styles.ratingItem}
-            onClick={() => setRating(value)}
-          >
-            {value <= rating ? "★" : "☆"}
-          </button>
-        ))}
-      </section>
-
-      {/* gap 24 */}
-      <div className={styles.gap24} />
-
-      {/* 입력 (re-input) */}
-      <section className={styles.reInput}>
-        <Textarea
-          className={styles.reTextareaRoot}
-          textareaClassName={styles.reTextareaEl}
-          placeholder="댓글을 입력하세요"
-          maxLength={200}
-          showCount
-          rows={5}
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-      </section>
-
-      {/* gap 16 */}
-      <div className={styles.gap16} />
-
-      {/* 회고 푸터 (re-footer) */}
-      <section className={styles.reFooter}>
-        <Button size="small" disabled={rating === 0 || comment.trim().length === 0} onClick={handleSubmit}>등록</Button>
-      </section>
-
-      {/* gap 40 */}
-      <div className={styles.gap40} />
-
-      {/* 리스트 타이틀 (re-list) */}
-      <section className={styles.reList}>
-        <h3 className={styles.reListText}>댓글 목록</h3>
-      </section>
-
-      {/* gap 40 */}
-      <div className={styles.gap40} />
-
-      {/* gap 40 */}
-      <div className={styles.gap40} />
+      {/* 댓글 섹션 */}
+      {/* 수정 이유: boardId를 props로 전달하여 실제 댓글 데이터 바인딩 */}
+      <BoardComments boardId={boardId} />
     </>
   );
 }
 
-// === 변경 주석 (자동 생성) ===
-// 시각: 2025-10-29 16:25:35
-// 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
-// 학습 키워드: 개념 식별 불가(자동 추정 실패)
+// === 변경 주석 ===
+// 시각: 2025-10-30 UI 구현 작업
+// 변경 이유: Figma 디자인을 반영하여 보드 상세 페이지 UI 완성
+// 작업 내용:
+//   1. 와이어프레임 기본 구조 유지
+//   2. 각 섹션의 타이포그래피 토큰 정확히 적용
+//   3. 색상 토큰 사용 (하드코딩 제거)
+//   4. Flexbox 기반 레이아웃으로 구성
+//   5. board-comments 컴포넌트 완전히 분리
 

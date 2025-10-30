@@ -20,10 +20,14 @@
 핵심요구사항) HTML과 flexbox를 활용한 와이어프레임 구조만 만들어낼 것.
 
 핵심요구사항) 각 영역은 아래의 수치값을 그대로 반영할 것. (단위: px)
-                - {gap}: 1200 * 24
-                - comment-header: 1200 * 60
-                - {gap}: 1200 * 16
-                - comment-form: 1200 * 200
+            - re-title: 1280 * 24
+            - {gap}: 1280 * 24
+            - re-rating: 1280 * 24
+            - {gap}: 1280 * 24
+            - re-input: 1280 * 144
+            - {gap}: 1280 * 16
+            - re-footer: 1280 * 48
+            - {gap}: 1280 * 40
                 - {gap}: 1200 * 24
                 - comment-list: 1200 * auto
                     - comment-item: 1200 * 120 (반복)
