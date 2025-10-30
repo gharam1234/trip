@@ -30,8 +30,9 @@ function StarIcon({ filled }: { filled: boolean }): JSX.Element {
       <path
         d="M12 2.5l2.944 5.961 6.58.957-4.764 4.645 1.125 6.562L12 17.852l-5.885 2.773 1.125-6.562-4.764-4.645 6.58-.957z"
         style={{
-          fill: filled ? "var(--color-blue-9)" : "var(--color-surface-default)",
-          stroke: filled ? "var(--color-blue-9)" : "var(--color-border-default)",
+          // 수정 이유: 별점 색깔을 노란색(#FADA67)으로 변경
+          fill: filled ? "#FADA67" : "var(--color-surface-default)",
+          stroke: filled ? "#FADA67" : "var(--color-border-default)",
           strokeWidth: 1,
         }}
       />

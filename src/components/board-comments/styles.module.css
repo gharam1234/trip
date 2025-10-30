@@ -205,7 +205,8 @@
 }
 
 .ratingButtonActive {
-  background-color: rgba(41, 125, 229, 0.08);
+  /* 수정 이유: 별점 선택 시 배경색을 노란색(#FADA67)에 맞춰 변경 */
+  background-color: rgba(250, 218, 103, 0.08);
 }
 
 .starIcon {

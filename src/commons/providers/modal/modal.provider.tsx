@@ -120,7 +120,11 @@ export function Modal({ id, children, isOpen, onClose, className = "", ...props 
     } else {
       closeModal(id);
     }
-  }, [isOpen, id]);
+
+    return () => {
+      closeModal(id);
+    };
+  }, [isOpen, id, openModal, closeModal]);
 
   if (!mounted) return null;
 
