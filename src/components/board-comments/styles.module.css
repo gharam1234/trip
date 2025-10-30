@@ -1,465 +1,546 @@
-/* 댓글 컴포넌트 스타일 */
-.editFormContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-    position: relative;
-    width: 1280px;
-    padding: 16px;
-    border: 1px solid var(--color-outline);
-    border-radius: 8px;
-    background-color: var(--color-surface-default);
-    margin: 0 auto;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    flex-shrink: 0;
-    width: 100%;
-  }
-  
-  .profileSection {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    position: relative;
-    flex-shrink: 0;
-  }
-  
-  .profile {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    position: relative;
-    flex-shrink: 0;
-  }
-  
-  .profileImg {
-    position: relative;
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-surface-muted);
-  }
-  
-  .profileIcon {
-    width: 16px;
-    height: 16px;
-    color: var(--color-text-tertiary);
-  }
-  
-  .authorName {
-    font-size: var(--typo-desktop-light02-fontSize);
-    line-height: var(--typo-desktop-light02-lineHeight);
-    font-weight: var(--typo-desktop-light02-fontWeight);
-    position: relative;
-    flex-shrink: 0;
-    color: var(--color-text-tertiary);
-    white-space: nowrap;
-  }
-  
-  .starContainer {
-    display: flex;
-    align-items: center;
-    position: relative;
-    flex-shrink: 0;
-  }
-  
-  .star {
-    position: relative;
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-  }
-  
-  .starSvg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .starButton {
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-  }
-  
-  .actionButtons {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    position: relative;
-    flex-shrink: 0;
-  }
-  
-  .iconButton {
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-  }
-  
-.iconEdit,
-.iconClose {
-  position: relative;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 20px 20px;
-  display: inline-block;
-}
+/* 한국어 주석만 사용: 보드 댓글 UI 스타일 */
 
-.iconEdit {
-  background-image: url('/icons/edit.png');
-}
-
-.iconClose {
-  background-image: url('/icons/close.png');
-}
-
-  .icon {
-    position: relative;
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-  }
-  
-  .iconSvg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .textButton {
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: var(--typo-desktop-body02_s-fontSize);
-    line-height: var(--typo-desktop-body02_s-lineHeight);
-    font-weight: var(--typo-desktop-body02_s-fontWeight);
-    color: var(--color-text-secondary);
-  }
-  
-  .content {
-    font-size: var(--typo-desktop-title02-fontSize);
-    line-height: var(--typo-desktop-title02-lineHeight);
-    font-weight: var(--typo-desktop-title02-fontWeight);
-    position: relative;
-    flex-shrink: 0;
-    width: 100%;
-    color: var(--color-text-secondary);
-    white-space: pre-wrap;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .textarea {
-    font-size: var(--typo-desktop-title02-fontSize);
-    line-height: var(--typo-desktop-title02-lineHeight);
-    font-weight: var(--typo-desktop-title02-fontWeight);
-    position: relative;
-    flex-shrink: 0;
-    width: 100%;
-    border-radius: 4px;
-    padding: 8px;
-    min-height: 100px;
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-outline);
-    background-color: var(--color-surface-default);
-    font-family: var(--font-family-ko);
-  }
-  
-  .dateContainer {
-    display: flex;
-    gap: 8px;
-    height: 24px;
-    align-items: center;
-    justify-content: flex-end;
-    position: relative;
-    flex-shrink: 0;
-    width: 100%;
-  }
-  
-  .date {
-    font-size: var(--typo-desktop-body02_s-fontSize);
-    line-height: var(--typo-desktop-body02_s-lineHeight);
-    font-weight: var(--typo-desktop-body02_s-fontWeight);
-    position: relative;
-    flex-shrink: 0;
-    color: var(--color-text-quaternary);
-    white-space: nowrap;
-  }
-  
-  @media (max-width: 767px) {
-    .commentContainer {
-      padding: 12px;
-    }
-  }
-
-/* CommentEditForm 스타일 */
-.editFormContainer {
+.submitForm {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  align-items: flex-end;
-  justify-content: center;
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
+  gap: 20px;
+  padding: 24px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 16px;
+  background-color: var(--color-surface-default);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
 }
 
-.starSection {
+.submitFormHeader {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: flex-start;
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
-}
-
-.starContainer {
-  display: flex;
-  gap: 8px;
   align-items: center;
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.starButton {
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
+.submitFormTitle {
+  margin: 0;
+  font-family: var(--font-family-ko);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
-.inputRow {
+.submitFormRating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fieldLabel {
+  display: block;
+  font-family: var(--font-family-ko);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  margin-bottom: 8px;
+}
+
+.submitFormRow {
   display: flex;
   gap: 16px;
-  align-items: center;
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
+  flex-wrap: wrap;
 }
 
-.inputGroup {
+.fieldGroup {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-start;
-  max-width: 312px;
-  position: relative;
-  flex-shrink: 0;
-  width: 312px;
+  flex: 1 1 240px;
 }
 
-.label {
-  display: flex;
-  font-size: var(--typo-desktop-title02-fontSize);
-  line-height: var(--typo-desktop-title02-lineHeight);
-  font-weight: var(--typo-desktop-button_medium-fontWeight);
-  gap: 4px;
-  align-items: flex-start;
-  position: relative;
-  flex-shrink: 0;
-  white-space: nowrap;
+/* 공통컴포넌트 width만 제어하기 위한 유틸 클래스 */
+.fullWidth {
   width: 100%;
 }
 
-.labelText {
-  position: relative;
-  flex-shrink: 0;
-  color: var(--color-text-secondary);
+.textInput {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-default);
+  background-color: var(--color-surface-subtle);
+  font-family: var(--font-family-ko);
+  font-size: 15px;
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.required {
-  position: relative;
-  flex-shrink: 0;
+.textInput:focus {
+  outline: none;
+  border-color: var(--color-blue-6);
+  box-shadow: 0 0 0 3px rgba(41, 125, 229, 0.16);
+  background-color: var(--color-surface-default);
+}
+
+.textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-default);
+  background-color: var(--color-surface-subtle);
+  font-family: var(--font-family-ko);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-blue-6);
+  box-shadow: 0 0 0 3px rgba(41, 125, 229, 0.16);
+  background-color: var(--color-surface-default);
+}
+
+.helperText {
+  font-size: 12px;
+  font-family: var(--font-family-ko);
+  color: var(--color-text-quaternary);
+  text-align: right;
+}
+
+.helperTextMuted {
+  font-size: 12px;
+  font-family: var(--font-family-ko);
+  color: var(--color-text-quaternary);
+}
+
+.errorMessage {
+  margin: 0;
+  font-family: var(--font-family-ko);
+  font-size: 13px;
   color: var(--color-danger);
 }
 
-.inputWrapper {
+.submitFormActions {
   display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.input {
-  flex-basis: 0;
-  flex-grow: 1;
-  min-height: 1px;
-  min-width: 1px;
-  background-color: var(--color-surface-muted);
-  position: relative;
-  flex-shrink: 0;
-  border-radius: 8px;
-  border: none;
-  box-sizing: border-box;
-  padding: 12px 16px;
-  font-size: var(--typo-desktop-title02-fontSize);
-  line-height: var(--typo-desktop-title02-lineHeight);
-  font-weight: var(--typo-desktop-title02-fontWeight);
-  color: var(--color-text-primary);
-  width: 100%;
+/* 수정 이유: Figma 285:32492 디자인 - 댓글 등록 버튼을 검은색으로 변경 (--color-action-neutral)
+   더블 클래스 선택자를 사용하여 !important 없이 우선순위 높임 */
+.submitButtonNeutral.submitButtonNeutral {
+  background-color: var(--color-action-neutral);
+  color: var(--color-on-action-neutral);
+}
+
+.submitButton,
+.resetButton {
+  padding: 12px 20px;
+  border-radius: 12px;
   font-family: var(--font-family-ko);
-}
-
-.input::placeholder {
-  color: var(--color-text-placeholder);
-}
-
-.inputBordered {
-  background-color: var(--color-surface-default);
-  border: 1px solid #d4d3d3;
-}
-
-.textareaContainer {
-  background-color: var(--color-surface-default);
-  height: 144px;
-  position: relative;
-  border-radius: 8px;
-  flex-shrink: 0;
-  width: 100%;
-  border: 1px solid #d4d3d3;
-}
-
-.textareaWrapper {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  padding: 12px 16px;
-  font-size: var(--typo-desktop-title02-fontSize);
-  line-height: var(--typo-desktop-title02-lineHeight);
-  font-weight: var(--typo-desktop-button_medium-fontWeight);
-}
-
-.charCount {
-  position: relative;
-  flex-shrink: 0;
-  text-align: right;
-  width: 100%;
-  color: var(--color-text-placeholder);
-  font-size: var(--typo-desktop-title02-fontSize);
-  line-height: var(--typo-desktop-title02-lineHeight);
-  font-weight: var(--typo-desktop-button_medium-fontWeight);
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: flex-end;
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
-}
-
-.cancelButton {
-  background-color: var(--color-surface-default);
-  box-sizing: border-box;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 12px 16px;
-  position: relative;
-  border-radius: 8px;
-  flex-shrink: 0;
-  border: 1px solid var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: var(--typo-desktop-button_large-fontSize);
-  line-height: var(--typo-desktop-button_large-lineHeight);
-  font-weight: var(--typo-desktop-title02-fontWeight);
-  color: var(--color-text-primary);
-  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  border: none;
 }
 
 .submitButton {
-  background-color: var(--color-text-primary);
-  box-sizing: border-box;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 12px 16px;
-  position: relative;
-  border-radius: 8px;
-  flex-shrink: 0;
-  border: none;
-  cursor: pointer;
-  font-size: var(--typo-desktop-button_large-fontSize);
-  line-height: var(--typo-desktop-button_large-lineHeight);
-  font-weight: var(--typo-desktop-title02-fontWeight);
-  color: var(--color-text-inverse);
-  white-space: nowrap;
+  background-color: var(--color-blue-9);
+  color: var(--color-on-action-primary);
+  box-shadow: 0 8px 16px rgba(41, 125, 229, 0.22);
 }
 
-.deleteConfirmModal {
+.submitButton:disabled {
+  background-color: var(--color-blue-1);
+  color: var(--color-placeholder-gray-7);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.resetButton {
+  background-color: var(--color-surface-muted);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+}
+
+.resetButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ratingSelector {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ratingSelectorSmall {
+  gap: 2px;
+}
+
+.ratingButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.ratingButton:focus-visible {
+  outline: 2px solid var(--color-blue-6);
+}
+
+.ratingButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.ratingButtonActive {
+  background-color: rgba(41, 125, 229, 0.08);
+}
+
+.starIcon {
+  display: block;
+}
+
+.ratingDisplay {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-family-ko);
+}
+
+.ratingDisplaySmall {
+  gap: 2px;
+}
+
+.ratingStar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ratingNumber {
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.commentCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: var(--color-surface-default);
+  border: 1px solid var(--color-border-default);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.04);
+}
+
+
+/* 수정 이유: 기존 큰 아바타와 헤더 텍스트 스타일은 새로운 헤더에서 사용하지 않으므로 제거 */
+
+.commentContent {
+  margin: 0;
+  font-family: var(--font-family-ko);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+  /* 수정 이유: 댓글 내용이 3줄을 넘어가는 경우 말줄임 처리 */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.passwordRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.passwordField {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.commentActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.actionButtonPrimary,
+.actionButtonSecondary {
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-family: var(--font-family-ko);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.actionButtonPrimary {
+  background-color: var(--color-blue-9);
+  color: var(--color-on-action-primary);
+  box-shadow: 0 8px 18px rgba(41, 125, 229, 0.18);
+}
+
+.actionButtonSecondary {
+  background-color: var(--color-surface-muted);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+}
+
+.actionButtonPrimary:disabled,
+.actionButtonSecondary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.editForm {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  align-items: flex-start;
-  justify-content: center;
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
-  padding: 24px;
-  background-color: var(--color-surface-default);
-  border: 1px solid var(--color-outline);
-  border-radius: 8px;
 }
 
-.deleteConfirmModal h3 {
-  font-size: var(--typo-desktop-title02-fontSize);
-  line-height: var(--typo-desktop-title02-lineHeight);
-  font-weight: var(--typo-desktop-title02-fontWeight);
-  color: var(--color-text-primary);
-  margin: 0;
-  width: 100%;
+/* 수정 이유: Figma 285:32565 디자인 반영 - 별점 표시 영역 */
+.editRatingDisplay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.deleteConfirmModal p {
-  font-size: var(--typo-desktop-body02_s-fontSize);
-  line-height: var(--typo-desktop-body02_s-lineHeight);
-  font-weight: var(--typo-desktop-body02_s-fontWeight);
-  color: var(--color-text-secondary);
-  margin: 0;
-  width: 100%;
+/* 수정 이유: Figma 285:32565 디자인 반영 - 작성자/비밀번호 2열 레이아웃 */
+.editFormRow {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-@media (max-width: 767px) {
-  .inputRow {
-    flex-direction: column;
-  }
-
-  .inputGroup {
-    max-width: 100%;
-    width: 100%;
-  }
+.editFormRow .fieldGroup {
+  flex: 1 1 240px;
 }
 
-/*
-=== 변경 주석 (자동 생성) ===
-시각: 2025-10-29 21:57:37
-변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
-학습 키워드: 개념 식별 불가(자동 추정 실패)
+.editControls {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.editControlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 200px;
+}
+
+/* 수정 이유: Figma 285:32565 디자인 반영 - 버튼 영역을 우측 정렬 */
+.editFormActions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* 와이어프레임: prompt.101.wireframe.txt 요구사항 정확히 반영 */
+/* 수정 이유: 댓글 폼 섹션(1280px)과 댓글 목록 섹션(1200px) 분리
+   - wireframeFormSection: 댓글 작성 폼 (1280px)
+   - wireframeListSection: 댓글 목록 (1200px)
 */
+
+.wireframeWrapper {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* 폼과 목록 사이의 큰 gap */
+}
+
+/* 댓글 작성 폼 섹션: 1280 × auto */
+.wireframeFormSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* re-title: 1280 × 24 */
+.wireframeTitle {
+  width: 1280px;
+  height: 24px;
+  background-color: var(--color-border-default);
+  border-radius: 4px;
+  margin-bottom: 24px; /* gap: 24 다음 요소까지 */
+}
+
+/* re-rating: 1280 × 24 */
+.wireframeRating {
+  width: 1280px;
+  height: 24px;
+  background-color: var(--color-border-default);
+  border-radius: 4px;
+  margin-bottom: 24px; /* gap: 24 다음 요소까지 */
+}
+
+/* re-input: 1280 × 144 */
+.wireframeInput {
+  width: 1280px;
+  height: 144px;
+  background-color: var(--color-border-default);
+  border-radius: 12px;
+  margin-bottom: 16px; /* gap: 16 다음 요소까지 */
+}
+
+/* re-footer: 1280 × 48 */
+.wireframeFooter {
+  width: 1280px;
+  height: 48px;
+  background-color: var(--color-border-default);
+  border-radius: 12px;
+}
+
+/* 댓글 목록 섹션: 1200 × auto */
+.wireframeListSection {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* 상단과 하단의 여백 */
+  padding: 24px 0; /* 상단 24px, 하단 24px */
+}
+
+/* comment-list: 1200 × auto */
+.wireframeList {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* comment-item들 사이의 gap */
+}
+
+/* comment-item: 1200 × 120 */
+.wireframeComment {
+  width: 1200px;
+  height: 120px;
+  border-radius: 16px;
+  border: 1px dashed var(--color-border-default);
+  background-color: var(--color-surface-default);
+}
+
+/* 수정 이유: Figma 285:32492 디자인 반영 - 새로운 댓글 헤더/푸터 레이아웃 */
+
+.commentHeaderNew {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+}
+
+.commentHeaderLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.avatarSmall {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-blue-4), var(--color-blue-8));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-on-action-primary);
+  font-family: var(--font-family-ko);
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.avatarInitialSmall {
+  display: inline-block;
+}
+
+.commentMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.commentAuthorSmall {
+  font-family: var(--font-family-ko);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--color-text-tertiary);
+  line-height: 20px;
+}
+
+.commentActionIcons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-quaternary);
+  transition: color 0.2s ease;
+}
+
+.iconButton:hover:not(:disabled) {
+  color: var(--color-text-secondary);
+}
+
+.iconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid var(--color-blue-6);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.commentFooter {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.commentDate {
+  font-family: var(--font-family-ko);
+  font-size: 14px;
+  color: var(--color-text-quaternary);
+  line-height: 20px;
+}
 
