@@ -137,20 +137,22 @@ test.describe("Board Comments Edit/Delete Hook (TDD 기반 테스트)", () => {
       if (isVisible) {
         // 삭제 버튼 클릭
         await deleteButton.click({ timeout: 400 });
-        console.log("삭제 버튼 클릭");
+        console.log("삭제 버튼 클릭 - 모달 열기");
 
-        // 비밀번호 입력 필드 확인
-        const passwordInput = page.locator("input[type='password']").last();
-        const isPasswordInputVisible = await passwordInput.isVisible({ timeout: 300 });
-        console.log(`비밀번호 입력 필드 가시성: ${isPasswordInputVisible}`);
+        // 삭제 모달의 비밀번호 입력 필드 확인
+        const deletePasswordInput = page.locator("[data-testid='comment-delete-password-input']");
+        const isPasswordInputVisible = await deletePasswordInput.isVisible({ timeout: 300 });
+        console.log(`삭제 모달 비밀번호 입력 필드 가시성: ${isPasswordInputVisible}`);
 
         if (isPasswordInputVisible) {
           // 비밀번호 입력
-          await passwordInput.fill("1234");
+          await deletePasswordInput.fill("1234");
+          console.log("모달에서 비밀번호 입력");
 
-          // 삭제 완료 버튼 클릭
-          const deleteConfirmButton = page.locator("button:has-text('삭제하기')").first();
+          // 삭제 모달의 "삭제 하기" 버튼 클릭
+          const deleteConfirmButton = page.locator("[data-testid='comment-delete-confirm']");
           await deleteConfirmButton.click({ timeout: 400 });
+          console.log("삭제 확인 버튼 클릭");
 
           // 삭제 후 리스트 업데이트 대기
           await page.waitForTimeout(500);

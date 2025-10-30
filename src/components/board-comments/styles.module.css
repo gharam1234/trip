@@ -13,9 +13,10 @@
 
 .submitFormHeader {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 16px;
+  /* 수정 이유: Figma 디자인에 맞춰 평점이 제목 아래에 오도록 flex-direction: column 추가 */
 }
 
 .submitFormTitle {
@@ -125,6 +126,8 @@
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: flex-end;
+  /* 수정 이유: 버튼들을 오른쪽으로 정렬하기 위해 justify-content: flex-end 추가 */
 }
 
 /* 수정 이유: Figma 285:32492 디자인 - 댓글 등록 버튼을 검은색으로 변경 (--color-action-neutral)
@@ -542,5 +545,36 @@
   font-size: 14px;
   color: var(--color-text-quaternary);
   line-height: 20px;
+}
+
+/* 수정 이유: 삭제 모달 관련 스타일 추가 */
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 360px;
+}
+
+.modalTitle {
+  margin: 0;
+  font-family: var(--font-family-ko);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.modalMessage {
+  margin: 0;
+  font-family: var(--font-family-ko);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 20px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 

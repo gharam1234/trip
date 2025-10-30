@@ -4,6 +4,7 @@ import React from "react";
 import { Input } from "@/commons/components/input";
 import { Textarea } from "@/commons/components/textarea";
 import { Button } from "@/commons/components/button";
+import { Modal } from "@/commons/providers/modal/modal.provider";
 import { useBoardComments } from "./hooks/index.binding.hook";
 import { useBoardCommentSubmit } from "./hooks/index.submit.hook";
 import { useBoardCommentEdit } from "./hooks/index.edit.hook";
@@ -11,7 +12,7 @@ import { CreateBoardCommentInput, UpdateBoardCommentInput } from "./graphql/muta
 import styles from "./styles.module.css";
 
 const RATING_VALUES = [1, 2, 3, 4, 5] as const;
-const MAX_CONTENT_LENGTH = 500;
+const MAX_CONTENT_LENGTH = 100;
 
 /**
  * 별 아이콘 SVG
@@ -142,7 +143,8 @@ export function CommentSubmitForm({
   const [author, setAuthor] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [content, setContent] = React.useState("");
-  const [rating, setRating] = React.useState(0);
+  // 수정 이유: 평점 초기값을 3으로 설정
+  const [rating, setRating] = React.useState(3);
   const [localError, setLocalError] = React.useState<string | null>(null);
 
   const remaining = React.useMemo(
@@ -154,7 +156,8 @@ export function CommentSubmitForm({
     setAuthor("");
     setPassword("");
     setContent("");
-    setRating(0);
+    // 수정 이유: 폼 리셋 후에도 평점을 초기값 3으로 설정
+    setRating(3);
   }, []);
 
   const handleSubmit = React.useCallback(
@@ -194,7 +197,6 @@ export function CommentSubmitForm({
       <div className={styles.submitFormHeader}>
         <h2 className={styles.submitFormTitle}>댓글</h2>
         <div className={styles.submitFormRating}>
-          <span className={styles.fieldLabel}>평점</span>
           <RatingSelector value={rating} onChange={setRating} />
         </div>
       </div>
@@ -248,7 +250,7 @@ export function CommentSubmitForm({
           data-testid="comment-content-input"
           showCount
         />
-        <span className={styles.helperText}>{content.length} / {MAX_CONTENT_LENGTH}</span>
+        {/* <span className={styles.helperText}>{content.length} / {MAX_CONTENT_LENGTH}</span> */}
       </label>
 
       {(localError || error) && (
@@ -268,16 +270,6 @@ export function CommentSubmitForm({
         >
           {isLoading ? "등록 중..." : "댓글 등록"}
         </Button>
-        <Button
-          type="button"
-          variant="secondary"
-          size="medium"
-          onClick={resetForm}
-          disabled={isLoading}
-        >
-          초기화
-        </Button>
-        <span className={styles.helperTextMuted}>남은 글자 수 {remaining}자</span>
       </div>
     </form>
   );
@@ -318,9 +310,13 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [editContent, setEditContent] = React.useState(content);
   const [editRating, setEditRating] = React.useState(rating);
-  const [password, setPassword] = React.useState("");
+  const [editPassword, setEditPassword] = React.useState("");
   const [localError, setLocalError] = React.useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  // 수정 이유: 삭제 시 비밀번호 입력을 모달로 변경하기 위한 상태
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  const [deletePassword, setDeletePassword] = React.useState("");
+  const [deleteError, setDeleteError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     setEditContent(content);
@@ -340,6 +336,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
     setLocalError(null);
     setEditContent(content);
     setEditRating(rating);
+    // 수정 이유: 수정 모드 토글 시 비밀번호 초기화
+    setEditPassword("");
   }, [content, onEdit, rating]);
 
   const handleEditSubmit = React.useCallback(
@@ -349,7 +347,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
       if (isSubmitting) return;
 
       const trimmedContent = editContent.trim();
-      const trimmedPassword = password.trim();
+      const trimmedPassword = editPassword.trim();
 
       if (!trimmedContent) {
         setLocalError("댓글 내용을 입력해주세요.");
@@ -372,7 +370,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
       try {
         await onEdit(id, trimmedContent, editRating, trimmedPassword);
         setIsEditing(false);
-        setPassword("");
+        setEditPassword("");
       } catch (err) {
         const message = err instanceof Error ? err.message : "댓글 수정에 실패했습니다.";
         setLocalError(message);
@@ -380,32 +378,48 @@ const CommentItem: React.FC<CommentItemProps> = ({
         setIsSubmitting(false);
       }
     },
-    [editContent, editRating, id, isSubmitting, onEdit, password]
+    [editContent, editPassword, editRating, id, isSubmitting, onEdit]
   );
 
-  const handleDelete = React.useCallback(async () => {
+  // 수정 이유: 삭제 버튼 클릭 시 모달 열기
+  const handleDeleteClick = React.useCallback(() => {
+    if (!onDelete) return;
+    setIsDeleteModalOpen(true);
+    setDeleteError(null);
+  }, [onDelete]);
+
+  // 수정 이유: 모달에서 삭제 확인 시 실행
+  const handleDeleteSubmit = React.useCallback(async () => {
     if (!onDelete) return;
     if (isSubmitting) return;
 
-    const trimmedPassword = password.trim();
+    const trimmedPassword = deletePassword.trim();
     if (!trimmedPassword) {
-      setLocalError("비밀번호를 입력해주세요.");
+      setDeleteError("비밀번호를 입력해주세요.");
       return;
     }
 
     setIsSubmitting(true);
-    setLocalError(null);
+    setDeleteError(null);
 
     try {
       await onDelete(id, trimmedPassword);
-      setPassword("");
+      setIsDeleteModalOpen(false);
+      setDeletePassword("");
     } catch (err) {
       const message = err instanceof Error ? err.message : "댓글 삭제에 실패했습니다.";
-      setLocalError(message);
+      setDeleteError(message);
     } finally {
       setIsSubmitting(false);
     }
-  }, [id, isSubmitting, onDelete, password]);
+  }, [deletePassword, id, isSubmitting, onDelete]);
+
+  // 수정 이유: 모달 닫기
+  const handleDeleteCancel = React.useCallback(() => {
+    setIsDeleteModalOpen(false);
+    setDeletePassword("");
+    setDeleteError(null);
+  }, []);
 
   return (
     <article
@@ -450,8 +464,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
                 className={styles.fullWidth}
                 type="password"
                 placeholder="비밀번호를 입력해 주세요."
-                value={password}
-                onChange={(event) => setPassword(event.currentTarget.value)}
+                value={editPassword}
+                onChange={(event) => setEditPassword(event.currentTarget.value)}
                 maxLength={20}
                 data-testid="comment-password-input"
               />
@@ -476,7 +490,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
               data-testid="comment-edit-content"
               showCount
             />
-            <span className={styles.helperText}>{editContent.length} / {MAX_CONTENT_LENGTH}</span>
+            {/* <span className={styles.helperText}>{editContent.length} / {MAX_CONTENT_LENGTH}</span> */}
           </label>
 
           {localError && (
@@ -550,7 +564,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                   <button
                     type="button"
                     className={styles.iconButton}
-                    onClick={handleDelete}
+                    onClick={handleDeleteClick}
                     disabled={isSubmitting}
                     aria-label="댓글 삭제"
                     data-testid="comment-delete-button"
@@ -578,30 +592,63 @@ const CommentItem: React.FC<CommentItemProps> = ({
             </span>
           </div>
 
-          {(onEdit || onDelete) && (
-            <>
-              <div className={styles.passwordRow}>
-                <label className={styles.passwordField}>
+          {/* 수정 이유: 삭제 모달 컴포넌트 및 수정 시 비밀번호는 editForm 내에서만 처리 */}
+          {onDelete && (
+            <Modal
+              id={`delete-modal-${id}`}
+              isOpen={isDeleteModalOpen}
+              onClose={handleDeleteCancel}
+              data-testid="comment-delete-modal"
+            >
+              <div className={styles.modalContent}>
+                <h3 className={styles.modalTitle}>댓글 삭제</h3>
+                <p className={styles.modalMessage}>댓글을 삭제하시려면 비밀번호를 입력해주세요.</p>
+
+                <label className={styles.fieldGroup}>
                   <span className={styles.fieldLabel}>비밀번호</span>
                   <Input
                     variant="primary"
-                    size="small"
+                    size="medium"
                     className={styles.fullWidth}
                     type="password"
-                    placeholder="비밀번호"
-                    value={password}
-                    onChange={(event) => setPassword(event.currentTarget.value)}
+                    placeholder="비밀번호를 입력해주세요."
+                    value={deletePassword}
+                    onChange={(event) => setDeletePassword(event.currentTarget.value)}
                     maxLength={20}
-                    data-testid="comment-password-input"
+                    data-testid="comment-delete-password-input"
                   />
                 </label>
-                {localError && (
-                  <p className={styles.errorMessage} role="alert">
-                    {localError}
+
+                {deleteError && (
+                  <p className={styles.errorMessage} role="alert" data-testid="comment-delete-error">
+                    {deleteError}
                   </p>
                 )}
+
+                <div className={styles.modalActions}>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="medium"
+                    onClick={handleDeleteCancel}
+                    disabled={isSubmitting}
+                    data-testid="comment-delete-cancel"
+                  >
+                    취소
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    size="medium"
+                    onClick={handleDeleteSubmit}
+                    disabled={isSubmitting}
+                    data-testid="comment-delete-confirm"
+                  >
+                    {isSubmitting ? "삭제 중..." : "삭제 하기"}
+                  </Button>
+                </div>
               </div>
-            </>
+            </Modal>
           )}
         </>
       )}
