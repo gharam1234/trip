@@ -78,7 +78,7 @@
 	height: 548px;
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 12px;
 }
 
 /* 리스트 행 (44px, 라운드 8, 얇은 경계) */
@@ -192,5 +192,4 @@
 .listRow:hover .deleteIcon {
     opacity: 1;
 }
-
 

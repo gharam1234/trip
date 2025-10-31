@@ -1,0 +1,67 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - text: ← → • • •
+    - main [ref=e4]:
+      - main [ref=e5]:
+        - generic [ref=e6]:
+          - heading "게시물 수정" [level=1] [ref=e8]
+          - generic [ref=e9]:
+            - generic [ref=e10]:
+              - generic [ref=e11]:
+                - text: 작성자
+                - generic [ref=e12]: "*"
+              - textbox [ref=e15]:
+                - /placeholder: 작성자 명을 입력해 주세요.
+                - text: 작성자1
+            - generic [ref=e16]:
+              - generic [ref=e17]:
+                - text: 비밀번호
+                - generic [ref=e18]: "*"
+              - textbox [ref=e21]:
+                - /placeholder: 비밀번호를 입력해 주세요.
+                - text: "1234"
+          - generic [ref=e22]:
+            - heading "제목*" [level=2] [ref=e23]
+            - textbox [ref=e26]:
+              - /placeholder: 제목을 입력해 주세요.
+              - text: 수정된 제목
+          - generic [ref=e28]:
+            - heading "내용*" [level=2] [ref=e29]
+            - textbox [ref=e32]:
+              - /placeholder: 내용을 입력해 주세요.
+              - text: 수정된 내용입니다.
+          - generic [ref=e33]:
+            - heading "주소" [level=2] [ref=e34]
+            - generic [ref=e35]:
+              - textbox [disabled] [ref=e38]:
+                - /placeholder: "01234"
+                - text: "12345"
+              - button "우편번호 검색" [pressed] [ref=e39] [cursor=pointer]:
+                - generic [ref=e40]: 우편번호 검색
+            - textbox [ref=e44]:
+              - /placeholder: 주소를 입력해 주세요,
+              - text: 서울시 강남구
+            - textbox [ref=e48]:
+              - /placeholder: 상세주소
+              - text: 테스트 빌딩
+          - generic [ref=e50]:
+            - heading "유튜브 링크" [level=2] [ref=e51]
+            - textbox [ref=e54]:
+              - /placeholder: 링크를 입력해 주세요.
+              - text: https://www.youtube.com/watch?v=test123
+          - generic [ref=e56]:
+            - heading "사진 첨부" [level=2] [ref=e57]
+            - generic [ref=e58]:
+              - img "사진업로드" [ref=e61] [cursor=pointer]
+              - img "사진업로드" [ref=e64] [cursor=pointer]
+              - img "사진업로드" [ref=e67] [cursor=pointer]
+          - generic [ref=e69]:
+            - button "취소" [pressed] [ref=e70] [cursor=pointer]:
+              - generic [ref=e71]: 취소
+            - button "수정 중..." [disabled] [pressed] [ref=e72] [cursor=pointer]:
+              - generic [ref=e73]: 수정 중...
+  - alert [ref=e74]
+```

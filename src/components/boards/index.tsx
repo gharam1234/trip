@@ -139,7 +139,11 @@ export default function Boards(): JSX.Element {
           </div>
 
           {/* 리스트 548px: API 데이터 바인딩 */}
-          <div className={styles.listBody} role="rowgroup">
+          <div
+            className={styles.listBody}
+            role="rowgroup"
+            data-testid="boards-list"
+          >
             {loading ? (
               <div className={styles.listRow} role="row">
                 <div className={styles.colNo} role="cell">로딩 중...</div>
@@ -164,48 +168,46 @@ export default function Boards(): JSX.Element {
                 <div className={styles.colDate} role="cell">-</div>
               </div>
             ) : (
-              <div data-testid="boards-list">
-                {boards.map((item, index) => {
-                  const boardNumber = calculateNumber(index);
-                  const href = linkTo('BOARD_DETAIL', { BoardId: item.no });
+              boards.map((item, index) => {
+                const boardNumber = calculateNumber(index);
+                const href = linkTo('BOARD_DETAIL', { BoardId: item.no });
 
-                  return (
-                    <a
-                      key={item.no}
-                      className={styles.listRow}
-                      role="row"
-                      href={href}
-                      data-testid={`board-row-${boardNumber}`}
+                return (
+                  <a
+                    key={item.no}
+                    className={styles.listRow}
+                    role="row"
+                    href={href}
+                    data-testid={`board-row-${boardNumber}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToBoardDetail(item.no);
+                    }}
+                  >
+                    <div className={styles.colNo} role="cell" data-testid={`board-number-${boardNumber}`}>
+                      {boardNumber}
+                    </div>
+                    <div className={styles.colTitle} role="cell">{item.title}</div>
+                    <div className={styles.colAuthor} role="cell">{item.author}</div>
+                    <div className={styles.colDate} role="cell">{item.date}</div>
+
+                    {/* 삭제 아이콘 (호버 시 표시) */}
+                    <img
+                      src="/icons/delete.png"
+                      alt="삭제"
+                      width={24}
+                      height={24}
+                      className={styles.deleteIcon}
+                      data-testid="delete-icon"
                       onClick={(e) => {
                         e.preventDefault();
-                        navigateToBoardDetail(item.no);
+                        e.stopPropagation();
+                        handleDelete(item.no);
                       }}
-                    >
-                      <div className={styles.colNo} role="cell" data-testid={`board-number-${boardNumber}`}>
-                        {boardNumber}
-                      </div>
-                      <div className={styles.colTitle} role="cell">{item.title}</div>
-                      <div className={styles.colAuthor} role="cell">{item.author}</div>
-                      <div className={styles.colDate} role="cell">{item.date}</div>
-
-                      {/* 삭제 아이콘 (호버 시 표시) */}
-                      <img
-                        src="/icons/delete.png"
-                        alt="삭제"
-                        width={24}
-                        height={24}
-                        className={styles.deleteIcon}
-                        data-testid="delete-icon"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleDelete(item.no);
-                        }}
-                      />
-                    </a>
-                  );
-                })}
-              </div>
+                    />
+                  </a>
+                );
+              })
             )}
           </div>
         </div>
