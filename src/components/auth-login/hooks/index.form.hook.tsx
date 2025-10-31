@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // React Hook Form 관련
 import { useForm } from 'react-hook-form';
@@ -67,6 +67,22 @@ export function useLoginForm() {
   const [pendingAccessToken, setPendingAccessToken] = useState<string | null>(null);
   const [pendingUser, setPendingUser] = useState<any | null>(null);
   const [pendingExpiresIn, setPendingExpiresIn] = useState<number | null>(null);
+  const [loginSucceeded, setLoginSucceeded] = useState<boolean>(false);
+  const pendingAccessTokenRef = useRef<string | null>(null);
+  const pendingUserRef = useRef<any | null>(null);
+  const pendingExpiresInRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    pendingAccessTokenRef.current = pendingAccessToken;
+  }, [pendingAccessToken]);
+
+  useEffect(() => {
+    pendingUserRef.current = pendingUser;
+  }, [pendingUser]);
+
+  useEffect(() => {
+    pendingExpiresInRef.current = pendingExpiresIn;
+  }, [pendingExpiresIn]);
 
   const deriveExpiresIn = (accessToken: string): number => {
     if (!accessToken) return 3600;
@@ -101,6 +117,8 @@ export function useLoginForm() {
   // 폼 설정
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
@@ -120,7 +138,10 @@ export function useLoginForm() {
         localStorage.setItem('accessToken', accessToken);
         console.log('accessToken 저장 완료:', accessToken);
         setPendingAccessToken(accessToken);
+        pendingAccessTokenRef.current = accessToken;
         setPendingExpiresIn(expiresIn);
+        pendingExpiresInRef.current = expiresIn;
+        setLoginSucceeded(true);
         openModal('login-success-modal');
 
         try {
@@ -130,9 +151,11 @@ export function useLoginForm() {
           });
           const fetchedUser = response.data?.fetchUserLoggedIn ?? null;
           setPendingUser(fetchedUser);
+          pendingUserRef.current = fetchedUser;
         } catch (fetchError) {
           console.error('로그인 후 사용자 정보 조회 실패:', fetchError);
           setPendingUser(null);
+          pendingUserRef.current = null;
         }
 
       } catch (error) {
@@ -141,6 +164,10 @@ export function useLoginForm() {
         setPendingAccessToken(null);
         setPendingUser(null);
         setPendingExpiresIn(null);
+        pendingAccessTokenRef.current = null;
+        pendingUserRef.current = null;
+        pendingExpiresInRef.current = null;
+        setLoginSucceeded(false);
         openModal('login-fail-modal');
       }
     },
@@ -153,6 +180,10 @@ export function useLoginForm() {
       setPendingAccessToken(null);
       setPendingUser(null);
       setPendingExpiresIn(null);
+      pendingAccessTokenRef.current = null;
+      pendingUserRef.current = null;
+      pendingExpiresInRef.current = null;
+      setLoginSucceeded(false);
       openModal('login-fail-modal');
     },
   });
@@ -187,26 +218,47 @@ export function useLoginForm() {
    * 모달 확인 버튼 클릭 처리
    */
   const handleModalConfirm = () => {
-    const successConfirmed = !!pendingAccessToken;
-    closeAllModals();
-    
-    if (successConfirmed && pendingAccessToken) {
+    const accessToken =
+      pendingAccessTokenRef.current ??
+      (typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null);
+
+    if (loginSucceeded && accessToken) {
       const userInfo =
-        pendingUser ??
+        pendingUserRef.current ??
         {
           email: form.getValues('email'),
           name: form.getValues('email'),
         };
 
-      const expiresIn = pendingExpiresIn ?? 3600;
-      login(userInfo, pendingAccessToken, expiresIn);
+      const expiresIn = pendingExpiresInRef.current ?? 3600;
+
+      login(userInfo, accessToken, expiresIn);
+
+      // 라우터 네비게이션과 함께 하드 리다이렉트 보조 처리
+      const boardsPath = getPath('BOARDS_LIST');
+      try {
+        router.push(boardsPath);
+      } catch (error) {
+        // 무시 - window.location으로 폴백
+      }
+      if (typeof window !== 'undefined') {
+        window.location.assign(boardsPath);
+      }
+
       setPendingAccessToken(null);
       setPendingUser(null);
       setPendingExpiresIn(null);
-    } else {
-      // 실패 모달의 경우 로그인 페이지 유지
-      router.push(getPath('AUTH_LOGIN'));
+      pendingAccessTokenRef.current = null;
+      pendingUserRef.current = null;
+      pendingExpiresInRef.current = null;
+      setLoginSucceeded(false);
+      closeAllModals();
+      return;
     }
+
+    closeAllModals();
+    setLoginSucceeded(false);
+    router.push(getPath('AUTH_LOGIN'));
   };
 
   return {
@@ -221,4 +273,3 @@ export function useLoginForm() {
 // 시각: 2025-10-29 16:25:35
 // 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 // 학습 키워드: 개념 식별 불가(자동 추정 실패)
-

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Input } from '@/commons/components/input';
 import { Button } from '@/commons/components/button';
-import { Modal } from '@/commons/providers/modal/modal.provider';
+import { Modal, useModal } from '@/commons/providers/modal/modal.provider';
 import { Modal as ModalComponent } from '@/commons/components/modal';
 import styles from './styles.module.css';
 import { useSignupForm } from './hooks/index.form.hook';
@@ -29,6 +29,33 @@ export default function AuthSignup() {
     passwordController,
     passwordConfirmController,
   } = useSignupForm();
+  const { openModal, closeModal } = useModal();
+  const signupSuccessId = React.useMemo(() => 'signup-success-modal', []);
+  const signupFailureId = React.useMemo(() => 'signup-failure-modal', []);
+
+  React.useEffect(() => {
+    if (showSuccessModal) {
+      openModal(signupSuccessId);
+    } else {
+      closeModal(signupSuccessId);
+    }
+
+    return () => {
+      closeModal(signupSuccessId);
+    };
+  }, [showSuccessModal, signupSuccessId, openModal, closeModal]);
+
+  React.useEffect(() => {
+    if (showFailureModal) {
+      openModal(signupFailureId);
+    } else {
+      closeModal(signupFailureId);
+    }
+
+    return () => {
+      closeModal(signupFailureId);
+    };
+  }, [showFailureModal, signupFailureId, openModal, closeModal]);
 
   return (
     <>
@@ -214,4 +241,3 @@ export default function AuthSignup() {
 // 시각: 2025-10-29 16:25:35
 // 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 // 학습 키워드: 개념 식별 불가(자동 추정 실패)
-

@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
     // fetchBoards & fetchBoardsCount 쿼리
     if (isOperation('fetchBoards') || isOperation('FetchBoards')) {
       // 단순 페이징 목 데이터 (10개 고정)
+      // 수정 이유: mainCard 컴포넌트에서 필요한 필드 추가 (user, likeCount, images)
       const page = variables?.page || 1;
       const items = Array.from({ length: 10 }).map((_, idx) => {
         const no = (page - 1) * 10 + (10 - idx);
@@ -70,6 +71,14 @@ export async function POST(req: NextRequest) {
           writer: `작성자${no}`,
           title: `테스트 제목 ${no}`,
           contents: `내용 ${no}`,
+          user: {
+            _id: `user-${no}`,
+            name: `사용자${no}`,
+            picture: `https://picsum.photos/40/40?random=${no}`,
+            __typename: 'User',
+          },
+          likeCount: Math.floor(Math.random() * 100),
+          images: [`https://picsum.photos/800/400?random=${no}`],
           createdAt: new Date().toISOString(),
           __typename: 'Board',
         };

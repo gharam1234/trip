@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './auth.provider';
 import { useModal } from '../modal/modal.provider';
@@ -23,7 +23,7 @@ declare global {
 export function useAuthGuard() {
   const router = useRouter();
   const { checkAuthStatus } = useAuth();
-  const { openModal, closeAllModals, isModalOpen } = useModal();
+  const { openModal, closeModal, closeAllModals, isModalOpen } = useModal();
   
   // 모달이 이미 표시되었는지 확인하기 위한 ref
   const modalShownRef = useRef<boolean>(false);
@@ -73,6 +73,10 @@ export function useAuthGuard() {
     modalShownRef.current = true;
     openModal(LOGIN_CONFIRM_MODAL_ID);
   }, [openModal]);
+
+  useEffect(() => () => {
+    closeModal(LOGIN_CONFIRM_MODAL_ID);
+  }, [closeModal]);
 
   // 로그인 페이지로 이동
   const handleLoginClick = useCallback(() => {

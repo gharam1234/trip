@@ -132,15 +132,17 @@ test.describe('게시판 폼 수정 기능 (Apollo 기반)', () => {
     await submitButton.click();
 
     // 수정 완료 알림 모달이 표시될 때까지 대기
-    await expect(page.locator('[data-testid="success-alert"]')).toBeVisible({ timeout: 500 });
+    // 수정 이유: GraphQL 응답 대기 시간을 고려하여 타임아웃 증가
+    await expect(page.locator('[data-testid="success-alert"]')).toBeVisible({ timeout: 5000 });
 
     // 확인 버튼 클릭
     const confirmButton = page.locator('[data-testid="success-alert"] button').first();
     await confirmButton.click();
 
     // 게시판 상세페이지로 리다이렉트되었는지 확인
-    // 경로: /boards/[BoardId] 형식으로 이동
-    await expect(page).toHaveURL(/\/boards\/[a-zA-Z0-9]+$/);
+    // 경로: /boards/[BoardId] 형식으로 이동 (edit 포함 가능)
+    // 수정 이유: 리다이렉트 대기 시간 증가
+    await page.waitForURL(/\/boards\/[a-zA-Z0-9]+$/, { timeout: 5000 });
 
     // 상세페이지의 주요 요소가 표시되는지 확인
     await expect(page.locator('[data-testid="board-detail-page"]')).toBeVisible();

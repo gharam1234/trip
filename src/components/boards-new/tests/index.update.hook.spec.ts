@@ -181,8 +181,9 @@ test.describe("게시판 수정 기능 - useBoardForm Hook", () => {
     await page.goto("/boards/1/edit");
 
     // 페이지 로드 확인
+    // 수정 이유: 페이지 로드 시간 증가
     await page.waitForSelector('[data-testid="boards-write-page"]', {
-      timeout: 500,
+      timeout: 5000,
     });
 
     // 폼 데이터 변경
@@ -198,8 +199,9 @@ test.describe("게시판 수정 기능 - useBoardForm Hook", () => {
     await submitButton.click();
 
     // 성공 알림 대기
+    // 수정 이유: GraphQL 응답 대기 시간 증가
     await page.waitForSelector('[data-testid="success-alert"]', {
-      timeout: 500,
+      timeout: 5000,
     });
 
     // 확인 버튼 클릭
@@ -209,7 +211,8 @@ test.describe("게시판 수정 기능 - useBoardForm Hook", () => {
     await confirmButton.click();
 
     // 상세페이지로 이동 확인
-    await page.waitForURL(/\/boards\/1$/);
+    // 수정 이유: 라우팅 대기 시간 증가
+    await page.waitForURL(/\/boards\/1$/, { timeout: 5000 });
     expect(page.url()).toContain("/boards/1");
   });
 

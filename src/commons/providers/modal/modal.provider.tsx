@@ -1,6 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+  useMemo,
+} from "react";
 import { createPortal } from "react-dom";
 import styles from "./styles.module.css";
 
@@ -27,29 +35,30 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // 모달 열기
-  const openModal = (id: string) => {
-    setModals(prev => {
+  const openModal = useCallback((id: string) => {
+    setModals((prev) => {
       if (!prev.includes(id)) {
         return [...prev, id];
       }
       return prev;
     });
-  };
+  }, []);
 
   // 모달 닫기
-  const closeModal = (id: string) => {
-    setModals(prev => prev.filter(modalId => modalId !== id));
-  };
+  const closeModal = useCallback((id: string) => {
+    setModals((prev) => prev.filter((modalId) => modalId !== id));
+  }, []);
 
   // 모든 모달 닫기
-  const closeAllModals = () => {
+  const closeAllModals = useCallback(() => {
     setModals([]);
-  };
+  }, []);
 
   // 모달 열림 상태 확인
-  const isModalOpen = (id: string) => {
-    return modals.includes(id);
-  };
+  const isModalOpen = useCallback(
+    (id: string) => modals.includes(id),
+    [modals],
+  );
 
   // body 스크롤 제어
   useEffect(() => {
@@ -67,13 +76,16 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     };
   }, [modals.length]);
 
-  const contextValue: ModalContextType = {
-    modals,
-    openModal,
-    closeModal,
-    closeAllModals,
-    isModalOpen,
-  };
+  const contextValue: ModalContextType = useMemo(
+    () => ({
+      modals,
+      openModal,
+      closeModal,
+      closeAllModals,
+      isModalOpen,
+    }),
+    [modals, openModal, closeModal, closeAllModals, isModalOpen],
+  );
 
   return (
     <ModalContext.Provider value={contextValue}>
@@ -107,24 +119,11 @@ interface ModalProps {
 }
 
 export function Modal({ id, children, isOpen, onClose, className = "", ...props }: ModalProps) {
-  const { openModal, closeModal } = useModal();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      openModal(id);
-    } else {
-      closeModal(id);
-    }
-
-    return () => {
-      closeModal(id);
-    };
-  }, [isOpen, id, openModal, closeModal]);
 
   if (!mounted) return null;
 

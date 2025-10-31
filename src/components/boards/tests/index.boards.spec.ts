@@ -118,6 +118,18 @@ test.describe("게시판 목록", () => {
   });
 
   test("트립토크 등록 버튼 클릭 시 작성 페이지로 이동한다", async ({ page }) => {
+    // 수정 이유: 로그인 상태로 변경하여 작성 페이지로 이동 가능하도록 함
+    await page.addInitScript(() => {
+      window.__TEST_ENV__ = 'test';
+      window.__TEST_BYPASS__ = true;
+      localStorage.setItem('accessToken', 'test-token-for-e2e-testing');
+      localStorage.setItem('user', JSON.stringify({
+        _id: 'test-user-id',
+        name: 'Test User',
+        email: 'test@example.com'
+      }));
+    });
+
     await page.goto("http://localhost:3000/boards");
     await page.waitForLoadState("networkidle");
 
@@ -130,6 +142,18 @@ test.describe("게시판 목록", () => {
   });
 
   test("게시글 클릭 시 상세 페이지로 이동한다", async ({ page }) => {
+    // 수정 이유: 로그인 상태로 변경하여 상세 페이지 접근 가능하도록 함
+    await page.addInitScript(() => {
+      window.__TEST_ENV__ = 'test';
+      window.__TEST_BYPASS__ = true;
+      localStorage.setItem('accessToken', 'test-token-for-e2e-testing');
+      localStorage.setItem('user', JSON.stringify({
+        _id: 'test-user-id',
+        name: 'Test User',
+        email: 'test@example.com'
+      }));
+    });
+
     await page.goto("http://localhost:3000/boards");
     await page.waitForLoadState("networkidle");
 
@@ -141,7 +165,7 @@ test.describe("게시판 목록", () => {
       await firstBoard.click();
 
       // 상세 페이지로 이동 확인
-      await expect(page).toHaveURL(/.*\/boards\/[0-9]+/);
+      await expect(page).toHaveURL(/.*\/boards\/[a-zA-Z0-9]+$/);
     }
   });
 

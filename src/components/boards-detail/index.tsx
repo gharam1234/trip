@@ -9,6 +9,8 @@ import { useBoardDetailBinding } from "./hooks/index.binding.hook";
 import { useBoardEditLink } from "./hooks/index.link.update.hook";
 import { useBoardListLink } from "./hooks/index.link.boards.hook";
 import { useTooltip } from "./hooks/index.tooltip.hook";
+import { useLikeDislikeCounts } from "./hooks/index.like-dislike.binding.hook";
+import { useLikeDislikeFunction } from "./hooks/index.like-dislike.function.hook";
 import { formatBoardDate } from "@/commons/utils/date";
 
 /**
@@ -34,6 +36,10 @@ export default function BoardsDetailWireframe(): JSX.Element {
 
   // 실제 데이터 바인딩 훅 사용
   const { boardData, loading, error } = useBoardDetailBinding(boardId);
+  // 좋아요/싫어요 카운트 훅 사용
+  const { likeCount, dislikeCount } = useLikeDislikeCounts(boardData);
+  const { handleLike, handleDislike, isLiking, isDisliking } =
+    useLikeDislikeFunction();
   // 게시글 수정 페이지 이동 훅 사용
   const { navigateToEdit } = useBoardEditLink();
   // 게시글 목록 페이지 이동 훅 사용
@@ -53,6 +59,36 @@ export default function BoardsDetailWireframe(): JSX.Element {
   const handleListClick = React.useCallback(() => {
     navigateToList();
   }, [navigateToList]);
+
+  const handleLikeClick = React.useCallback(() => {
+    if (!boardId || isLiking) return;
+    void handleLike(boardId);
+  }, [boardId, handleLike, isLiking]);
+
+  const handleDislikeClick = React.useCallback(() => {
+    if (!boardId || isDisliking) return;
+    void handleDislike(boardId);
+  }, [boardId, handleDislike, isDisliking]);
+
+  const handleLikeKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        handleLikeClick();
+      }
+    },
+    [handleLikeClick]
+  );
+
+  const handleDislikeKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        handleDislikeClick();
+      }
+    },
+    [handleDislikeClick]
+  );
 
   // 로딩 상태 처리
   const renderContent = (content: React.ReactNode) => (
@@ -178,13 +214,32 @@ export default function BoardsDetailWireframe(): JSX.Element {
       <div className={styles.gap24} />
 
       {/* 아이콘 영역: 싫어요/좋아요 카운트 */}
+      {/* 수정 이유: useLikeDislikeCounts 훅을 사용하여 GraphQL API에서 받은 실제 likeCount, dislikeCount 데이터를 바인딩 */}
       <section className={styles.detailIcon}>
-        <div className={styles.reactionBad}>
+        <div
+          className={styles.reactionBad}
+          role="button"
+          tabIndex={0}
+          aria-label="싫어요"
+          aria-disabled={isDisliking}
+          onClick={handleDislikeClick}
+          onKeyDown={handleDislikeKeyDown}
+          data-loading={isDisliking ? "true" : undefined}
+        >
           <span className={styles.iconBad} aria-hidden />
-          <span className={styles.reactionCountMuted}>24</span>
+          <span className={styles.reactionCountMuted}>{dislikeCount}</span>
         </div>
-        <div className={styles.reactionGood}>
-          <span className={styles.reactionCountDanger}>12</span>
+        <div
+          className={styles.reactionGood}
+          role="button"
+          tabIndex={0}
+          aria-label="좋아요"
+          aria-disabled={isLiking}
+          onClick={handleLikeClick}
+          onKeyDown={handleLikeKeyDown}
+          data-loading={isLiking ? "true" : undefined}
+        >
+          <span className={styles.reactionCountDanger}>{likeCount}</span>
           <span className={styles.iconGood} aria-hidden />
         </div>
       </section>
@@ -239,4 +294,3 @@ export default function BoardsDetailWireframe(): JSX.Element {
 //   3. 색상 토큰 사용 (하드코딩 제거)
 //   4. Flexbox 기반 레이아웃으로 구성
 //   5. board-comments 컴포넌트 완전히 분리
-

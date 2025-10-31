@@ -20,14 +20,15 @@ import styles from './styles.module.css';
 export default function AuthLogin() {
   const { form, handleLogin, handleModalConfirm, loginLoading } = useLoginForm();
   const { isModalOpen } = useModal();
+  const { register, handleSubmit, formState } = form;
+  const emailField = register('email');
+  const passwordField = register('password');
 
   /**
    * 폼 제출 처리
    * @param data - 폼 데이터 (email, password)
    */
-  const onSubmit = (data: { email: string; password: string }) => {
-    handleLogin(data);
-  };
+  const onSubmit = handleSubmit(handleLogin);
 
   return (
     <div className={styles.wrapper} data-testid="login-container">
@@ -40,7 +41,7 @@ export default function AuthLogin() {
         <div className={styles.leftGapMid1} />
         <div className={styles.leftGapMid3}>트립트립에 로그인 하세요</div>
         <div className={styles.leftGapMid1} />
-        <form className={styles.form} data-testid="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className={styles.form} data-testid="login-form" onSubmit={onSubmit}>
           <div className={styles.formRow}>
             <Input
               variant="primary"
@@ -50,14 +51,12 @@ export default function AuthLogin() {
               label="이메일"
               placeholder="이메일을 입력해 주세요."
               className={styles.width320}
-              value={form.watch('email') || ''}
-              onChange={(e) => form.setValue('email', e.target.value)}
-              onBlur={() => form.trigger('email')}
               data-testid="email-input"
+              {...emailField}
             />
-            {form.formState.errors.email && (
+            {formState.errors.email && (
               <div data-testid="email-error" className={styles.errorMessage}>
-                {form.formState.errors.email.message}
+                {formState.errors.email.message}
               </div>
             )}
           </div>
@@ -70,14 +69,12 @@ export default function AuthLogin() {
               label="비밀번호"
               placeholder="비밀번호를 입력해 주세요."
               className={styles.width320}
-              value={form.watch('password') || ''}
-              onChange={(e) => form.setValue('password', e.target.value)}
-              onBlur={() => form.trigger('password')}
               data-testid="password-input"
+              {...passwordField}
             />
-            {form.formState.errors.password && (
+            {formState.errors.password && (
               <div data-testid="password-error" className={styles.errorMessage}>
-                {form.formState.errors.password.message}
+                {formState.errors.password.message}
               </div>
             )}
           </div>
@@ -147,4 +144,3 @@ export default function AuthLogin() {
 // 시각: 2025-10-29 16:25:35
 // 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 // 학습 키워드: 개념 식별 불가(자동 추정 실패)
-

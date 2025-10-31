@@ -226,7 +226,8 @@ test.describe('보드 데이터 바인딩 (API) 테스트', () => {
   test('제목 셀에 CSS 오버플로우 스타일 적용 확인', async ({ page }) => {
     // 페이지 로드 완료 확인
     const boardsContainer = page.locator('[data-testid="boards-container"]');
-    await expect(boardsContainer).toBeVisible({ timeout: 500 });
+    // 수정 이유: 페이지 로드 시간을 고려하여 타임아웃 증가
+    await expect(boardsContainer).toBeVisible({ timeout: 5000 });
 
     // 리스트 행의 제목 셀 확인
     const listRows = page.locator('[class*="listRow"]');

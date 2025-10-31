@@ -4,7 +4,7 @@ import React from "react";
 import { Input } from "@/commons/components/input";
 import { Textarea } from "@/commons/components/textarea";
 import { Button } from "@/commons/components/button";
-import { Modal } from "@/commons/providers/modal/modal.provider";
+import { Modal, useModal } from "@/commons/providers/modal/modal.provider";
 import { useBoardComments } from "./hooks/index.binding.hook";
 import { useBoardCommentSubmit } from "./hooks/index.submit.hook";
 import { useBoardCommentEdit } from "./hooks/index.edit.hook";
@@ -318,6 +318,20 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [deletePassword, setDeletePassword] = React.useState("");
   const [deleteError, setDeleteError] = React.useState<string | null>(null);
+  const { openModal, closeModal } = useModal();
+  const deleteModalId = React.useMemo(() => `delete-modal-${id}`, [id]);
+
+  React.useEffect(() => {
+    if (isDeleteModalOpen) {
+      openModal(deleteModalId);
+    } else {
+      closeModal(deleteModalId);
+    }
+
+    return () => {
+      closeModal(deleteModalId);
+    };
+  }, [isDeleteModalOpen, deleteModalId, openModal, closeModal]);
 
   React.useEffect(() => {
     setEditContent(content);

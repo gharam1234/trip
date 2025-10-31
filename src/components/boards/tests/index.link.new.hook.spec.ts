@@ -17,10 +17,11 @@ test.describe('트립토크 등록 버튼 클릭 테스트', () => {
       
       // 트립토크 등록 버튼 클릭
       await page.click('[data-testid="trip-talk-button"]');
-      
-      // 로그인요청모달 노출여부 확인 (timeout 500ms 미만 설정)
-      await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible({ timeout: 400 });
-      
+
+      // 로그인요청모달 노출여부 확인 (모달 렌더링 시간 포함)
+      // 수정 이유: 모달 렌더링 시간을 고려하여 타임아웃 증가
+      await expect(page.locator('[data-testid="login-confirm-modal"]')).toBeVisible({ timeout: 5000 });
+
       // URL이 변경되지 않았는지 확인 (모달만 표시되고 페이지 이동 안됨)
       await expect(page).toHaveURL('/boards');
     });

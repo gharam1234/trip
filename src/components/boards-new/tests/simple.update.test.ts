@@ -38,12 +38,17 @@ test('게시판 수정 기능 기본 테스트', async ({ page }) => {
   
   // 등록하기 버튼 클릭
   await page.click('[data-testid="board-submit-button"]');
-  
+
+  // 성공 모달이 나타날 때까지 대기
+  // 수정 이유: GraphQL 응답 대기 시간 증가
+  await page.waitForSelector('[data-testid="success-alert"]', { timeout: 5000 });
+
   // 성공 모달 확인
   await page.click('[data-testid="success-alert-confirm"]');
-  
+
   // 상세 페이지로 이동 확인
-  await page.waitForSelector('[data-testid="boards-detail-page"]', { timeout: 5000 });
+  // 수정 이유: 라우팅 대기 시간 증가
+  await page.waitForSelector('[data-testid="board-detail-page"]', { timeout: 5000 });
   
   // 수정 버튼 클릭
   await page.click('[data-testid="edit-button"]');

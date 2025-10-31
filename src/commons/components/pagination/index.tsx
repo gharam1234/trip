@@ -85,8 +85,19 @@ export const Pagination: React.FC<PaginationProps> = ({
     if (next !== page) onChange?.(next);
   }
 
-  // 단순 숫자 나열 (1~safeTotal). 필요 시 ellipsis 로직 확장 가능
-  const pages = Array.from({ length: safeTotal }, (_, i) => i + 1);
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, clampedPage - Math.floor(maxVisiblePages / 2));
+  let endPage = startPage + maxVisiblePages - 1;
+
+  if (endPage > safeTotal) {
+    endPage = safeTotal;
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
+  const pages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, i) => startPage + i,
+  );
 
   return (
     <nav className={rootClassName} aria-label={ariaLabel} role="navigation">
@@ -134,5 +145,4 @@ export const Pagination: React.FC<PaginationProps> = ({
 };
 
 export default Pagination;
-
 

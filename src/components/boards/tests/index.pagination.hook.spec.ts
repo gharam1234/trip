@@ -18,16 +18,16 @@ test.describe("게시판 페이지네이션", () => {
     expect(boardRows).toBeLessThanOrEqual(10);
   });
 
-  test("페이지 번호가 10개 단위로 표시된다", async ({ page }) => {
+  test("페이지 번호가 최대 5개만 표시된다", async ({ page }) => {
     // /boards 접속
     await page.goto("http://localhost:3000/boards");
 
     // [data-testid="boards-pagination"] 확인
     await page.waitForSelector('[data-testid="boards-pagination"]');
 
-    // 페이지 버튼 개수가 최대 10개인지 검증
+    // 페이지 버튼 개수가 최대 5개인지 검증
     const pageButtons = await page.locator('[data-testid^="page-"]').count();
-    expect(pageButtons).toBeLessThanOrEqual(10);
+    expect(pageButtons).toBeLessThanOrEqual(5);
     expect(pageButtons).toBeGreaterThan(0);
   });
 

@@ -12,7 +12,7 @@ import { useBoardForm } from "./hooks/index.form.hook";
 import { useBoardUpdateForm } from "./hooks/index.update.form.hook";
 import { useAddressSearch } from "./hooks/index.address.hook";
 import { useImageUpload } from "./hooks/index.image.hook";
-import { Modal as ProviderModal } from "@/commons/providers/modal/modal.provider";
+import { Modal as ProviderModal, useModal } from "@/commons/providers/modal/modal.provider";
 import { Modal as FeedbackModal } from "@/commons/components/modal";
 
 /**
@@ -42,6 +42,33 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
     passwordController,
     youtubeUrlController
   } = formHook;
+  const { openModal, closeModal } = useModal();
+  const successModalId = React.useMemo(() => "board-success-modal", []);
+  const failureModalId = React.useMemo(() => "board-failure-modal", []);
+
+  React.useEffect(() => {
+    if (showSuccessAlert) {
+      openModal(successModalId);
+    } else {
+      closeModal(successModalId);
+    }
+
+    return () => {
+      closeModal(successModalId);
+    };
+  }, [showSuccessAlert, successModalId, openModal, closeModal]);
+
+  React.useEffect(() => {
+    if (showFailureAlert) {
+      openModal(failureModalId);
+    } else {
+      closeModal(failureModalId);
+    }
+
+    return () => {
+      closeModal(failureModalId);
+    };
+  }, [showFailureAlert, failureModalId, openModal, closeModal]);
 
   // 주소 검색 훅 초기화 - 주소 선택 완료 시 폼 필드 업데이트
   const addressHook = useAddressSearch((data) => {
@@ -425,4 +452,3 @@ export default function BoardsWriteUI({ isEdit = false, boardId }: { isEdit?: bo
 // 시각: 2025-10-29 16:25:35
 // 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 // 학습 키워드: 개념 식별 불가(자동 추정 실패)
-
