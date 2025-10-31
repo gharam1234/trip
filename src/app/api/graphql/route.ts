@@ -6,6 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const contentType = req.headers.get('content-type') || '';
     let query = '';
+    let operationName = '';
     let variables: any = {};
 
     if (contentType.includes('multipart/form-data')) {
@@ -15,6 +16,7 @@ export async function POST(req: NextRequest) {
         try {
           const parsed = JSON.parse(operations);
           query = parsed?.query || '';
+          operationName = parsed?.operationName || '';
           variables = parsed?.variables || {};
         } catch (parseError) {
           console.error('Failed to parse multipart operations:', parseError);
@@ -23,12 +25,19 @@ export async function POST(req: NextRequest) {
     } else {
       const body = await req.json();
       query = body?.query || '';
+      operationName = body?.operationName || '';
       variables = body?.variables || {};
     }
 
     // 간단한 오퍼레이션 식별 (문자열 포함으로 판별)
     const isOperation = (name: string) => {
-      const pattern = new RegExp(`\\b${name}\\b`);
+      const normalizedName = name.toLowerCase();
+      if (operationName) {
+        if (operationName.toLowerCase() === normalizedName) {
+          return true;
+        }
+      }
+      const pattern = new RegExp(`\\b${name}\\b`, 'i');
       return pattern.test(query);
     };
 
@@ -245,4 +254,3 @@ export async function POST(req: NextRequest) {
 // 시각: 2025-10-29 16:25:35
 // 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 // 학습 키워드: 개념 식별 불가(자동 추정 실패)
-
