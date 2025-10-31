@@ -57,6 +57,20 @@
   align-items: center;
 }
 
+.profileArrowButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.profileArrowButton:hover .profileArrow {
+  color: #555555;
+}
+
 /* Divider: 1px */
 .divider {
   width: 100%;
@@ -186,4 +200,3 @@
 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 학습 키워드: 개념 식별 불가(자동 추정 실패)
 */
-

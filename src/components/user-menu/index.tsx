@@ -37,6 +37,12 @@ export default function UserMenu({
     }
   };
 
+  const handleArrowClick = React.useCallback(() => {
+    if (onClose) {
+      onClose();
+    }
+  }, [onClose]);
+
   if (!isOpen) return null;
 
   // 데이터 로딩 중 또는 에러 발생 시
@@ -66,9 +72,17 @@ export default function UserMenu({
             <span className={styles.profileName} data-testid="user-menu-name">
               {userName || userData.name}
             </span>
-            <svg className={styles.profileArrow} width="8" height="5" viewBox="0 0 8 5" fill="none" stroke="currentColor" strokeWidth="1">
-              <path d="M1 1.5L4 4L7 1.5" />
-            </svg>
+            <button
+              type="button"
+              className={styles.profileArrowButton}
+              onClick={handleArrowClick}
+              aria-label="사용자 메뉴 닫기"
+              data-testid="user-menu-arrow-button"
+            >
+              <svg className={styles.profileArrow} width="8" height="5" viewBox="0 0 8 5" fill="none" stroke="currentColor" strokeWidth="1">
+                <path d="M1 3.5L4 1L7 3.5" />
+              </svg>
+            </button>
           </div>
           <div className={styles.divider} />
         </>

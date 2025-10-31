@@ -145,12 +145,14 @@
     - 요청방식: fetchPosts query
     - 요청 파라미터 구조:
 
-        query fetchPosts(page:1) {
-    _id
-    writer
-    title
-    createdAt
-  }
+        query {
+          fetchPosts(page: 1) {
+            _id
+            writer
+            title
+            createdAt
+          }
+        }
 
 핵심요구사항) 현재의 모든 구조를 그대로 유지하고, 하드코딩된 Mock데이터를 제거하고, 실제 fetchPosts API 데이터를 바인딩할 것.
 

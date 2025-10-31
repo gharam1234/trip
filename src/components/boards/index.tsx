@@ -54,6 +54,13 @@ export default function Boards(): JSX.Element {
   // Hook: 게시글 삭제
   const { handleDelete } = useDeleteBoard();
 
+  function handleSearchKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
+    if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
+
+    e.preventDefault();
+    handleSearchSubmit();
+  }
+
   // 검색 실행 핸들러
   function handleSearchSubmit(): void {
     // 검색 실행 상태 설정
@@ -92,6 +99,7 @@ export default function Boards(): JSX.Element {
             size="medium"
             value={keyword}
             onChange={(e) => setKeyword(e.currentTarget.value)}
+            onKeyDown={handleSearchKeyDown}
             placeholder="제목을 검색해 주세요."
             className={styles.wSearch640}
           />
@@ -234,4 +242,3 @@ export default function Boards(): JSX.Element {
 // 시각: 2025-10-29 16:25:35
 // 변경 이유: 요구사항 반영 또는 사소한 개선(자동 추정)
 // 학습 키워드: 개념 식별 불가(자동 추정 실패)
-
